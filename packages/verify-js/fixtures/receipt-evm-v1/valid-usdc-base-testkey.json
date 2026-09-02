@@ -1,0 +1,140 @@
+{
+  "name": "valid-usdc-base-testkey",
+  "description": "Body derived from REAL recorded Base mainnet evidence for USDC (legacy ZOS proxy, owner present, privileged selectors observed) at finalized block 48114405 — signed with an ephemeral TEST key. Real observation, test signature: the contract demonstrated on real data without any production claim.",
+  "input": {
+    "chain": "base-mainnet",
+    "tokenAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "implementationAddress": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+    "blockNumber": 48114405,
+    "blockHash": "0x01486f5533a0057302c4ded55c34e85f30288b621d3f69bf3e4df1baeea03f3e",
+    "timestamp": "2026-07-02T18:49:17.000Z",
+    "rulesVersion": "raven-evm-rules@0.1.0",
+    "findingTaxonomyVersion": "raven-evm-taxonomy@0.1.0",
+    "scopeChecksPerformed": [
+      "contract_code_present",
+      "eip1967_proxy_slots",
+      "erc20_interface_probe",
+      "owner_probe",
+      "privileged_selector_scan"
+    ],
+    "scopeChecksNotPerformed": [
+      "deployer_history",
+      "honeypot_simulation",
+      "liquidity_depth",
+      "top_holders"
+    ],
+    "coverageGaps": [
+      "deployer_outcomes",
+      "liquidity",
+      "offchain_claims",
+      "source_verification",
+      "top_holders"
+    ],
+    "findings": [
+      {
+        "code": "evm_contract.code_present",
+        "source": "eth_getCode",
+        "evidence": {
+          "byteLength": 1852
+        }
+      },
+      {
+        "code": "evm_contract.upgradeable_proxy_zos_legacy",
+        "source": "eth_getStorageAt",
+        "evidence": {
+          "implementation": "0x2ce6311ddae708829bc0784c967b7d77d19fd779"
+        }
+      },
+      {
+        "code": "evm_issuer_control.blacklist_selector_present",
+        "source": "bytecode_selector_scan",
+        "evidence": {
+          "signature": "blacklist(address)",
+          "selector": "0xf9f92be4",
+          "scannedTarget": "implementation"
+        }
+      },
+      {
+        "code": "evm_issuer_control.mint_selector_present",
+        "source": "bytecode_selector_scan",
+        "evidence": {
+          "signature": "mint(address,uint256)",
+          "selector": "0x40c10f19",
+          "scannedTarget": "implementation"
+        }
+      },
+      {
+        "code": "evm_issuer_control.owner_present",
+        "source": "eth_call:owner()",
+        "evidence": {
+          "owner": "0x3abd6f64a422225e61e435bae41db12096106df7"
+        }
+      },
+      {
+        "code": "evm_issuer_control.pause_selector_present",
+        "source": "bytecode_selector_scan",
+        "evidence": {
+          "signature": "pause()",
+          "selector": "0x8456cb59",
+          "scannedTarget": "implementation"
+        }
+      },
+      {
+        "code": "evm_token.erc20_interface_responsive",
+        "source": "eth_call:erc20_probes"
+      }
+    ],
+    "interpretations": [
+      {
+        "code": "evm_contract.code_present",
+        "text": "The address holds deployed contract bytecode at the observed block.",
+        "lang": "en"
+      },
+      {
+        "code": "evm_contract.upgradeable_proxy_zos_legacy",
+        "text": "The contract stores a legacy ZeppelinOS implementation pointer: its logic can be replaced by whoever controls the proxy.",
+        "lang": "en"
+      },
+      {
+        "code": "evm_issuer_control.blacklist_selector_present",
+        "text": "The deployed bytecode contains the selector for blacklist(address). Selector presence is a static observation; behavior is not claimed.",
+        "lang": "en"
+      },
+      {
+        "code": "evm_issuer_control.mint_selector_present",
+        "text": "The deployed bytecode contains the selector for mint(address,uint256). Selector presence is a static observation; behavior is not claimed.",
+        "lang": "en"
+      },
+      {
+        "code": "evm_issuer_control.owner_present",
+        "text": "An owner() call answered with a non-zero address at the observed block.",
+        "lang": "en"
+      },
+      {
+        "code": "evm_issuer_control.pause_selector_present",
+        "text": "The deployed bytecode contains the selector for pause(). Selector presence is a static observation; behavior is not claimed.",
+        "lang": "en"
+      },
+      {
+        "code": "evm_token.erc20_interface_responsive",
+        "text": "name(), symbol(), decimals(), and totalSupply() all answered at the observed block.",
+        "lang": "en"
+      }
+    ],
+    "maxAgeSeconds": 300,
+    "disclaimer": "This attestation reports on-chain state within the defined scope at the stated slot. It is not a prediction, recommendation, or declaration of safety.",
+    "payloadHash": "sha256:8a7d49041639e3171670b7811a7814761c05efa3e8b205b91afb9d308d8f8fa0",
+    "receiptId": "raven-receipt-evm-v1:sha256:8a7d49041639e3171670b7811a7814761c05efa3e8b205b91afb9d308d8f8fa0",
+    "signature": "Q2TzD2QB2vEWq+xInoWe9R39ozhquO7jQxRzEcHYqTRSBDhGNW/cFgJTw6LdQhfR5xbK4GgU+aARbQBlLizRDg==",
+    "signerPublicKey": "MCowBQYDK2VwAyEAff7ziS0rj8oK6cVDwX2BES0MBms7r7kVHYgxlDcYFS8="
+  },
+  "now": "2026-07-02T18:10:00.000Z",
+  "trustedKeys": [
+    "MCowBQYDK2VwAyEAff7ziS0rj8oK6cVDwX2BES0MBms7r7kVHYgxlDcYFS8="
+  ],
+  "expected": {
+    "valid": true,
+    "stale": false,
+    "keyTrusted": true
+  }
+}

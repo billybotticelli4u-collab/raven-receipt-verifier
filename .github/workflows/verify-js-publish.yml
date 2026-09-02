@@ -1,0 +1,112 @@
+# raven-receipt-verifier — trusted publication ceremony (npm OIDC provenance).
+#
+# SAFE BY DEFAULT. There is no push/pull_request trigger: publication happens
+# only through a manual dispatch that a human approves on the protected
+# `npm-release` environment. The approval of a specific dispatched run, bound to
+# the exact inputs below, IS the publication authorization.
+#
+# The gate job is SECRETLESS and carries no id-token. Only the protected publish
+# job requests OIDC, and it re-verifies the release SHA and the exact tarball
+# identity immediately before publishing (TOCTOU). No long-lived registry
+# credential is used or read:
+# authentication is npm trusted publishing via GitHub OIDC.
+name: verify-js publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_sha:
+        description: "Exact reviewed commit SHA authorized for publication"
+        required: true
+      confirm_version:
+        description: "Package version being published (must match package.json)"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: Release gate (secretless, no OIDC)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["22.18.0", "24"]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install from the package lockfile
+        run: npm --prefix packages/verify-js ci
+      - name: Package test suite
+        run: npm --prefix packages/verify-js test
+      - name: Packed-install consumer
+        run: npm --prefix packages/verify-js run test:packed
+      - name: Declaration consumer
+        run: npm --prefix packages/verify-js run test:declarations
+      - name: "CJS consumer: require() the packed tarball"
+        run: npm --prefix packages/verify-js run test:cjs
+      - name: Mirror boundary + workflow security controls
+        run: node --test ops/*.test.mjs
+
+  publish:
+    name: Protected publication (environment approval IS the authorization)
+    needs: gate
+    environment: npm-release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22.18.0"
+          registry-url: "https://registry.npmjs.org"
+      - name: Refuse unless HEAD is the authorized release SHA
+        env:
+          RELEASE_SHA: ${{ inputs.release_sha }}
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          if [ "$actual" != "$RELEASE_SHA" ]; then
+            echo "REFUSED: HEAD $actual != authorized release SHA $RELEASE_SHA" >&2
+            exit 1
+          fi
+      - name: Install from the package lockfile
+        run: npm --prefix packages/verify-js ci
+      - name: Pack exactly once
+        run: |
+          set -euo pipefail
+          cd packages/verify-js
+          npm pack --json > "$RUNNER_TEMP/pack.json"
+      - name: Refuse unless the tarball matches the frozen release identity
+        env:
+          CONFIRM_VERSION: ${{ inputs.confirm_version }}
+        run: node ops/verify-release-identity.mjs "$RUNNER_TEMP/pack.json" "$CONFIRM_VERSION"
+      - name: Publish that exact tarball with provenance (OIDC, no token)
+        run: |
+          set -euo pipefail
+          cd packages/verify-js
+          tarball="$(node -e 'console.log(require(process.env.RUNNER_TEMP+"/pack.json")[0].filename)')"
+          npm publish "$tarball" --provenance --access public
+      - name: Retain release evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-evidence
+          path: |
+            ${{ runner.temp }}/pack.json
+            release/release-identity.json

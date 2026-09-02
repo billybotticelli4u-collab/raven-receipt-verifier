@@ -1,0 +1,81 @@
+{
+  "name": "canonical-ordering-evm",
+  "description": "Two byte-different key orderings canonicalize to the same payloadHash.",
+  "inputA": {
+    "chain": "base-mainnet",
+    "tokenAddress": "0x4200000000000000000000000000000000000006",
+    "implementationAddress": null,
+    "blockNumber": 48114405,
+    "blockHash": "0x01486f5533a0057302c4ded55c34e85f30288b621d3f69bf3e4df1baeea03f3e",
+    "timestamp": "2026-07-02T18:09:17.000Z",
+    "rulesVersion": "raven-evm-rules@0.1.0",
+    "findingTaxonomyVersion": "raven-evm-taxonomy@0.1.0",
+    "scopeChecksPerformed": [
+      "contract_code_present",
+      "eip1967_proxy_slots",
+      "erc20_interface_probe",
+      "owner_probe",
+      "privileged_selector_scan"
+    ],
+    "scopeChecksNotPerformed": [
+      "deployer_history",
+      "honeypot_simulation",
+      "liquidity_depth",
+      "top_holders"
+    ],
+    "coverageGaps": [
+      "deployer_outcomes",
+      "liquidity",
+      "offchain_claims",
+      "source_verification",
+      "top_holders"
+    ],
+    "findings": [],
+    "interpretations": [],
+    "maxAgeSeconds": 300,
+    "disclaimer": "This attestation reports on-chain state within the defined scope at the stated slot. It is not a prediction, recommendation, or declaration of safety.",
+    "payloadHash": "sha256:6894adc5a008f3b907ff3b15501f35da5159362d055bbfa9b49c3710b00f7086",
+    "receiptId": "raven-receipt-evm-v1:sha256:6894adc5a008f3b907ff3b15501f35da5159362d055bbfa9b49c3710b00f7086",
+    "signature": "dwcmzOHPXB7hnlXklea6wxDmH842KWdX45XV/ULe9W/G0yHyT8ijVIwO9oammfbMfx+B633bZ+am2ZBlQPA/AQ==",
+    "signerPublicKey": "MCowBQYDK2VwAyEAff7ziS0rj8oK6cVDwX2BES0MBms7r7kVHYgxlDcYFS8="
+  },
+  "inputB": {
+    "tokenAddress": "0x4200000000000000000000000000000000000006",
+    "timestamp": "2026-07-02T18:09:17.000Z",
+    "signerPublicKey": "MCowBQYDK2VwAyEAff7ziS0rj8oK6cVDwX2BES0MBms7r7kVHYgxlDcYFS8=",
+    "signature": "dwcmzOHPXB7hnlXklea6wxDmH842KWdX45XV/ULe9W/G0yHyT8ijVIwO9oammfbMfx+B633bZ+am2ZBlQPA/AQ==",
+    "scopeChecksPerformed": [
+      "contract_code_present",
+      "eip1967_proxy_slots",
+      "erc20_interface_probe",
+      "owner_probe",
+      "privileged_selector_scan"
+    ],
+    "scopeChecksNotPerformed": [
+      "deployer_history",
+      "honeypot_simulation",
+      "liquidity_depth",
+      "top_holders"
+    ],
+    "rulesVersion": "raven-evm-rules@0.1.0",
+    "receiptId": "raven-receipt-evm-v1:sha256:6894adc5a008f3b907ff3b15501f35da5159362d055bbfa9b49c3710b00f7086",
+    "payloadHash": "sha256:6894adc5a008f3b907ff3b15501f35da5159362d055bbfa9b49c3710b00f7086",
+    "maxAgeSeconds": 300,
+    "interpretations": [],
+    "implementationAddress": null,
+    "findings": [],
+    "findingTaxonomyVersion": "raven-evm-taxonomy@0.1.0",
+    "disclaimer": "This attestation reports on-chain state within the defined scope at the stated slot. It is not a prediction, recommendation, or declaration of safety.",
+    "coverageGaps": [
+      "deployer_outcomes",
+      "liquidity",
+      "offchain_claims",
+      "source_verification",
+      "top_holders"
+    ],
+    "chain": "base-mainnet",
+    "blockNumber": 48114405,
+    "blockHash": "0x01486f5533a0057302c4ded55c34e85f30288b621d3f69bf3e4df1baeea03f3e"
+  },
+  "now": "2026-07-02T18:10:00.000Z"
+}

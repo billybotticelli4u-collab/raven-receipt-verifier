@@ -1,0 +1,151 @@
+{
+  "name": "rules-1.1.4-slot-mismatch-invalid",
+  "description": "An authentic 1.1.4 holder observation bound to a slot different from the receipt slot.",
+  "input": {
+    "chain": "solana-mainnet",
+    "mintAddress": "So11111111111111111111111111111111111111112",
+    "tokenProgramAddress": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "slot": 123456,
+    "timestamp": "2026-07-21T12:00:00.000Z",
+    "rulesVersion": "raven-rules@1.1.4",
+    "findingTaxonomyVersion": "raven-taxonomy@1.0.0",
+    "scopeChecksPerformed": [
+      "freeze_authority",
+      "mint_authority",
+      "token2022_extensions",
+      "token_program_tier",
+      "top_holders"
+    ],
+    "scopeChecksNotPerformed": [
+      "deployer_history",
+      "liquidity_depth",
+      "metadata_mutability",
+      "venue_liquidity_custody"
+    ],
+    "coverageGaps": [
+      "deployer_outcomes",
+      "holder_venue_adjustment",
+      "liquidity"
+    ],
+    "findings": [
+      {
+        "code": "holders.distributed",
+        "source": "holder_distribution_evidence",
+        "subject": "holder_concentration",
+        "evidence": {
+          "classification": "distributed",
+          "reason": "top10_share_below_moderate_threshold",
+          "classifierVersion": "holders-classifier/1",
+          "adjustedForKnownVenues": false,
+          "exclusionEvidence": null,
+          "metrics": {
+            "basis": "total_supply",
+            "supplyRaw": "1000000",
+            "accountsConsidered": 3,
+            "excludedCount": 0,
+            "excludedAmountRaw": "0",
+            "top1Bps": 1000,
+            "top5Bps": 2500,
+            "top10Bps": 2500,
+            "top1AmountRaw": "100000",
+            "top5AmountRaw": "250000",
+            "top10AmountRaw": "250000"
+          },
+          "holderAttempt": {
+            "version": "raven-holder-attempt/v1",
+            "state": "observed",
+            "source": "solana_rpc",
+            "result": "observed",
+            "reason": null,
+            "mintAddress": "So11111111111111111111111111111111111111112",
+            "commitment": "finalized",
+            "attemptedChecks": [
+              "largest_accounts",
+              "token_supply"
+            ],
+            "observation": {
+              "slot": 123457,
+              "contexts": {
+                "mint": true,
+                "metadata": false,
+                "largestAccounts": true,
+                "supply": true,
+                "venueCustody": false,
+                "liquidity": false
+              }
+            }
+          }
+        }
+      },
+      {
+        "code": "holders.unadjusted_may_include_pools",
+        "source": "holder_distribution_evidence",
+        "subject": "holder_concentration_basis",
+        "evidence": {
+          "adjustedForKnownVenues": false,
+          "exclusionEvidence": null,
+          "excludedCount": 0,
+          "holderAttempt": {
+            "version": "raven-holder-attempt/v1",
+            "state": "observed",
+            "source": "solana_rpc",
+            "result": "observed",
+            "reason": null,
+            "mintAddress": "So11111111111111111111111111111111111111112",
+            "commitment": "finalized",
+            "attemptedChecks": [
+              "largest_accounts",
+              "token_supply"
+            ],
+            "observation": {
+              "slot": 123457,
+              "contexts": {
+                "mint": true,
+                "metadata": false,
+                "largestAccounts": true,
+                "supply": true,
+                "venueCustody": false,
+                "liquidity": false
+              }
+            }
+          }
+        }
+      }
+    ],
+    "interpretations": [],
+    "maxAgeSeconds": 300,
+    "disclaimer": "This attestation reports on-chain state within the defined scope at the stated slot. It is not a prediction, recommendation, or declaration of safety.",
+    "payloadHash": "sha256:5abbb262ccfd367a872559bc64ccb9f49907fb767dbc15405f6c364a56afb722",
+    "receiptId": "raven-receipt-v1:sha256:5abbb262ccfd367a872559bc64ccb9f49907fb767dbc15405f6c364a56afb722",
+    "signature": "u3A9noXXPx+DVRP7W2HqNa48nadqCl4kWzhviSI5HmkPxX6roWFyQFYmpnTCmUqZIAQn/IRXZuM23Ef7F17bDQ==",
+    "signerPublicKey": "MCowBQYDK2VwAyEA0EqyMnQrtKs6E2i9RhXk5tAiSrcaAWuvhSCjMsl3hzc="
+  },
+  "now": "2026-07-21T12:01:00.000Z",
+  "trustedKeys": [
+    "MCowBQYDK2VwAyEA0EqyMnQrtKs6E2i9RhXk5tAiSrcaAWuvhSCjMsl3hzc="
+  ],
+  "expected": {
+    "keyTrusted": true,
+    "valid": true,
+    "stale": false,
+    "rulesVersion": "raven-rules@1.1.4",
+    "rulesStatus": "supported_invalid",
+    "rulesReasons": [
+      "holder_observation_slot_mismatch"
+    ]
+  },
+  "expectedSurfaces": {
+    "producer": "reject_holder_provenance_invalid",
+    "acpAdmission": "reject_holder_provenance_invalid",
+    "replay": "reject_holder_provenance_invalid",
+    "archival": "reject_holder_provenance_invalid",
+    "receiptProduction": "reject_holder_provenance_invalid",
+    "acpVerifier": "supported_invalid",
+    "verifyJs": "supported_invalid",
+    "pythonVerifier": "supported_invalid",
+    "browserVerifier": "supported_invalid",
+    "freshness": "fresh",
+    "keyTrust": "trusted",
+    "supportStatus": "supported_invalid"
+  }
+}

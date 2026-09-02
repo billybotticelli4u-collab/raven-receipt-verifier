@@ -1,0 +1,22 @@
+{
+  "schema": "raven-receipt-verifier-release-identity/1",
+  "note": "Frozen tarball identity for the reviewed release. Measured from this mirror tree with `npm pack`. The publish workflow refuses to publish any tarball whose measured identity differs from these values. Never edit to match an observed value — a change here is a governed change requiring fresh independent review.",
+  "package": {
+    "name": "raven-receipt-verifier",
+    "version": "0.1.0",
+    "fileCount": 48,
+    "packedSize": 51329,
+    "unpackedSize": 199966,
+    "shasum": "e0236f4b5abaa87bc8b6ed9f837e1194f1189175",
+    "integrity": "sha512-jBSyyTo3Sr+0xku7c2PTjCHbiOwAjlriaMlLlUO2mBgiC/4GU4Q/TbNl9jqwKuHMrK5NMLWYGrZB3Xo1/WWFfw==",
+    "runtimeDependencies": 0,
+    "nodeFloor": ">=22.18",
+    "verifiedNodeLines": ["22.18.0", "24"]
+  },
+  "source": {
+    "mirrorRepository": "https://github.com/billybotticelli4u-collab/raven-receipt-verifier",
+    "packageDirectory": "packages/verify-js",
+    "derivedFromPrivateMain": "bf91ab4337edb1755c35320b571dbfdc34372c6d",
+    "derivedFromPrivateTree": "1192cadcf0dbcea07e0c06cab03560d74db1aa8a"
+  }
+}

@@ -1,0 +1,3 @@
+node_modules/
+packages/verify-js/dist/
+*.tgz

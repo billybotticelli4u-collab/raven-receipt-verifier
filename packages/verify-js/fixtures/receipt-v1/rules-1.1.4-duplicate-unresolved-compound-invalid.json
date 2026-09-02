@@ -1,0 +1,122 @@
+{
+  "name": "rules-1.1.4-duplicate-unresolved-compound-invalid",
+  "description": "An authentic 1.1.4 artifact with two otherwise valid State-B unresolved primaries and byte-identical holder-attempt copies.",
+  "input": {
+    "chain": "solana-mainnet",
+    "mintAddress": "So11111111111111111111111111111111111111112",
+    "tokenProgramAddress": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "slot": 123456,
+    "timestamp": "2026-07-21T12:00:00.000Z",
+    "rulesVersion": "raven-rules@1.1.4",
+    "findingTaxonomyVersion": "raven-taxonomy@1.0.0",
+    "scopeChecksPerformed": [
+      "freeze_authority",
+      "mint_authority",
+      "token2022_extensions",
+      "token_program_tier"
+    ],
+    "scopeChecksNotPerformed": [
+      "deployer_history",
+      "liquidity_depth",
+      "metadata_mutability",
+      "top_holders",
+      "venue_liquidity_custody"
+    ],
+    "coverageGaps": [
+      "deployer_outcomes",
+      "holder_venue_adjustment",
+      "liquidity",
+      "top_holders"
+    ],
+    "findings": [
+      {
+        "code": "holders.distribution_unresolved",
+        "source": "holder_distribution_evidence",
+        "subject": "holder_concentration",
+        "evidence": {
+          "classification": "unresolved",
+          "reason": "holder_fetch_failed",
+          "classifierVersion": "holders-classifier/1",
+          "adjustedForKnownVenues": false,
+          "exclusionEvidence": null,
+          "metrics": null,
+          "holderAttempt": {
+            "version": "raven-holder-attempt/v1",
+            "state": "attempted_unavailable",
+            "source": "solana_rpc",
+            "result": "unavailable",
+            "reason": "holder_fetch_failed",
+            "mintAddress": "So11111111111111111111111111111111111111112",
+            "commitment": "finalized",
+            "attemptedChecks": [
+              "largest_accounts"
+            ],
+            "observation": null
+          }
+        }
+      },
+      {
+        "code": "holders.distribution_unresolved",
+        "source": "holder_distribution_evidence",
+        "subject": "holder_concentration",
+        "evidence": {
+          "classification": "unresolved",
+          "reason": "holder_fetch_failed",
+          "classifierVersion": "holders-classifier/1",
+          "adjustedForKnownVenues": false,
+          "exclusionEvidence": null,
+          "metrics": null,
+          "holderAttempt": {
+            "version": "raven-holder-attempt/v1",
+            "state": "attempted_unavailable",
+            "source": "solana_rpc",
+            "result": "unavailable",
+            "reason": "holder_fetch_failed",
+            "mintAddress": "So11111111111111111111111111111111111111112",
+            "commitment": "finalized",
+            "attemptedChecks": [
+              "largest_accounts"
+            ],
+            "observation": null
+          }
+        }
+      }
+    ],
+    "interpretations": [],
+    "maxAgeSeconds": 300,
+    "disclaimer": "This attestation reports on-chain state within the defined scope at the stated slot. It is not a prediction, recommendation, or declaration of safety.",
+    "payloadHash": "sha256:c8716c981ed651ec3ea1fdd3b58542aa0464507a6f6dc3267780c7c69883bb88",
+    "receiptId": "raven-receipt-v1:sha256:c8716c981ed651ec3ea1fdd3b58542aa0464507a6f6dc3267780c7c69883bb88",
+    "signature": "xKfjjXpphlXc29gk09GiawworFJgORBw5hD4uP6gU6T/PrEhXLsSeaLCcN7Scm18u7sSo+7mbUx12OSfx7iiBw==",
+    "signerPublicKey": "MCowBQYDK2VwAyEA0EqyMnQrtKs6E2i9RhXk5tAiSrcaAWuvhSCjMsl3hzc="
+  },
+  "now": "2026-07-21T12:01:00.000Z",
+  "trustedKeys": [
+    "MCowBQYDK2VwAyEA0EqyMnQrtKs6E2i9RhXk5tAiSrcaAWuvhSCjMsl3hzc="
+  ],
+  "expected": {
+    "keyTrusted": true,
+    "valid": true,
+    "stale": false,
+    "rulesVersion": "raven-rules@1.1.4",
+    "rulesStatus": "supported_invalid",
+    "rulesReasons": [
+      "holder_primary_cardinality_invalid",
+      "holder_state_contradiction"
+    ]
+  },
+  "expectedSurfaces": {
+    "producer": "reject_holder_provenance_invalid",
+    "acpAdmission": "reject_holder_provenance_invalid",
+    "replay": "reject_holder_provenance_invalid",
+    "archival": "reject_holder_provenance_invalid",
+    "receiptProduction": "reject_holder_provenance_invalid",
+    "acpVerifier": "supported_invalid",
+    "verifyJs": "supported_invalid",
+    "pythonVerifier": "supported_invalid",
+    "browserVerifier": "supported_invalid",
+    "freshness": "fresh",
+    "keyTrust": "trusted",
+    "supportStatus": "supported_invalid"
+  }
+}

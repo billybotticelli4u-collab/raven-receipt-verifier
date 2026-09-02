@@ -1,0 +1,50 @@
+{
+  "name": "unparseable-timestamp-evm",
+  "description": "Correctly signed receipt whose timestamp does not parse. Freshness is UNPROVABLE, so the verifier fails closed: valid (signature holds) but stale:true with reason timestamp_unparseable — never fresh-forever. Mirrors the receipt-v1 vector.",
+  "input": {
+    "chain": "base-mainnet",
+    "tokenAddress": "0x4200000000000000000000000000000000000006",
+    "implementationAddress": null,
+    "blockNumber": 48114405,
+    "blockHash": "0x01486f5533a0057302c4ded55c34e85f30288b621d3f69bf3e4df1baeea03f3e",
+    "timestamp": "not-a-parseable-time",
+    "rulesVersion": "raven-evm-rules@0.1.0",
+    "findingTaxonomyVersion": "raven-evm-taxonomy@0.1.0",
+    "scopeChecksPerformed": [
+      "contract_code_present",
+      "eip1967_proxy_slots",
+      "erc20_interface_probe",
+      "owner_probe",
+      "privileged_selector_scan"
+    ],
+    "scopeChecksNotPerformed": [
+      "deployer_history",
+      "honeypot_simulation",
+      "liquidity_depth",
+      "top_holders"
+    ],
+    "coverageGaps": [
+      "deployer_outcomes",
+      "liquidity",
+      "offchain_claims",
+      "source_verification",
+      "top_holders"
+    ],
+    "findings": [],
+    "interpretations": [],
+    "maxAgeSeconds": 300,
+    "disclaimer": "This attestation reports on-chain state within the defined scope at the stated slot. It is not a prediction, recommendation, or declaration of safety.",
+    "payloadHash": "sha256:2d334d3bda693d1423ba261ba1dd5bbb19b88b683a2ae813ad7fc814094bf8f5",
+    "receiptId": "raven-receipt-evm-v1:sha256:2d334d3bda693d1423ba261ba1dd5bbb19b88b683a2ae813ad7fc814094bf8f5",
+    "signature": "GY5+aGSE9m7n/7li7MFHWX8BJB3aNszvv64Uub0kExKUOhhVltdpnzGDPPFWokuCaFlnz5M06M1MmblzeDO3BQ==",
+    "signerPublicKey": "MCowBQYDK2VwAyEA/TZWB1oOgWAvPqLinMgd5Y9aHmYrgWDapS4LMFFSkTo="
+  },
+  "now": "2026-07-02T18:10:00.000Z",
+  "expected": {
+    "valid": true,
+    "stale": true,
+    "reasonsInclude": [
+      "timestamp_unparseable"
+    ]
+  }
+}

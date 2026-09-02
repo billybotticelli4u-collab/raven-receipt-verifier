@@ -1,0 +1,65 @@
+{
+  "name": "rules-1.1.2-no-holder-historical",
+  "description": "A signed no-holder receipt accepted under frozen 1.1.2 semantics.",
+  "input": {
+    "chain": "solana-mainnet",
+    "mintAddress": "So11111111111111111111111111111111111111112",
+    "tokenProgramAddress": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "slot": 123456,
+    "timestamp": "2026-07-21T12:00:00.000Z",
+    "rulesVersion": "raven-rules@1.1.2",
+    "findingTaxonomyVersion": "raven-taxonomy@1.0.0",
+    "scopeChecksPerformed": [
+      "freeze_authority",
+      "mint_authority",
+      "token2022_extensions",
+      "token_program_tier"
+    ],
+    "scopeChecksNotPerformed": [
+      "deployer_history",
+      "liquidity_depth",
+      "metadata_mutability",
+      "top_holders",
+      "venue_liquidity_custody"
+    ],
+    "coverageGaps": [
+      "deployer_outcomes",
+      "liquidity",
+      "top_holders"
+    ],
+    "findings": [],
+    "interpretations": [],
+    "maxAgeSeconds": 300,
+    "disclaimer": "This attestation reports on-chain state within the defined scope at the stated slot. It is not a prediction, recommendation, or declaration of safety.",
+    "payloadHash": "sha256:e8b9e86a3d46f0e778c90e43ee67877695a346253a8f1f619bc8a02f6e2789b7",
+    "receiptId": "raven-receipt-v1:sha256:e8b9e86a3d46f0e778c90e43ee67877695a346253a8f1f619bc8a02f6e2789b7",
+    "signature": "c94KsLxbTUKAVsoLCR3jAaBbhoEeB4OP6QqD2QnBE+Ccs4Po3gVUjk24Tj1Dx5j8+s00XQEv5HeNEy3VIBh7DQ==",
+    "signerPublicKey": "MCowBQYDK2VwAyEAA6EHv/POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg="
+  },
+  "now": "2026-07-21T12:01:00.000Z",
+  "trustedKeys": [
+    "MCowBQYDK2VwAyEAA6EHv/POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg="
+  ],
+  "expected": {
+    "keyTrusted": true,
+    "valid": true,
+    "stale": false,
+    "rulesVersion": "raven-rules@1.1.2",
+    "rulesStatus": "supported_valid",
+    "rulesReasons": []
+  },
+  "expectedSurfaces": {
+    "producer": "historical_artifact_only",
+    "acpAdmission": "not_reproduced",
+    "replay": "admit_exact_version",
+    "archival": "preserve",
+    "receiptProduction": "no_restamp",
+    "acpVerifier": "supported_valid",
+    "verifyJs": "supported_valid",
+    "pythonVerifier": "supported_valid",
+    "browserVerifier": "supported_valid",
+    "freshness": "fresh",
+    "keyTrust": "trusted",
+    "supportStatus": "supported_valid"
+  }
+}

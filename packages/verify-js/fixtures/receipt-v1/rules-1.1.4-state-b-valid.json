@@ -1,0 +1,93 @@
+{
+  "name": "rules-1.1.4-state-b-valid",
+  "description": "A signed optional-holder 1.1.4 receipt with a typed unavailable attempt.",
+  "input": {
+    "chain": "solana-mainnet",
+    "mintAddress": "So11111111111111111111111111111111111111112",
+    "tokenProgramAddress": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "slot": 123456,
+    "timestamp": "2026-07-21T12:00:00.000Z",
+    "rulesVersion": "raven-rules@1.1.4",
+    "findingTaxonomyVersion": "raven-taxonomy@1.0.0",
+    "scopeChecksPerformed": [
+      "freeze_authority",
+      "mint_authority",
+      "token2022_extensions",
+      "token_program_tier"
+    ],
+    "scopeChecksNotPerformed": [
+      "deployer_history",
+      "liquidity_depth",
+      "metadata_mutability",
+      "top_holders",
+      "venue_liquidity_custody"
+    ],
+    "coverageGaps": [
+      "deployer_outcomes",
+      "holder_venue_adjustment",
+      "liquidity",
+      "top_holders"
+    ],
+    "findings": [
+      {
+        "code": "holders.distribution_unresolved",
+        "source": "holder_distribution_evidence",
+        "subject": "holder_concentration",
+        "evidence": {
+          "classification": "unresolved",
+          "reason": "holder_fetch_failed",
+          "classifierVersion": "holders-classifier/1",
+          "adjustedForKnownVenues": false,
+          "exclusionEvidence": null,
+          "metrics": null,
+          "holderAttempt": {
+            "version": "raven-holder-attempt/v1",
+            "state": "attempted_unavailable",
+            "source": "solana_rpc",
+            "result": "unavailable",
+            "reason": "holder_fetch_failed",
+            "mintAddress": "So11111111111111111111111111111111111111112",
+            "commitment": "finalized",
+            "attemptedChecks": [
+              "largest_accounts"
+            ],
+            "observation": null
+          }
+        }
+      }
+    ],
+    "interpretations": [],
+    "maxAgeSeconds": 300,
+    "disclaimer": "This attestation reports on-chain state within the defined scope at the stated slot. It is not a prediction, recommendation, or declaration of safety.",
+    "payloadHash": "sha256:b84863a0eb71f26b97933e9c22b6a0ddb801a5a1a7ffdf21df904d224055043e",
+    "receiptId": "raven-receipt-v1:sha256:b84863a0eb71f26b97933e9c22b6a0ddb801a5a1a7ffdf21df904d224055043e",
+    "signature": "MtMROS60TZkdD3yQFoH5Pfm5qBnSXIs9ZZtN7BtDkM9xzWyVjFwwbaJ+pFY9dHuxuKK6JnSUnMEreom+P1tcAA==",
+    "signerPublicKey": "MCowBQYDK2VwAyEAA6EHv/POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg="
+  },
+  "now": "2026-07-21T12:01:00.000Z",
+  "trustedKeys": [
+    "MCowBQYDK2VwAyEAA6EHv/POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg="
+  ],
+  "expected": {
+    "keyTrusted": true,
+    "valid": true,
+    "stale": false,
+    "rulesVersion": "raven-rules@1.1.4",
+    "rulesStatus": "supported_valid",
+    "rulesReasons": []
+  },
+  "expectedSurfaces": {
+    "producer": "admit_optional_refuse_mandatory",
+    "acpAdmission": "admit_optional_refuse_mandatory",
+    "replay": "admit_optional_refuse_mandatory",
+    "archival": "admit_optional_refuse_mandatory",
+    "receiptProduction": "admit_optional_refuse_mandatory",
+    "acpVerifier": "supported_valid",
+    "verifyJs": "supported_valid",
+    "pythonVerifier": "supported_valid",
+    "browserVerifier": "supported_valid",
+    "freshness": "fresh",
+    "keyTrust": "trusted",
+    "supportStatus": "supported_valid"
+  }
+}

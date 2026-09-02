@@ -1,0 +1,169 @@
+{
+  "schema": "raven-holder-outcome-projection/v1",
+  "vectors": [
+    {
+      "name": "empty findings",
+      "findingCodes": [],
+      "expected": {
+        "outcome": "warning",
+        "reason": "no_deterministic_findings",
+        "triggeringFindingCodes": []
+      }
+    },
+    {
+      "name": "holder warning",
+      "findingCodes": [
+        "venue.infrastructure_tier_immutable",
+        "holders.concentration_high",
+        "holders.unadjusted_may_include_pools"
+      ],
+      "expected": {
+        "outcome": "warning",
+        "reason": "holder_concentration_warning",
+        "triggeringFindingCodes": ["holders.concentration_high"]
+      }
+    },
+    {
+      "name": "holder unresolved precedes liquidity depth warning",
+      "findingCodes": [
+        "liquidity.supply_majority_returned_to_pool",
+        "holders.distribution_unresolved"
+      ],
+      "expected": {
+        "outcome": "warning",
+        "reason": "holder_concentration_warning",
+        "triggeringFindingCodes": ["holders.distribution_unresolved"]
+      }
+    },
+    {
+      "name": "issuer risk precedes holder warning",
+      "findingCodes": [
+        "holders.concentration_high",
+        "issuer_control.mint_authority_active",
+        "issuer_control.freeze_authority_active",
+        "issuer_control.mint_authority_active"
+      ],
+      "expected": {
+        "outcome": "risk",
+        "reason": "issuer_control_finding_present",
+        "triggeringFindingCodes": [
+          "issuer_control.mint_authority_active",
+          "issuer_control.freeze_authority_active"
+        ]
+      }
+    },
+    {
+      "name": "infrastructure warning precedes holder warning",
+      "findingCodes": [
+        "holders.concentration_high",
+        "venue.liquidity_unresolved"
+      ],
+      "expected": {
+        "outcome": "warning",
+        "reason": "mutable_or_unresolved_infrastructure",
+        "triggeringFindingCodes": ["venue.liquidity_unresolved"]
+      }
+    },
+    {
+      "name": "token extension warning precedes holder warning",
+      "findingCodes": [
+        "holders.concentration_high",
+        "token2022.non_transferable_present"
+      ],
+      "expected": {
+        "outcome": "warning",
+        "reason": "token2022_extension_warning_present",
+        "triggeringFindingCodes": ["token2022.non_transferable_present"]
+      }
+    },
+    {
+      "name": "known infrastructure info precedes holder info",
+      "findingCodes": [
+        "holders.distributed",
+        "holders.unadjusted_may_include_pools",
+        "venue.infrastructure_tier_mutable_but_known"
+      ],
+      "expected": {
+        "outcome": "pass_with_info_finding",
+        "reason": "mutable_but_known_infrastructure_dependency",
+        "triggeringFindingCodes": ["venue.infrastructure_tier_mutable_but_known"]
+      }
+    },
+    {
+      "name": "token extension info precedes holder info",
+      "findingCodes": [
+        "holders.concentration_moderate",
+        "holders.adjusted_for_known_venues",
+        "token2022.metadata_pointer_present"
+      ],
+      "expected": {
+        "outcome": "pass_with_info_finding",
+        "reason": "token2022_informational_extension_present",
+        "triggeringFindingCodes": ["token2022.metadata_pointer_present"]
+      }
+    },
+    {
+      "name": "holder info precedes venue custody info",
+      "findingCodes": [
+        "venue.pumpfun_curve_active",
+        "holders.distributed",
+        "holders.adjusted_for_known_venues"
+      ],
+      "expected": {
+        "outcome": "pass_with_info_finding",
+        "reason": "holder_distribution_informational",
+        "triggeringFindingCodes": [
+          "holders.distributed",
+          "holders.adjusted_for_known_venues"
+        ]
+      }
+    },
+    {
+      "name": "venue custody info precedes immutable pass",
+      "findingCodes": [
+        "venue.infrastructure_tier_immutable",
+        "venue.pumpfun_curve_complete"
+      ],
+      "expected": {
+        "outcome": "pass_with_info_finding",
+        "reason": "venue_custody_informational",
+        "triggeringFindingCodes": ["venue.pumpfun_curve_complete"]
+      }
+    },
+    {
+      "name": "immutable infrastructure pass",
+      "findingCodes": ["venue.infrastructure_tier_immutable"],
+      "expected": {
+        "outcome": "pass",
+        "reason": "immutable_infrastructure_only",
+        "triggeringFindingCodes": ["venue.infrastructure_tier_immutable"]
+      }
+    },
+    {
+      "name": "unknown codes remain warning without triggers",
+      "findingCodes": ["future.unknown_finding"],
+      "expected": {
+        "outcome": "warning",
+        "reason": "no_deterministic_findings",
+        "triggeringFindingCodes": []
+      }
+    }
+  ],
+  "malformedVectors": [
+    {
+      "name": "non-array codes",
+      "findingCodes": null,
+      "expectedErrorCode": "invalid_finding_codes"
+    },
+    {
+      "name": "empty code",
+      "findingCodes": [""],
+      "expectedErrorCode": "finding_missing_code"
+    },
+    {
+      "name": "non-string code",
+      "findingCodes": [7],
+      "expectedErrorCode": "finding_missing_code"
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "name": "rules-1.1.3-holder-bearing-derived-compatibility",
+  "description": "DERIVED COMPATIBILITY ONLY (not a historical observation): a newly signed holder-bearing 1.1.3 receipt proving exact-version verifier dispatch preserves pre-1.1.4 semantics.",
+  "input": {
+    "chain": "solana-mainnet",
+    "mintAddress": "So11111111111111111111111111111111111111112",
+    "tokenProgramAddress": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "slot": 123456,
+    "timestamp": "2026-07-21T12:00:00.000Z",
+    "rulesVersion": "raven-rules@1.1.3",
+    "findingTaxonomyVersion": "raven-taxonomy@1.0.0",
+    "scopeChecksPerformed": [
+      "freeze_authority",
+      "mint_authority",
+      "token2022_extensions",
+      "token_program_tier",
+      "top_holders"
+    ],
+    "scopeChecksNotPerformed": [
+      "deployer_history",
+      "liquidity_depth",
+      "metadata_mutability",
+      "venue_liquidity_custody"
+    ],
+    "coverageGaps": [
+      "deployer_outcomes",
+      "holder_venue_adjustment",
+      "liquidity"
+    ],
+    "findings": [
+      {
+        "code": "holders.distributed",
+        "source": "holder_distribution_evidence",
+        "subject": "holder_concentration",
+        "evidence": {
+          "classification": "distributed",
+          "reason": "top10_share_below_moderate_threshold",
+          "classifierVersion": "holders-classifier/1",
+          "adjustedForKnownVenues": false,
+          "exclusionEvidence": null,
+          "metrics": {
+            "basis": "total_supply",
+            "supplyRaw": "1000000",
+            "accountsConsidered": 3,
+            "excludedCount": 0,
+            "excludedAmountRaw": "0",
+            "top1Bps": 1000,
+            "top5Bps": 2000,
+            "top10Bps": 3000,
+            "top1AmountRaw": "100000",
+            "top5AmountRaw": "200000",
+            "top10AmountRaw": "300000"
+          },
+          "holderAttempt": {
+            "version": "raven-holder-attempt/v1",
+            "state": "observed",
+            "source": "solana_rpc",
+            "result": "observed",
+            "reason": null,
+            "mintAddress": "So11111111111111111111111111111111111111112",
+            "commitment": "finalized",
+            "attemptedChecks": [
+              "largest_accounts",
+              "token_supply"
+            ],
+            "observation": {
+              "slot": 123456,
+              "contexts": {
+                "mint": true,
+                "metadata": false,
+                "largestAccounts": true,
+                "supply": true,
+                "venueCustody": false,
+                "liquidity": false
+              }
+            }
+          }
+        }
+      },
+      {
+        "code": "holders.unadjusted_may_include_pools",
+        "source": "holder_distribution_evidence",
+        "subject": "holder_concentration_basis",
+        "evidence": {
+          "adjustedForKnownVenues": false,
+          "exclusionEvidence": null,
+          "excludedCount": 0,
+          "holderAttempt": {
+            "version": "raven-holder-attempt/v1",
+            "state": "observed",
+            "source": "solana_rpc",
+            "result": "observed",
+            "reason": null,
+            "mintAddress": "So11111111111111111111111111111111111111112",
+            "commitment": "finalized",
+            "attemptedChecks": [
+              "largest_accounts",
+              "token_supply"
+            ],
+            "observation": {
+              "slot": 123456,
+              "contexts": {
+                "mint": true,
+                "metadata": false,
+                "largestAccounts": true,
+                "supply": true,
+                "venueCustody": false,
+                "liquidity": false
+              }
+            }
+          }
+        }
+      }
+    ],
+    "interpretations": [],
+    "maxAgeSeconds": 300,
+    "disclaimer": "This attestation reports on-chain state within the defined scope at the stated slot. It is not a prediction, recommendation, or declaration of safety.",
+    "payloadHash": "sha256:5524065d7bde083286a9ac074af8ba1240f757d08d0c0e8f6dfc298dc05831ce",
+    "receiptId": "raven-receipt-v1:sha256:5524065d7bde083286a9ac074af8ba1240f757d08d0c0e8f6dfc298dc05831ce",
+    "signature": "6q2vDiyZUzQIKt483tj6ynDaVfH4fmzdxmNbxBWpruwwU7kJHDbSS9rGEXNJaVqDePusXpBuiam7dmfeQBPNBA==",
+    "signerPublicKey": "MCowBQYDK2VwAyEA0EqyMnQrtKs6E2i9RhXk5tAiSrcaAWuvhSCjMsl3hzc="
+  },
+  "now": "2026-07-21T12:01:00.000Z",
+  "trustedKeys": [
+    "MCowBQYDK2VwAyEA0EqyMnQrtKs6E2i9RhXk5tAiSrcaAWuvhSCjMsl3hzc="
+  ],
+  "expected": {
+    "keyTrusted": true,
+    "valid": true,
+    "stale": false,
+    "rulesVersion": "raven-rules@1.1.3",
+    "rulesStatus": "supported_valid",
+    "rulesReasons": []
+  },
+  "expectedSurfaces": {
+    "producer": "derived_fixture_only",
+    "acpAdmission": "not_producer_admission_evidence",
+    "replay": "admit_exact_version",
+    "archival": "compatibility_fixture",
+    "receiptProduction": "no_restamp",
+    "acpVerifier": "supported_valid",
+    "verifyJs": "supported_valid",
+    "pythonVerifier": "supported_valid",
+    "browserVerifier": "supported_valid",
+    "freshness": "fresh",
+    "keyTrust": "trusted",
+    "supportStatus": "supported_valid"
+  }
+}
