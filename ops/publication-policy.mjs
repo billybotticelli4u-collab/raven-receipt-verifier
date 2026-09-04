@@ -33,6 +33,11 @@ export const validateWorkflowText = (workflow) => {
   if ((workflow.match(/^\s+npm pack\b/gm) ?? []).length !== 1) failures.push("workflow must contain exactly one direct npm pack");
   if (!/^\s+npm pack --json --pack-destination "\$RUNNER_TEMP\/release-package"/m.test(pack)) failures.push("authorized pack is not in package-artifact");
   if (/\bnpm pack\b/.test(source) || /\bnpm pack\b/.test(tarball) || /\bnpm pack\b/.test(publish)) failures.push("pack operation exists outside package-artifact");
+  if (/^\s+(?:bash|sh)\s+(?:\.\/)?ops\//m.test(workflow) || /^\s+(?:\.\/)?ops\/[A-Za-z0-9._/-]+\.sh\b/m.test(workflow)) {
+    failures.push("workflow may not hide package creation behind a shell helper");
+  }
+  if (/^\s+npm\s+exec\b[^\n]*\bpack\b/gim.test(workflow)) failures.push("workflow contains indirect npm pack");
+  if (/^\s+tar\s+[^\n]*(?:-[A-Za-z]*c[A-Za-z]*|--create)\b/gim.test(workflow)) failures.push("workflow reconstructs a tarball");
   if ((publish.match(/node ops\/publish-exact-release\.mjs/g) ?? []).length !== 1) failures.push("publish job must invoke one guarded publisher");
   if (/\bnpm\s+publish\b/.test(workflow)) failures.push("raw npm publish must not appear in workflow YAML");
   if ((publish.match(/^\s+run:/gm) ?? []).length !== 4) failures.push("publish job contains an unexpected executable step");
@@ -59,6 +64,8 @@ const PACK_CREATION_PATTERNS = [
   /["']npm(?:\.cmd)?["'][\s\S]{0,160}["']pack["']/i,
   /libnpmpack|pacote\.tarball/i,
   /\b(?:spawn(?:Sync)?|execFile(?:Sync)?|run)\(\s*["']tar["']\s*,\s*\[\s*["']-[A-Za-z]*c[A-Za-z]*["']/i,
+  /\b(?:spawn(?:Sync)?|execFile(?:Sync)?|run)\(\s*["'](?:bash|sh)["']/i,
+  /\b(?:bash|sh)\s+(?:\.\/)?ops\//i,
 ];
 
 export const scanInvokedPublicationHelpers = ({ root, workflow }) => {

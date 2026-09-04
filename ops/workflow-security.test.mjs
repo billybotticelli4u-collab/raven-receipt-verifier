@@ -74,6 +74,29 @@ test("M8 tar reconstruction behind an invoked helper turns RED", () => {
   }
 });
 
+test("M8 a shell wrapper cannot hide a second package creation path", () => {
+  expectWorkflowRed("M8 shell wrapper", workflow.replace(
+    "          npm pack --json --pack-destination",
+    "          bash ops/repack.sh\n          npm pack --json --pack-destination",
+  ));
+
+  const scratch = mkdtempSync(path.join(tmpdir(), "raven-hidden-shell-"));
+  try {
+    mkdirSync(path.join(scratch, "ops"));
+    writeFileSync(
+      path.join(scratch, "ops/hidden-shell.mjs"),
+      'import { spawnSync } from "node:child_process";\nspawnSync("bash", ["ops/repack.sh"]);\n',
+    );
+    const failures = scanInvokedPublicationHelpers({
+      root: scratch,
+      workflow: "run: node ops/hidden-shell.mjs\n",
+    });
+    assert.ok(failures.some((failure) => failure.includes("hidden-shell.mjs")));
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
+  }
+});
+
 test("M19 removal of the final guarded verify-to-publish wrapper turns RED", () => {
   expectWorkflowRed("M19", workflow.replace(
     "node ops/publish-exact-release.mjs",
