@@ -1,0 +1,705 @@
+{
+  "schema": "raven-private-public-byte-correspondence/1",
+  "note": "Release evidence, not an independent trust root. Upstream commit/tree authorization remains an Owner decision.",
+  "hashAlgorithm": "git-blob-sha1",
+  "upstreamSource": {
+    "commit": "610b10ca67b2f7ddf4a131de4cf8c1da71468eb1",
+    "tree": "b9c8984430168f2ad0169a1466c5c1605a4de932",
+    "packageTree": "b268024119ddfa18344397072200896828804190"
+  },
+  "publicMirror": {
+    "packageTree": "da56440a505f0730203e2a0b254112fe8d19c76a",
+    "authorizedDelta": "packages/verify-js/package.json repository metadata only"
+  },
+  "entries": [
+    {
+      "privatePath": "packages/verify-js/LICENSE",
+      "privateBlob": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "publicPath": "packages/verify-js/LICENSE",
+      "publicBlob": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/README.md",
+      "privateBlob": "e17426e9426d2e22285fcab7e9a2fbeb5ed7737c",
+      "publicPath": "packages/verify-js/README.md",
+      "publicBlob": "e17426e9426d2e22285fcab7e9a2fbeb5ed7737c",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/SECURITY.md",
+      "privateBlob": "d8e1b1861ccfd52094edcd454ec08bbe4b6d27fb",
+      "publicPath": "packages/verify-js/SECURITY.md",
+      "publicBlob": "d8e1b1861ccfd52094edcd454ec08bbe4b6d27fb",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/holder-outcome-v1.json",
+      "privateBlob": "c99c844da818498062c249190826786cd8cddb7d",
+      "publicPath": "packages/verify-js/fixtures/holder-outcome-v1.json",
+      "publicBlob": "c99c844da818498062c249190826786cd8cddb7d",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/canonical-ordering-evm.json",
+      "privateBlob": "9709af968f70a58e462e37ed68832b12035045cc",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/canonical-ordering-evm.json",
+      "publicBlob": "9709af968f70a58e462e37ed68832b12035045cc",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/d7-ec-evm.json",
+      "privateBlob": "2d80d40bc725aad972bc2c75e83207557923c57b",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/d7-ec-evm.json",
+      "publicBlob": "2d80d40bc725aad972bc2c75e83207557923c57b",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/d7-rsa-evm.json",
+      "privateBlob": "a4aaf5f730f90c006702634ea8d7a4212b413fa3",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/d7-rsa-evm.json",
+      "publicBlob": "a4aaf5f730f90c006702634ea8d7a4212b413fa3",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/forbidden-word-evm.json",
+      "privateBlob": "5bc8594d229c715260452e25bc15847292e23b95",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/forbidden-word-evm.json",
+      "publicBlob": "5bc8594d229c715260452e25bc15847292e23b95",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/tampered-disclaimer-evm.json",
+      "privateBlob": "2f08783d733790c46bb96a2b2075ea14c425822d",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/tampered-disclaimer-evm.json",
+      "publicBlob": "2f08783d733790c46bb96a2b2075ea14c425822d",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/tampered-finding-evm.json",
+      "privateBlob": "f1abbf2dbdd7557d84778b37ea916032ece4a780",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/tampered-finding-evm.json",
+      "publicBlob": "f1abbf2dbdd7557d84778b37ea916032ece4a780",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/unparseable-timestamp-evm.json",
+      "privateBlob": "ea4f227d4afa5882404633a3b8eeaf5b77698131",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/unparseable-timestamp-evm.json",
+      "publicBlob": "ea4f227d4afa5882404633a3b8eeaf5b77698131",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/valid-minimal-evm.json",
+      "privateBlob": "449fba2e79698454c986a78a142a1d3294b10afd",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/valid-minimal-evm.json",
+      "publicBlob": "449fba2e79698454c986a78a142a1d3294b10afd",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/valid-stale-evm.json",
+      "privateBlob": "a878b752ec2dfe7ff0a7870468e15c63f37ee508",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/valid-stale-evm.json",
+      "publicBlob": "a878b752ec2dfe7ff0a7870468e15c63f37ee508",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/valid-usdc-base-testkey.json",
+      "privateBlob": "bc381856bb9de3d7baad87750412ab6ddd4e5353",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/valid-usdc-base-testkey.json",
+      "publicBlob": "bc381856bb9de3d7baad87750412ab6ddd4e5353",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/wrong-domain-evm.json",
+      "privateBlob": "14a6c08594b0e4ec13c3950e796be0f7d75aec71",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/wrong-domain-evm.json",
+      "publicBlob": "14a6c08594b0e4ec13c3950e796be0f7d75aec71",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-evm-v1/wrong-key-evm.json",
+      "privateBlob": "2a40e243f9a8bc975faa647f0d28bc326030a597",
+      "publicPath": "packages/verify-js/fixtures/receipt-evm-v1/wrong-key-evm.json",
+      "publicBlob": "2a40e243f9a8bc975faa647f0d28bc326030a597",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/canonical-ordering.json",
+      "privateBlob": "f8811a99e2c4691fa86c220115da238d79ac551e",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/canonical-ordering.json",
+      "publicBlob": "f8811a99e2c4691fa86c220115da238d79ac551e",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/forbidden-word.json",
+      "privateBlob": "ee93866caeccd715d6835a3198706db7dfe418c2",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/forbidden-word.json",
+      "publicBlob": "ee93866caeccd715d6835a3198706db7dfe418c2",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/production-receipt-v1-bonk-2026-07-03.json",
+      "privateBlob": "d9cba6d23e043321a303f32ebb91f8dc4b0fc9d3",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/production-receipt-v1-bonk-2026-07-03.json",
+      "publicBlob": "d9cba6d23e043321a303f32ebb91f8dc4b0fc9d3",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/production-receipt-v1-bonk-verified.json",
+      "privateBlob": "1cab7dabba667b878d315107ea683b188ea6146a",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/production-receipt-v1-bonk-verified.json",
+      "publicBlob": "1cab7dabba667b878d315107ea683b188ea6146a",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.2-no-holder-historical.json",
+      "privateBlob": "2fc7124a39f7e8a3a97e3571b056a1d7ebabc42a",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.2-no-holder-historical.json",
+      "publicBlob": "2fc7124a39f7e8a3a97e3571b056a1d7ebabc42a",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.3-holder-bearing-derived-compatibility.json",
+      "privateBlob": "1ac9a559ae99cd28dc5b84eaf2fc127c14c81dc9",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.3-holder-bearing-derived-compatibility.json",
+      "publicBlob": "1ac9a559ae99cd28dc5b84eaf2fc127c14c81dc9",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.3-no-holder-historical.json",
+      "privateBlob": "84d9bca756707f226d438b66e5e3d5b3cf61ed5f",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.3-no-holder-historical.json",
+      "publicBlob": "84d9bca756707f226d438b66e5e3d5b3cf61ed5f",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.3-production-shaped-historical.json",
+      "privateBlob": "00ace8f8a9fb5f46eb9f17f9e886f84625f5b3d7",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.3-production-shaped-historical.json",
+      "publicBlob": "00ace8f8a9fb5f46eb9f17f9e886f84625f5b3d7",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-acp-bypass-invalid.json",
+      "privateBlob": "cc10c2b604d81c2cdcd3cd33ffdf45880ac6b39a",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-acp-bypass-invalid.json",
+      "publicBlob": "cc10c2b604d81c2cdcd3cd33ffdf45880ac6b39a",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-attempt-state-type-invalid.json",
+      "privateBlob": "9d16d7a42379851d819b71795e2971150033b13a",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-attempt-state-type-invalid.json",
+      "publicBlob": "9d16d7a42379851d819b71795e2971150033b13a",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-attempt-type-invalid.json",
+      "privateBlob": "bdaa913966dd8508e195e39e87c72276b6d8b44b",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-attempt-type-invalid.json",
+      "publicBlob": "bdaa913966dd8508e195e39e87c72276b6d8b44b",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-duplicate-unresolved-compound-invalid.json",
+      "privateBlob": "19943da944c670438d7fa404b17b38165aef4c97",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-duplicate-unresolved-compound-invalid.json",
+      "publicBlob": "19943da944c670438d7fa404b17b38165aef4c97",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-empty-coverage-invalid.json",
+      "privateBlob": "632626690f750c0e3ac8150364baecd6b55b5efa",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-empty-coverage-invalid.json",
+      "publicBlob": "632626690f750c0e3ac8150364baecd6b55b5efa",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-malformed-reason-invalid.json",
+      "privateBlob": "c239b3002ac993be2e896fc434b283a92f06c90b",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-malformed-reason-invalid.json",
+      "publicBlob": "c239b3002ac993be2e896fc434b283a92f06c90b",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-missing-attempt-field-invalid.json",
+      "privateBlob": "4dfe66b683d32a3922cfe2bc8006a4549223f0db",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-missing-attempt-field-invalid.json",
+      "publicBlob": "4dfe66b683d32a3922cfe2bc8006a4549223f0db",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-missing-provenance-invalid.json",
+      "privateBlob": "f3ba4c904949edf900aadbf5dc674d0054aac28d",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-missing-provenance-invalid.json",
+      "publicBlob": "f3ba4c904949edf900aadbf5dc674d0054aac28d",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-mutated-signed-provenance.json",
+      "privateBlob": "b14e9eb4f7270090b548855a572b95165334a12a",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-mutated-signed-provenance.json",
+      "publicBlob": "b14e9eb4f7270090b548855a572b95165334a12a",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-observed-unresolved-contradiction.json",
+      "privateBlob": "31948478e94eaa936fdaaa4f8ffc8cd8fde0fa70",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-observed-unresolved-contradiction.json",
+      "publicBlob": "31948478e94eaa936fdaaa4f8ffc8cd8fde0fa70",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-primary-adjustment-contradiction-invalid.json",
+      "privateBlob": "5cb62a4b229d7001a428f3d9297632e2101b85fe",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-primary-adjustment-contradiction-invalid.json",
+      "publicBlob": "5cb62a4b229d7001a428f3d9297632e2101b85fe",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-slot-mismatch-invalid.json",
+      "privateBlob": "965eea6fb229207571333b6c29bbe41afabe1e7d",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-slot-mismatch-invalid.json",
+      "publicBlob": "965eea6fb229207571333b6c29bbe41afabe1e7d",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-state-a-valid.json",
+      "privateBlob": "21abdd5aa725c7376e5782ed3d424d8b6ce0b3f5",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-state-a-valid.json",
+      "publicBlob": "21abdd5aa725c7376e5782ed3d424d8b6ce0b3f5",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-state-b-valid.json",
+      "privateBlob": "6273b3bfea6ef432c095a3a1716c3f4a5dd862bf",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-state-b-valid.json",
+      "publicBlob": "6273b3bfea6ef432c095a3a1716c3f4a5dd862bf",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-state-c-valid.json",
+      "privateBlob": "f420743b2ce4072f1ed9734cbca775a3b6515824",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-1.1.4-state-c-valid.json",
+      "publicBlob": "f420743b2ce4072f1ed9734cbca775a3b6515824",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-future-unsupported.json",
+      "privateBlob": "36db0a61eeb7bc45b1827e689029ba8ffeddc954",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-future-unsupported.json",
+      "publicBlob": "36db0a61eeb7bc45b1827e689029ba8ffeddc954",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/rules-version-malformed.json",
+      "privateBlob": "08ab35dc2609cf61c0720d79b05dd08b7947bbde",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/rules-version-malformed.json",
+      "publicBlob": "08ab35dc2609cf61c0720d79b05dd08b7947bbde",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/tampered-disclaimer.json",
+      "privateBlob": "31ff79266aa31d58ef231e79303bfde61545cccd",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/tampered-disclaimer.json",
+      "publicBlob": "31ff79266aa31d58ef231e79303bfde61545cccd",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/tampered-finding.json",
+      "privateBlob": "a3d00a1282eb9d7f708b722a78452a1c26877403",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/tampered-finding.json",
+      "publicBlob": "a3d00a1282eb9d7f708b722a78452a1c26877403",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/unparseable-timestamp.json",
+      "privateBlob": "d61999811a195dcd94917986eb986e1aa7c7a204",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/unparseable-timestamp.json",
+      "publicBlob": "d61999811a195dcd94917986eb986e1aa7c7a204",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/valid-minimal.json",
+      "privateBlob": "d57930cf3bdc2534a478686c41f7a1827ac5dbf0",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/valid-minimal.json",
+      "publicBlob": "d57930cf3bdc2534a478686c41f7a1827ac5dbf0",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/valid-stale.json",
+      "privateBlob": "7add97f6dfee96c5a72eb2e28c3960e578f7e1ce",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/valid-stale.json",
+      "publicBlob": "7add97f6dfee96c5a72eb2e28c3960e578f7e1ce",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/valid-with-findings.json",
+      "privateBlob": "b90fa5c41b5a725e28b538b6ba3ce657fa3a1395",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/valid-with-findings.json",
+      "publicBlob": "b90fa5c41b5a725e28b538b6ba3ce657fa3a1395",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/wrong-domain.json",
+      "privateBlob": "91154cc23f47aa5ae1595503c10a665abff98194",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/wrong-domain.json",
+      "publicBlob": "91154cc23f47aa5ae1595503c10a665abff98194",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/fixtures/receipt-v1/wrong-key.json",
+      "privateBlob": "f5b56a143ac6bbe167974423511e40b6b3a1f4fc",
+      "publicPath": "packages/verify-js/fixtures/receipt-v1/wrong-key.json",
+      "publicBlob": "f5b56a143ac6bbe167974423511e40b6b3a1f4fc",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/package-lock.json",
+      "privateBlob": "c471c604dd76dd21aae30fb2c1eea2255e003c49",
+      "publicPath": "packages/verify-js/package-lock.json",
+      "publicBlob": "c471c604dd76dd21aae30fb2c1eea2255e003c49",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/package.json",
+      "privateBlob": "65e53afaa53f1045e4a4d1476c701bc97fd2ff18",
+      "publicPath": "packages/verify-js/package.json",
+      "publicBlob": "6dba7e192593a4832afe70dc90afff580af1cfd3",
+      "mode": "100644",
+      "relationship": "AUTHORIZED_PUBLIC_METADATA_ONLY",
+      "normalizedPublicBlob": "65e53afaa53f1045e4a4d1476c701bc97fd2ff18"
+    },
+    {
+      "privatePath": "packages/verify-js/scripts/clean-dist.mjs",
+      "privateBlob": "53fb5e0e30a4a201d22ed5804e2ab41d104d8043",
+      "publicPath": "packages/verify-js/scripts/clean-dist.mjs",
+      "publicBlob": "53fb5e0e30a4a201d22ed5804e2ab41d104d8043",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/scripts/test-cjs-consumer.mjs",
+      "privateBlob": "68ae38eaae645c26b267db718383bd56dbcd6e5b",
+      "publicPath": "packages/verify-js/scripts/test-cjs-consumer.mjs",
+      "publicBlob": "68ae38eaae645c26b267db718383bd56dbcd6e5b",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/scripts/test-declaration-consumer.mjs",
+      "privateBlob": "8e49395984a896e5e238481dda54aea8c2d07cea",
+      "publicPath": "packages/verify-js/scripts/test-declaration-consumer.mjs",
+      "publicBlob": "8e49395984a896e5e238481dda54aea8c2d07cea",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/scripts/test-packed-install.mjs",
+      "privateBlob": "782eb53830cf955bf24a585ede28754293e17d6b",
+      "publicPath": "packages/verify-js/scripts/test-packed-install.mjs",
+      "publicBlob": "782eb53830cf955bf24a585ede28754293e17d6b",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/canonicalDataSnapshot.ts",
+      "privateBlob": "8c15e7e62c495aa0c0895c7737cbc66635f6fbe4",
+      "publicPath": "packages/verify-js/src/canonicalDataSnapshot.ts",
+      "publicBlob": "8c15e7e62c495aa0c0895c7737cbc66635f6fbe4",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/canonicalJson.ts",
+      "privateBlob": "a44b88f0022b79e6c43c8b7028b7e20d9900db69",
+      "publicPath": "packages/verify-js/src/canonicalJson.ts",
+      "publicBlob": "a44b88f0022b79e6c43c8b7028b7e20d9900db69",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/detect.ts",
+      "privateBlob": "c0ea6cbfaaf0988687499e8bc982920afd46e13b",
+      "publicPath": "packages/verify-js/src/detect.ts",
+      "publicBlob": "c0ea6cbfaaf0988687499e8bc982920afd46e13b",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/index.ts",
+      "privateBlob": "14d9894567c4406c8b58160e52152ae5b013cd33",
+      "publicPath": "packages/verify-js/src/index.ts",
+      "publicBlob": "14d9894567c4406c8b58160e52152ae5b013cd33",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/keyManifest.ts",
+      "privateBlob": "29b09a0b71c8b6ecfcb0ffedd26f495115d892e5",
+      "publicPath": "packages/verify-js/src/keyManifest.ts",
+      "publicBlob": "29b09a0b71c8b6ecfcb0ffedd26f495115d892e5",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/outcomeProjection.ts",
+      "privateBlob": "e3c4255f3b12bb825124706ab86aef274729a6a2",
+      "publicPath": "packages/verify-js/src/outcomeProjection.ts",
+      "publicBlob": "e3c4255f3b12bb825124706ab86aef274729a6a2",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/proposed.ts",
+      "privateBlob": "2b17e5ee5c6ec34c7772515c1d802fbb867569a0",
+      "publicPath": "packages/verify-js/src/proposed.ts",
+      "publicBlob": "2b17e5ee5c6ec34c7772515c1d802fbb867569a0",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/receiptEvmV1.ts",
+      "privateBlob": "4fb28c657f6c6d2749c9ad309fbedec529fddf27",
+      "publicPath": "packages/verify-js/src/receiptEvmV1.ts",
+      "publicBlob": "4fb28c657f6c6d2749c9ad309fbedec529fddf27",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/receiptRules.ts",
+      "privateBlob": "d719987d05e755e894c8c3362107ea25c4eb4410",
+      "publicPath": "packages/verify-js/src/receiptRules.ts",
+      "publicBlob": "d719987d05e755e894c8c3362107ea25c4eb4410",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/receiptV1.ts",
+      "privateBlob": "f894a56c2acc836c7ea11908343e474af7fa8486",
+      "publicPath": "packages/verify-js/src/receiptV1.ts",
+      "publicBlob": "f894a56c2acc836c7ea11908343e474af7fa8486",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/solanaAddress.ts",
+      "privateBlob": "8bb93e6534504e0776429c034166e03f64ea2be1",
+      "publicPath": "packages/verify-js/src/solanaAddress.ts",
+      "publicBlob": "8bb93e6534504e0776429c034166e03f64ea2be1",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/trustAnchor.ts",
+      "privateBlob": "48288d3bbc2c418df96dcdf7c23fa5e2c1571a43",
+      "publicPath": "packages/verify-js/src/trustAnchor.ts",
+      "publicBlob": "48288d3bbc2c418df96dcdf7c23fa5e2c1571a43",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/verifyReceiptEvmV1.ts",
+      "privateBlob": "c921d56df355c0e1d3f075e017f43f16f6bf40c7",
+      "publicPath": "packages/verify-js/src/verifyReceiptEvmV1.ts",
+      "publicBlob": "c921d56df355c0e1d3f075e017f43f16f6bf40c7",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/verifyReceiptV1.ts",
+      "privateBlob": "b5f24a489ba54b335f938a69fdafcfb55d84dc8a",
+      "publicPath": "packages/verify-js/src/verifyReceiptV1.ts",
+      "publicBlob": "b5f24a489ba54b335f938a69fdafcfb55d84dc8a",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/src/verifyReceiptV1ForSubject.ts",
+      "privateBlob": "8868ba15459ef881cecb02885152e8134c0854b7",
+      "publicPath": "packages/verify-js/src/verifyReceiptV1ForSubject.ts",
+      "publicBlob": "8868ba15459ef881cecb02885152e8134c0854b7",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/canonicalDataSnapshot.test.ts",
+      "privateBlob": "8dd94d3b9d749479aea2d5f396ac945b47cf5114",
+      "publicPath": "packages/verify-js/test/canonicalDataSnapshot.test.ts",
+      "publicBlob": "8dd94d3b9d749479aea2d5f396ac945b47cf5114",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/canonicalJson.test.ts",
+      "privateBlob": "e8a56a08b49458728a79fb00a594e7d81bb4c518",
+      "publicPath": "packages/verify-js/test/canonicalJson.test.ts",
+      "publicBlob": "e8a56a08b49458728a79fb00a594e7d81bb4c518",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/detect.test.ts",
+      "privateBlob": "138bbce37712fda9811cfd3a1363427425a0ed4c",
+      "publicPath": "packages/verify-js/test/detect.test.ts",
+      "publicBlob": "138bbce37712fda9811cfd3a1363427425a0ed4c",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/exportSurface.test.ts",
+      "privateBlob": "1d7a08b4deecaf52200e391ffea98f97492609a4",
+      "publicPath": "packages/verify-js/test/exportSurface.test.ts",
+      "publicBlob": "1d7a08b4deecaf52200e391ffea98f97492609a4",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/fixture-parity.test.ts",
+      "privateBlob": "b76674f55a9f00d16a3b1f7af06971e4f3b63905",
+      "publicPath": "packages/verify-js/test/fixture-parity.test.ts",
+      "publicBlob": "b76674f55a9f00d16a3b1f7af06971e4f3b63905",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/hostileReceipt.test.ts",
+      "privateBlob": "26ed0d44d7d42ac121145fc6ecfa8b025293c94d",
+      "publicPath": "packages/verify-js/test/hostileReceipt.test.ts",
+      "publicBlob": "26ed0d44d7d42ac121145fc6ecfa8b025293c94d",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/keyManifest.test.ts",
+      "privateBlob": "a73cf5cb27b842826a239a95ec41ce0d5cd3df08",
+      "publicPath": "packages/verify-js/test/keyManifest.test.ts",
+      "publicBlob": "a73cf5cb27b842826a239a95ec41ce0d5cd3df08",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/releaseManifest.test.ts",
+      "privateBlob": "39d5d4dc8017634246877acbcd3c03d37a9b2e5f",
+      "publicPath": "packages/verify-js/test/releaseManifest.test.ts",
+      "publicBlob": "39d5d4dc8017634246877acbcd3c03d37a9b2e5f",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/signatureKeyType.test.ts",
+      "privateBlob": "327b91e3f2ba8f5145fc42b39d0ac8cc9dbc3bca",
+      "publicPath": "packages/verify-js/test/signatureKeyType.test.ts",
+      "publicBlob": "327b91e3f2ba8f5145fc42b39d0ac8cc9dbc3bca",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/subjectBinding.test.ts",
+      "privateBlob": "97cf80d8808e77761c05a644c420fdd96cc20c41",
+      "publicPath": "packages/verify-js/test/subjectBinding.test.ts",
+      "publicBlob": "97cf80d8808e77761c05a644c420fdd96cc20c41",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/trustAnchor.test.ts",
+      "privateBlob": "bbbedc36ebd752c81590297e255958a8ace0a309",
+      "publicPath": "packages/verify-js/test/trustAnchor.test.ts",
+      "publicBlob": "bbbedc36ebd752c81590297e255958a8ace0a309",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/trustConfig.test.ts",
+      "privateBlob": "4c43a26c2e149b18042dbcbf87ea9548e2fa975f",
+      "publicPath": "packages/verify-js/test/trustConfig.test.ts",
+      "publicBlob": "4c43a26c2e149b18042dbcbf87ea9548e2fa975f",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/trustConfigShapeFailure.test.ts",
+      "privateBlob": "cb7e7e208c5d3a395ba0461e9eec530989f585f3",
+      "publicPath": "packages/verify-js/test/trustConfigShapeFailure.test.ts",
+      "publicBlob": "cb7e7e208c5d3a395ba0461e9eec530989f585f3",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/vectors-evm.test.ts",
+      "privateBlob": "62ec064300ce3c932da4838a8f67bfafaad5a342",
+      "publicPath": "packages/verify-js/test/vectors-evm.test.ts",
+      "publicBlob": "62ec064300ce3c932da4838a8f67bfafaad5a342",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/test/vectors.test.ts",
+      "privateBlob": "1e008c16028314c1b401536117c621c8b7df3aef",
+      "publicPath": "packages/verify-js/test/vectors.test.ts",
+      "publicBlob": "1e008c16028314c1b401536117c621c8b7df3aef",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    },
+    {
+      "privatePath": "packages/verify-js/tsconfig.build.json",
+      "privateBlob": "62c87c54474a7bdb65c5c79242b0becbd35a1bf4",
+      "publicPath": "packages/verify-js/tsconfig.build.json",
+      "publicBlob": "62c87c54474a7bdb65c5c79242b0becbd35a1bf4",
+      "mode": "100644",
+      "relationship": "IDENTICAL"
+    }
+  ]
+}

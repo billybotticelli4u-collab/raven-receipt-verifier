@@ -21,7 +21,7 @@ import {
   findForbiddenWords,
   type ReceiptEvmV1Body,
 } from "./receiptEvmV1.ts";
-import { resolveKeyTrust, type VerifyReceiptOptions } from "./verifyReceiptV1.ts";
+import { resolveKeyTrust, sanitizeOptions, type VerifyReceiptOptions } from "./verifyReceiptV1.ts";
 import { isInspectableObject } from "./receiptRules.ts";
 
 /** EVM verifier result; intentionally does not acquire Solana rules fields. */
@@ -29,7 +29,7 @@ export interface VerifyReceiptEvmResult {
   valid: boolean;
   stale: boolean;
   reasons: string[];
-  keyTrusted?: boolean;
+  keyTrusted: boolean;
 }
 
 const publicKeyCache = new Map<string, ReturnType<typeof createPublicKey>>();
@@ -117,6 +117,24 @@ const extractBody = (receipt: Record<string, unknown>): ReceiptEvmV1Body => {
 const toIso = (now: string | Date | undefined): string =>
   now === undefined ? new Date().toISOString() : typeof now === "string" ? now : now.toISOString();
 
+const readSignerPublicKey = (receipt: unknown): string | null => {
+  if (receipt === null || typeof receipt !== "object") return null;
+  try {
+    const value = (receipt as Record<string, unknown>).signerPublicKey;
+    return typeof value === "string" ? value : null;
+  } catch {
+    return null;
+  }
+};
+
+const resolveShapeFailureTrust = (
+  receipt: unknown,
+  opts: Pick<VerifyReceiptOptions, "trustedKeys" | "allowUntrustedKey">,
+): { keyTrusted: boolean; reason?: string } => {
+  const signerPublicKey = readSignerPublicKey(receipt);
+  return resolveKeyTrust(signerPublicKey ?? "", opts);
+};
+
 /**
  * Verify a receipt-evm-v1. Same result contract as verifyReceiptV1:
  * `valid` gated only by shape/disclaimer/forbidden-words/hash/signature;
@@ -126,16 +144,32 @@ export const verifyReceiptEvmV1 = (
   receipt: unknown,
   opts: VerifyReceiptOptions = {},
 ): VerifyReceiptEvmResult => {
+  const safeOpts = sanitizeOptions(opts);
   const reasons: string[] = [];
 
   if (!isInspectableObject(receipt)) {
-    return { valid: false, stale: false, reasons: ["shape_not_an_object"] };
+    const trust = resolveShapeFailureTrust(receipt, safeOpts);
+    return {
+      valid: false,
+      stale: false,
+      reasons:
+        trust.reason === undefined
+          ? ["shape_not_an_object"]
+          : ["shape_not_an_object", trust.reason],
+      keyTrusted: trust.keyTrusted,
+    };
   }
   const r = receipt as Record<string, unknown>;
 
   const shapeReasons = checkShape(r);
   if (shapeReasons.length > 0) {
-    return { valid: false, stale: false, reasons: shapeReasons };
+    const trust = resolveShapeFailureTrust(r, safeOpts);
+    return {
+      valid: false,
+      stale: false,
+      reasons: trust.reason === undefined ? shapeReasons : [...shapeReasons, trust.reason],
+      keyTrusted: trust.keyTrusted,
+    };
   }
 
   if (r.disclaimer !== RECEIPT_EVM_DISCLAIMER) reasons.push("disclaimer_mismatch");
@@ -200,12 +234,12 @@ export const verifyReceiptEvmV1 = (
 
   const valid = reasons.length === 0;
 
-  const trust = resolveKeyTrust(r.signerPublicKey as string, opts);
+  const trust = resolveKeyTrust(r.signerPublicKey as string, safeOpts);
   const keyTrusted = trust.keyTrusted;
   if (trust.reason !== undefined) reasons.push(trust.reason);
 
   const ageSeconds =
-    (Date.parse(toIso(opts.now)) - Date.parse(r.timestamp as string)) / 1000;
+    (Date.parse(toIso(safeOpts.now)) - Date.parse(r.timestamp as string)) / 1000;
   let stale: boolean;
   if (Number.isFinite(ageSeconds)) {
     stale = ageSeconds > (r.maxAgeSeconds as number);
@@ -215,5 +249,5 @@ export const verifyReceiptEvmV1 = (
     reasons.push("timestamp_unparseable");
   }
 
-  return { valid, stale, reasons, ...(keyTrusted === undefined ? {} : { keyTrusted }) };
+  return { valid, stale, reasons, keyTrusted };
 };

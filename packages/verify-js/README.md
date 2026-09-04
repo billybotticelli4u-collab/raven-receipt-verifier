@@ -142,7 +142,7 @@ interface VerifyReceiptResult {
   valid: boolean;      // gated ONLY by checks 1–5 below
   stale: boolean;      // freshness — reported, never gates `valid`
   reasons: string[];   // stable codes for every failed / noted check
-  keyTrusted?: boolean; // present when `trustedKeys` or `allowUntrustedKey` is supplied
+  keyTrusted: boolean;  // false when untrusted, explicitly unevaluated, or trust config is malformed/missing
   rulesVersion: string | null;
   rulesStatus: "supported_valid" | "supported_invalid" | "unsupported" | "malformed" | null;
   rulesReasons: string[]; // signed-semantics axis; never folded into `valid`
@@ -157,19 +157,23 @@ Checks, in order (reasons accumulate; a tampered receipt surfaces every failure)
    `legit`, `scam-free`, `approved`, `guaranteed`).
 4. **Payload hash + receiptId** — recomputed over the canonical preimage.
 5. **Signature** — Ed25519 over the domain-separated envelope.
-6. **Key trust** *(non-fatal)* — is `signerPublicKey` in your `trustedKeys`?
+6. **Key trust** *(non-fatal)* — is `signerPublicKey` an exact match for an
+   eligible key in your `trustedKeys`?
    `trustedKeys` accepts a `Set<string>` or a plain string array (the shape any
-   caller loading keys from JSON or env will hold). Every malformed value — a
-   non-collection, or any non-string member — fails closed and typed:
+   caller loading keys from JSON or env will hold). Receipt-v1 trust keys must
+   be canonical Ed25519 SPKI. A syntactically valid SPKI for another algorithm
+   fails closed with `trust_key_type_unsupported`; a supported Ed25519 key that
+   does not match the signer uses `key_untrusted`. Every malformed value — a
+   non-collection, non-string member, or malformed key encoding — fails typed:
    `keyTrusted: false` with `trust_config_invalid`, and no exception escapes.
    With no keys supplied, `allowUntrustedKey: true` is the typed opt-out
    (`key_trust_not_evaluated`) and `allowUntrustedKey: false` is a typed
-   contract error (`trust_config_invalid`); at this kernel level, omitting
-   both preserves the historical not-evaluated behavior (the partner wrapper
-   above refuses omission instead). A non-boolean `allowUntrustedKey` —
-   realistic for env-derived strings such as `"false"` — is malformed trust
-   configuration and fails closed with `trust_config_invalid`; it never
-   silently disables trust evaluation.
+   contract error (`trust_config_invalid`). Omitting both is also missing trust
+   configuration: it returns `keyTrusted: false` with
+   `trust_config_invalid`, never an absent axis. A non-boolean
+   `allowUntrustedKey` — realistic for env-derived strings such as `"false"` —
+   is malformed trust configuration and fails closed with
+   `trust_config_invalid`; it never silently disables trust evaluation.
 7. **Freshness** *(non-fatal)* — `stale = now − timestamp > maxAgeSeconds`.
 8. **Exact rules semantics** *(separate axis)* — historical rules retain their
    recorded meaning; `raven-rules@1.1.4` holder provenance is checked; canonical

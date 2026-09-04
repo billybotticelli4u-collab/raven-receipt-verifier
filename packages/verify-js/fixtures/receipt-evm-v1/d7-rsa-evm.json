@@ -1,6 +1,6 @@
 {
   "name": "d7-rsa-evm",
-  "description": "D7 regression: receipt-evm-v1 self-signed with an attacker-generated RSA-2048 key (that SPKI trusted). receipt-evm-v1 signatures are Ed25519-only; a non-Ed25519 signer key must be rejected with signature_invalid, exactly like the Solana receipt-v1 D3 vectors and the Python reference verifier. Key trust is a separate non-fatal axis, so keyTrusted stays true.",
+  "description": "D7 regression: receipt-evm-v1 self-signed with an attacker-generated RSA-2048 key. Receipt signatures and trust material are Ed25519-only; integrity and trust fail independently.",
   "input": {
     "chain": "base-mainnet",
     "tokenAddress": "0x4200000000000000000000000000000000000006",
@@ -46,9 +46,10 @@
   "expected": {
     "valid": false,
     "stale": false,
-    "keyTrusted": true,
+    "keyTrusted": false,
     "reasonsInclude": [
-      "signature_invalid"
+      "signature_invalid",
+      "trust_key_type_unsupported"
     ]
   }
 }

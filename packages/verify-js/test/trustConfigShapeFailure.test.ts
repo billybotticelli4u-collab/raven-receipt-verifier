@@ -1,9 +1,7 @@
 // Trust axis on the receipt-SHAPE early-return paths.
 //
-// `VerifyReceiptOptions.trustedKeys` documents: "When provided, key trust is
-// reported via `keyTrusted`", and `VerifyReceiptResult.keyTrusted` documents:
-// "Present when `trustedKeys` or `allowUntrustedKey` was supplied." Neither
-// promise is conditional on the receipt being well-formed.
+// `VerifyReceiptOptions` documents that every verification result reports the
+// trust axis. That promise is not conditional on the receipt being well-formed.
 //
 // Both early returns in verifyReceiptV1 — the entry guard
 // (`shape_not_an_object`) and the shape check — used to return before the
@@ -69,7 +67,7 @@ test("a shape-failed receipt with NO signerPublicKey can never be trusted", () =
   // receipt that carries no signer look trusted.
   const res = verifyReceiptV1({ notAReceipt: true }, { trustedKeys: [""] });
   assert.equal(res.keyTrusted, false, "empty-string key must not match a missing signer");
-  assert.ok(res.reasons.includes("key_untrusted"), JSON.stringify(res.reasons));
+  assert.ok(res.reasons.includes("trust_config_invalid"), JSON.stringify(res.reasons));
 });
 
 test("a shape-failed receipt WITH a matching signerPublicKey resolves trusted", () => {
@@ -80,7 +78,9 @@ test("a shape-failed receipt WITH a matching signerPublicKey resolves trusted", 
 });
 
 test("a non-matching signerPublicKey appends key_untrusted after the shape reasons", () => {
-  const res = verifyReceiptV1({ signerPublicKey: "SOMETHING_ELSE" }, { trustedKeys: [KEY] });
+  const res = verifyReceiptV1({ signerPublicKey: KEY }, {
+    trustedKeys: ["MCowBQYDK2VwAyEAjYvhv+z9XAFfQdKny5PLTGByQMwtc20fyDjhsHknL3s="],
+  });
   assert.equal(res.keyTrusted, false);
   assert.equal(res.reasons.at(-1), "key_untrusted", "trust reason is appended last");
   assert.ok(res.reasons.length > 1, "shape reasons are preserved ahead of it");
@@ -97,12 +97,13 @@ test("hostile receipts resolve trust without escaping an exception", () => {
   }
 });
 
-test("NO policy supplied leaves the shape result byte-for-byte unchanged", () => {
-  // Guards the regression risk of this change: absent a trust option, nothing
-  // about the shape-failure result may move, and keyTrusted stays ABSENT.
+test("NO policy supplied on shape failures fails closed on the trust axis", () => {
+  // Shape failures are early returns, so this pins the no-omission invariant on
+  // the path most likely to drop trust evaluation.
   for (const [, receipt] of [...ENTRY, ...SHAPED]) {
     const res = verifyReceiptV1(receipt, {});
-    assert.equal(has(res, "keyTrusted"), false, "keyTrusted must stay absent with no policy");
-    assert.ok(!res.reasons.some((x) => x.startsWith("key_") || x === "trust_config_invalid"));
+    assert.equal(has(res, "keyTrusted"), true, "keyTrusted must be present with omitted policy");
+    assert.equal(res.keyTrusted, false);
+    assert.equal(res.reasons.at(-1), "trust_config_invalid");
   }
 });

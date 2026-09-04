@@ -1,33 +1,33 @@
-# raven-receipt-verifier — trusted publication ceremony (npm OIDC provenance).
-#
-# SAFE BY DEFAULT. There is no push/pull_request trigger: publication happens
-# only through a manual dispatch that a human approves on the protected
-# `npm-release` environment. The approval of a specific dispatched run, bound to
-# the exact inputs below, IS the publication authorization.
-#
-# The gate job is SECRETLESS and carries no id-token. Only the protected publish
-# job requests OIDC, and it re-verifies the release SHA and the exact tarball
-# identity immediately before publishing (TOCTOU). No long-lived registry
-# credential is used or read:
-# authentication is npm trusted publishing via GitHub OIDC.
+# raven-receipt-verifier — pack-once npm OIDC publication ceremony.
+# Code readiness is separate from platform readiness. This workflow must not be
+# dispatched until npm-release protection and npm trusted publishing are proven.
 name: verify-js publish
 
 on:
   workflow_dispatch:
     inputs:
+      release_ref:
+        description: "Authorized protected source ref; policy currently permits refs/heads/main only"
+        required: true
       release_sha:
-        description: "Exact reviewed commit SHA authorized for publication"
+        description: "Exact independently reviewed public mirror commit"
+        required: true
+      release_tree:
+        description: "Exact independently reviewed public mirror tree"
         required: true
       confirm_version:
-        description: "Package version being published (must match package.json)"
+        description: "Package version; must be 0.1.0"
         required: true
 
 permissions:
   contents: read
 
+env:
+  RAVEN_PINNED_NPM_VERSION: "11.18.0"
+
 jobs:
-  gate:
-    name: Release gate (secretless, no OIDC)
+  source-gate:
+    name: Source and correspondence gates (secretless)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -39,27 +39,155 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ inputs.release_sha }}
+          fetch-depth: 0
           persist-credentials: false
+      - name: Resolve authorized ref to exact SHA and tree
+        env:
+          RAVEN_RELEASE_REF: ${{ inputs.release_ref }}
+          RAVEN_RELEASE_SHA: ${{ inputs.release_sha }}
+          RAVEN_RELEASE_TREE: ${{ inputs.release_tree }}
+        run: node ops/verify-release-ref.mjs
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install from the package lockfile
+      - name: Install pinned npm CLI
+        run: npm install --global "npm@${RAVEN_PINNED_NPM_VERSION}"
+      - name: Assert pinned npm CLI
+        run: node ops/npm-version-gate.mjs "${RAVEN_PINNED_NPM_VERSION}"
+      - name: Install package development dependencies
         run: npm --prefix packages/verify-js ci
-      - name: Package test suite
+      - name: Build exact accepted verifier mirror
+        run: npm --prefix packages/verify-js run build
+      - name: Verify accepted-private to public byte correspondence
+        run: node ops/verify-byte-correspondence.mjs
+      - name: Package contract tests
         run: npm --prefix packages/verify-js test
-      - name: Packed-install consumer
-        run: npm --prefix packages/verify-js run test:packed
-      - name: Declaration consumer
-        run: npm --prefix packages/verify-js run test:declarations
-      - name: "CJS consumer: require() the packed tarball"
-        run: npm --prefix packages/verify-js run test:cjs
-      - name: Mirror boundary + workflow security controls
+      - name: Publication policy and mutation tests
         run: node --test ops/*.test.mjs
 
+  package-artifact:
+    name: Create the one release tarball (secretless)
+    needs: source-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.release_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Resolve authorized ref to exact SHA and tree
+        env:
+          RAVEN_RELEASE_REF: ${{ inputs.release_ref }}
+          RAVEN_RELEASE_SHA: ${{ inputs.release_sha }}
+          RAVEN_RELEASE_TREE: ${{ inputs.release_tree }}
+        run: node ops/verify-release-ref.mjs
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22.18.0"
+      - name: Install pinned npm CLI
+        run: npm install --global "npm@${RAVEN_PINNED_NPM_VERSION}"
+      - name: Assert pinned npm CLI
+        run: node ops/npm-version-gate.mjs "${RAVEN_PINNED_NPM_VERSION}"
+      - name: Install package development dependencies
+        run: npm --prefix packages/verify-js ci
+      - name: Pack exactly once
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/release-package"
+          cd packages/verify-js
+          npm pack --json --pack-destination "$RUNNER_TEMP/release-package" > "$RUNNER_TEMP/release-package/pack.json"
+      - name: Measure actual tarball and create immutable handoff evidence
+        env:
+          GITHUB_REF: ${{ inputs.release_ref }}
+        run: |
+          node ops/create-release-artifact-identity.mjs \
+            --pack-json "$RUNNER_TEMP/release-package/pack.json" \
+            --tarball-dir "$RUNNER_TEMP/release-package" \
+            --out "$RUNNER_TEMP/release-package/release-artifact-identity.json" \
+            --release-ref "${{ inputs.release_ref }}"
+      - name: Refuse unless actual tarball matches frozen authorization
+        run: |
+          node ops/verify-release-artifact.mjs \
+            --pack-json "$RUNNER_TEMP/release-package/pack.json" \
+            --tarball-dir "$RUNNER_TEMP/release-package" \
+            --artifact-identity "$RUNNER_TEMP/release-package/release-artifact-identity.json" \
+            --frozen-identity release/release-identity.json \
+            --confirm-version "${{ inputs.confirm_version }}" \
+            --release-ref "${{ inputs.release_ref }}" \
+            --release-sha "${{ inputs.release_sha }}" \
+            --release-tree "${{ inputs.release_tree }}"
+      - name: Upload exact three-file handoff
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-package
+          path: |
+            ${{ runner.temp }}/release-package/raven-receipt-verifier-0.1.0.tgz
+            ${{ runner.temp }}/release-package/pack.json
+            ${{ runner.temp }}/release-package/release-artifact-identity.json
+          if-no-files-found: error
+
+  tarball-gate:
+    name: Downloaded artifact customer gates
+    needs: package-artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["22.18.0", "24"]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.release_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Resolve authorized ref to exact SHA and tree
+        env:
+          RAVEN_RELEASE_REF: ${{ inputs.release_ref }}
+          RAVEN_RELEASE_SHA: ${{ inputs.release_sha }}
+          RAVEN_RELEASE_TREE: ${{ inputs.release_tree }}
+        run: node ops/verify-release-ref.mjs
+      - name: Download exact package handoff
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: release-package
+          path: ${{ runner.temp }}/release-package
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install pinned npm CLI
+        run: npm install --global "npm@${RAVEN_PINNED_NPM_VERSION}"
+      - name: Assert pinned npm CLI
+        run: node ops/npm-version-gate.mjs "${RAVEN_PINNED_NPM_VERSION}"
+      - name: Install declaration compiler only from lockfile
+        run: npm --prefix packages/verify-js ci
+      - name: Verify actual downloaded tarball
+        run: |
+          node ops/verify-release-artifact.mjs \
+            --pack-json "$RUNNER_TEMP/release-package/pack.json" \
+            --tarball-dir "$RUNNER_TEMP/release-package" \
+            --artifact-identity "$RUNNER_TEMP/release-package/release-artifact-identity.json" \
+            --frozen-identity release/release-identity.json \
+            --confirm-version "${{ inputs.confirm_version }}" \
+            --release-ref "${{ inputs.release_ref }}" \
+            --release-sha "${{ inputs.release_sha }}" \
+            --release-tree "${{ inputs.release_tree }}"
+      - name: Test exact downloaded tarball without repacking
+        run: |
+          node ops/test-release-tarball.mjs \
+            --pack-json "$RUNNER_TEMP/release-package/pack.json" \
+            --tarball-dir "$RUNNER_TEMP/release-package" \
+            --package-dir packages/verify-js
+
   publish:
-    name: Protected publication (environment approval IS the authorization)
-    needs: gate
+    name: Protected atomic verification and publication
+    needs: tarball-gate
     environment: npm-release
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -69,44 +197,47 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ inputs.release_sha }}
+          fetch-depth: 0
           persist-credentials: false
+      - name: Resolve authorized ref to exact SHA and tree
+        env:
+          RAVEN_RELEASE_REF: ${{ inputs.release_ref }}
+          RAVEN_RELEASE_SHA: ${{ inputs.release_sha }}
+          RAVEN_RELEASE_TREE: ${{ inputs.release_tree }}
+        run: node ops/verify-release-ref.mjs
+      - name: Download exact package handoff
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: release-package
+          path: ${{ runner.temp }}/release-package
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "22.18.0"
           registry-url: "https://registry.npmjs.org"
-      - name: Refuse unless HEAD is the authorized release SHA
+      - name: Install pinned npm CLI
+        run: npm install --global "npm@${RAVEN_PINNED_NPM_VERSION}"
+      - name: Assert pinned npm CLI
+        run: node ops/npm-version-gate.mjs "${RAVEN_PINNED_NPM_VERSION}"
+      - name: Final in-process verification and immediate exact-tarball publish
         env:
-          RELEASE_SHA: ${{ inputs.release_sha }}
+          RAVEN_RELEASE_REF: ${{ inputs.release_ref }}
+          RAVEN_RELEASE_SHA: ${{ inputs.release_sha }}
+          RAVEN_RELEASE_TREE: ${{ inputs.release_tree }}
         run: |
-          set -euo pipefail
-          actual="$(git rev-parse HEAD)"
-          if [ "$actual" != "$RELEASE_SHA" ]; then
-            echo "REFUSED: HEAD $actual != authorized release SHA $RELEASE_SHA" >&2
-            exit 1
-          fi
-      - name: Install from the package lockfile
-        run: npm --prefix packages/verify-js ci
-      - name: Pack exactly once
-        run: |
-          set -euo pipefail
-          cd packages/verify-js
-          npm pack --json > "$RUNNER_TEMP/pack.json"
-      - name: Refuse unless the tarball matches the frozen release identity
-        env:
-          CONFIRM_VERSION: ${{ inputs.confirm_version }}
-        run: node ops/verify-release-identity.mjs "$RUNNER_TEMP/pack.json" "$CONFIRM_VERSION"
-      - name: Publish that exact tarball with provenance (OIDC, no token)
-        run: |
-          set -euo pipefail
-          cd packages/verify-js
-          tarball="$(node -e 'console.log(require(process.env.RUNNER_TEMP+"/pack.json")[0].filename)')"
-          npm publish "$tarball" --provenance --access public
-      - name: Retain release evidence
+          node ops/publish-exact-release.mjs \
+            --pack-json "$RUNNER_TEMP/release-package/pack.json" \
+            --tarball-dir "$RUNNER_TEMP/release-package" \
+            --artifact-identity "$RUNNER_TEMP/release-package/release-artifact-identity.json" \
+            --frozen-identity release/release-identity.json \
+            --confirm-version "${{ inputs.confirm_version }}"
+      - name: Retain exact release evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: release-evidence
           path: |
-            ${{ runner.temp }}/pack.json
+            ${{ runner.temp }}/release-package/raven-receipt-verifier-0.1.0.tgz
+            ${{ runner.temp }}/release-package/pack.json
+            ${{ runner.temp }}/release-package/release-artifact-identity.json
             release/release-identity.json

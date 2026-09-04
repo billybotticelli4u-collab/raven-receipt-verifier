@@ -200,13 +200,9 @@ const readSignerPublicKey = (receipt: unknown): string | null => {
 const resolveContainmentTrust = (
   receipt: unknown,
   opts: VerifyReceiptOptions,
-): { keyTrusted: boolean | undefined; reason?: string } => {
+): { keyTrusted: boolean; reason?: string } => {
   const signerPublicKey = readSignerPublicKey(receipt);
-  const trust = resolveKeyTrust(signerPublicKey ?? "", opts);
-  if (signerPublicKey === null && trust.keyTrusted === true) {
-    return { keyTrusted: false, reason: "key_untrusted" };
-  }
-  return trust;
+  return resolveKeyTrust(signerPublicKey ?? "", opts);
 };
 
 const FALLBACK_RULES: {
@@ -249,7 +245,7 @@ const containmentResult = (
         ? ["receipt_uninspectable"]
         : ["receipt_uninspectable", trust.reason],
     ...rules,
-    ...(trust.keyTrusted === undefined ? {} : { keyTrusted: trust.keyTrusted }),
+    keyTrusted: trust.keyTrusted,
   };
 };
 

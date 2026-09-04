@@ -52,7 +52,8 @@ const validInput = (): Record<string, unknown> => structuredClone(validFixture.i
 const HOSTILE_RESULT = {
   valid: false,
   stale: false,
-  reasons: ["shape_not_an_object"],
+  reasons: ["shape_not_an_object", "trust_config_invalid"],
+  keyTrusted: false,
   rulesVersion: null,
   rulesStatus: "malformed",
   rulesReasons: ["malformed_rules_version"],
@@ -157,11 +158,11 @@ test("a revoked-Proxy receipt is contained: an outcome, never an exception", () 
   });
   assert.equal(r!.valid, false);
   assert.equal(r!.stale, false);
-  assert.deepEqual(r!.reasons, ["shape_not_an_object"]);
+  assert.deepEqual(r!.reasons, ["shape_not_an_object", "trust_config_invalid"]);
   assert.equal(r!.rulesVersion, null);
   assert.equal(r!.rulesStatus, "malformed");
   assert.deepEqual(r!.rulesReasons, ["malformed_rules_version"]);
-  assert.ok(!("keyTrusted" in r!), "no trust option supplied => keyTrusted absent");
+  assert.equal(r!.keyTrusted, false, "omitted trust config must fail closed");
 });
 
 test("a revoked-Proxy receipt is contained with trust options supplied too", () => {
@@ -179,7 +180,10 @@ test("a revoked-Proxy receipt is contained with trust options supplied too", () 
   // pinned explicitly, where before it was only implied by its absence.
   let r: ReturnType<typeof verifyReceiptV1> | undefined;
   assert.doesNotThrow(() => {
-    r = verifyReceiptV1(revokedProxy(), { now: T0, trustedKeys: ["some-key"] });
+    r = verifyReceiptV1(revokedProxy(), {
+      now: T0,
+      trustedKeys: [validFixture.input.signerPublicKey as string],
+    });
   });
   assert.equal(r!.valid, false);
   assert.equal(r!.keyTrusted, false, "a receipt with no readable signer is never trusted");
@@ -192,7 +196,8 @@ test("the EVM verifier contains a revoked-Proxy receipt as well", () => {
     r = verifyReceiptEvmV1(revokedProxy(), { now: T0 });
   });
   assert.equal(r!.valid, false);
-  assert.deepEqual(r!.reasons, ["shape_not_an_object"]);
+  assert.equal(r!.keyTrusted, false);
+  assert.deepEqual(r!.reasons, ["shape_not_an_object", "trust_config_invalid"]);
 });
 
 test("the rules evaluator alone contains a revoked Proxy", () => {
@@ -205,7 +210,7 @@ test("the rules evaluator alone contains a revoked Proxy", () => {
   assert.deepEqual(out!.rulesReasons, ["malformed_rules_version"]);
 });
 
-// Containment must not change the outcome for ordinary non-object inputs.
+// Containment must not drop the trust axis for ordinary non-object inputs.
 for (const [label, input] of [
   ["null", null],
   ["undefined", undefined],
@@ -214,15 +219,15 @@ for (const [label, input] of [
   ["boolean", true],
   ["array", [{ chain: "solana" }]],
 ] as Array<[string, unknown]>) {
-  test(`non-object receipt (${label}) keeps its existing malformed outcome`, () => {
+  test(`non-object receipt (${label}) reports malformed shape and missing trust config`, () => {
     const r = verifyReceiptV1(input, { now: T0 });
     assert.equal(r.valid, false);
     assert.equal(r.stale, false);
-    assert.deepEqual(r.reasons, ["shape_not_an_object"]);
+    assert.deepEqual(r.reasons, ["shape_not_an_object", "trust_config_invalid"]);
     assert.equal(r.rulesVersion, null);
     assert.equal(r.rulesStatus, "malformed");
     assert.deepEqual(r.rulesReasons, ["malformed_rules_version"]);
-    assert.ok(!("keyTrusted" in r));
+    assert.equal(r.keyTrusted, false);
   });
 }
 
@@ -230,7 +235,12 @@ test("a shape-invalid object keeps its field-level shape reasons", () => {
   const r = verifyReceiptV1({ chain: "solana" }, { now: T0 });
   assert.equal(r.valid, false);
   assert.ok(r.reasons.length > 1, JSON.stringify(r.reasons));
-  assert.ok(r.reasons.every((x) => x.startsWith("shape_missing_field:")), JSON.stringify(r.reasons));
+  assert.ok(
+    r.reasons.slice(0, -1).every((x) => x.startsWith("shape_missing_field:")),
+    JSON.stringify(r.reasons),
+  );
+  assert.equal(r.reasons.at(-1), "trust_config_invalid");
+  assert.equal(r.keyTrusted, false);
   assert.equal(r.reasons.includes("shape_not_an_object"), false);
 });
 
@@ -268,7 +278,8 @@ for (const [label, makeHostile] of hostileCases) {
 test("the valid signed receipt remains valid through the same exported path", () => {
   const result = contained(validInput(), { now: validFixture.now });
   assert.equal(result.valid, true);
-  assert.deepEqual(result.reasons, []);
+  assert.equal(result.keyTrusted, false);
+  assert.deepEqual(result.reasons, ["trust_config_invalid"]);
 });
 
 test("the hostile-result assertion is non-vacuous", () => {
@@ -303,6 +314,7 @@ test("the boundary remains total with both a hostile signer and hostile trustedK
   });
   assert.equal(result.valid, false);
   assert.deepEqual(result.reasons.slice(0, 1), ["shape_not_an_object"]);
+  assert.equal(result.keyTrusted, false);
   assert.equal(result.rulesVersion, null);
   assert.equal(result.rulesStatus, "malformed");
 });
@@ -320,13 +332,15 @@ test("a deep getter reached only during canonicalization stays canonicalization_
   });
   const result = contained(input, { now: findingsFixture.now });
   assert.equal(result.valid, false);
-  assert.deepEqual(result.reasons, ["canonicalization_failed"]);
+  assert.equal(result.keyTrusted, false);
+  assert.deepEqual(result.reasons, ["canonicalization_failed", "trust_config_invalid"]);
 });
 
 test("successfully read malformed or cryptographically wrong signature bytes stay signature_invalid", () => {
   for (const signature of ["!!!not-base64!!!", Buffer.alloc(64).toString("base64")]) {
     const result = contained({ ...validInput(), signature }, { now: validFixture.now });
     assert.equal(result.valid, false);
-    assert.deepEqual(result.reasons, ["signature_invalid"]);
+    assert.equal(result.keyTrusted, false);
+    assert.deepEqual(result.reasons, ["signature_invalid", "trust_config_invalid"]);
   }
 });

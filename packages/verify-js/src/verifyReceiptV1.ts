@@ -6,7 +6,7 @@
 // GENERATES receipts; this library VERIFIES them.
 //
 // Result contract (matches the production verifier):
-//   { valid, stale, reasons, rulesVersion, rulesStatus, rulesReasons, keyTrusted? }
+//   { valid, stale, reasons, rulesVersion, rulesStatus, rulesReasons, keyTrusted }
 // `valid` is gated ONLY by checks 1–5 (shape, disclaimer, forbidden words, payload
 // hash + receiptId, signature). Key trust (6) and freshness (7) are reported but
 // NON-FATAL — a self-consistent signature from an untrusted key is still a valid
@@ -61,6 +61,88 @@ const decodeCanonicalEd25519Spki = (value: string): Buffer => {
   return decoded;
 };
 
+type TrustKeyEligibility = "supported" | "unsupported" | "invalid";
+
+const readDerLength = (der: Buffer, offset: number): { length: number; next: number } => {
+  if (offset >= der.length) throw new Error("missing DER length");
+  const first = der[offset];
+  if (first < 0x80) return { length: first, next: offset + 1 };
+  const octets = first & 0x7f;
+  if (octets === 0 || octets > 4 || offset + 1 + octets > der.length) {
+    throw new Error("invalid DER length");
+  }
+  if (der[offset + 1] === 0) throw new Error("non-minimal DER length");
+  let length = 0;
+  for (let i = 0; i < octets; i++) length = length * 256 + der[offset + 1 + i];
+  if (length < 0x80) throw new Error("non-minimal DER length");
+  return { length, next: offset + 1 + octets };
+};
+
+const readDerElement = (
+  der: Buffer,
+  offset: number,
+  tag: number,
+): { contentStart: number; end: number } => {
+  if (offset >= der.length || der[offset] !== tag) throw new Error("unexpected DER tag");
+  const { length, next } = readDerLength(der, offset + 1);
+  const end = next + length;
+  if (end > der.length) throw new Error("truncated DER element");
+  return { contentStart: next, end };
+};
+
+const isCanonicalDerOid = (der: Buffer, start: number, end: number): boolean => {
+  if (start === end) return false;
+  let offset = start;
+  while (offset < end) {
+    if (der[offset] === 0x80) return false;
+    do {
+      if (offset >= end) return false;
+    } while ((der[offset++] & 0x80) !== 0);
+  }
+  return true;
+};
+
+/** Classify canonical receipt-v1 trust material without invoking crypto. */
+const classifyTrustKey = (value: string): TrustKeyEligibility => {
+  let der: Buffer;
+  try {
+    der = decodeCanonicalBase64(value);
+    decodeCanonicalEd25519Spki(value);
+    return "supported";
+  } catch {
+    // A non-Ed25519 value can still be a syntactically valid SPKI. Validate
+    // the outer SubjectPublicKeyInfo structure below before calling it an
+    // unsupported key type; arbitrary bytes remain malformed configuration.
+  }
+  try {
+    const outer = readDerElement(der!, 0, 0x30);
+    if (outer.end !== der!.length) throw new Error("trailing DER data");
+    const algorithm = readDerElement(der!, outer.contentStart, 0x30);
+    const oid = readDerElement(der!, algorithm.contentStart, 0x06);
+    if (oid.end > algorithm.end || !isCanonicalDerOid(der!, oid.contentStart, oid.end)) {
+      throw new Error("invalid algorithm OID");
+    }
+    if (oid.end < algorithm.end) {
+      const parameter = readDerElement(der!, oid.end, der![oid.end]);
+      if (parameter.end !== algorithm.end) throw new Error("extra algorithm parameters");
+    }
+    const keyBits = readDerElement(der!, algorithm.end, 0x03);
+    if (keyBits.end !== outer.end || keyBits.contentStart === keyBits.end) {
+      throw new Error("invalid SPKI key bits");
+    }
+    const unusedBits = der![keyBits.contentStart];
+    if (unusedBits > 7 || keyBits.contentStart + 1 === keyBits.end) {
+      throw new Error("invalid SPKI bit string");
+    }
+    if (unusedBits > 0 && (der![keyBits.end - 1] & ((1 << unusedBits) - 1)) !== 0) {
+      throw new Error("nonzero DER padding bits");
+    }
+    return "unsupported";
+  } catch {
+    return "invalid";
+  }
+};
+
 const cachePublicKey = (
   signerPublicKey: string,
   publicKey: ReturnType<typeof createPublicKey>,
@@ -78,13 +160,13 @@ export interface VerifyReceiptOptions {
   /**
    * Trusted signer public keys (base64 SPKI DER), as a Set or a plain string
    * array — the shape any caller loading keys from JSON, env or /pubkey will
-   * hold. When provided, key trust is reported via `keyTrusted`. Trust is
+   * hold. Key trust is always reported via `keyTrusted`. Trust is
    * NON-FATAL — it never gates `valid`.
    *
-   * Every malformed value fails closed and typed: a non-collection (number,
-   * string, plain object, explicit null) or any non-string collection member
-   * yields `keyTrusted: false` with `trust_config_invalid`. No exception
-   * escapes for any input.
+   * Every malformed value fails closed and typed: a malformed collection or
+   * key encoding yields `trust_config_invalid`; a canonical SPKI for an
+   * unsupported algorithm yields `trust_key_type_unsupported`. Only canonical
+   * Ed25519 SPKI is eligible to establish receipt-v1 trust.
    */
   trustedKeys?: ReadonlySet<string> | readonly string[] | null;
   /**
@@ -92,17 +174,18 @@ export interface VerifyReceiptOptions {
    * supplied: `true` opts out deliberately (`key_trust_not_evaluated`);
    * `false` declares untrusted keys unacceptable — with no keys supplied that
    * is a contract error on the trust axis (`trust_config_invalid`), never a
-   * silent pass. When both options are omitted, the historical
-   * not-evaluated behavior is preserved (`keyTrusted` absent).
+   * silent pass. When both options are omitted, trust configuration is missing
+   * and fails closed on the trust axis (`keyTrusted: false` with
+   * `trust_config_invalid`), never as an absent axis.
    */
   allowUntrustedKey?: boolean;
 }
 
 /**
  * Normalize a caller-supplied trustedKeys collection to a Set of strings.
- * Returns null on ANY malformed input: non-collections, and collections with
- * any non-string member. Validation is total — no exception escapes for any
- * value.
+ * Returns null on ANY malformed collection shape. Key encodings are classified
+ * separately so a syntactically valid unsupported SPKI remains distinguishable
+ * from malformed trust material.
  */
 export const normalizeTrustedKeys = (
   input: ReadonlySet<string> | readonly string[] | null | undefined,
@@ -125,13 +208,51 @@ export const normalizeTrustedKeys = (
 };
 
 /**
+ * Copy recognized option fields onto a fresh plain object before verifier work
+ * begins. This is a security boundary: hostile whole-options objects and
+ * throwing/stateful accessors must not escape into receipt-shape containment or
+ * be read more than once on the trust axis.
+ */
+export const sanitizeOptions = (options: unknown): VerifyReceiptOptions => {
+  const out: VerifyReceiptOptions = {};
+  if (options === null || options === undefined) return out;
+
+  let trustAccessorFailed = false;
+  try {
+    const now = (options as VerifyReceiptOptions).now;
+    if (now !== undefined) out.now = now;
+  } catch {
+    // Drop `now`: freshness falls back to real time.
+  }
+  try {
+    const trustedKeys = (options as VerifyReceiptOptions).trustedKeys;
+    if (trustedKeys !== undefined) out.trustedKeys = trustedKeys;
+  } catch {
+    trustAccessorFailed = true;
+  }
+  try {
+    const allowUntrustedKey = (options as VerifyReceiptOptions).allowUntrustedKey;
+    if (allowUntrustedKey !== undefined) out.allowUntrustedKey = allowUntrustedKey;
+  } catch {
+    trustAccessorFailed = true;
+  }
+
+  if (trustAccessorFailed) {
+    delete out.trustedKeys;
+    out.allowUntrustedKey = false;
+  }
+  return out;
+};
+
+/**
  * Resolve the key-trust axis (check 6, NON-FATAL). Shared by the Solana and
  * EVM verifiers so both enforce the same trust-input contract.
  */
 export const resolveKeyTrust = (
   signerPublicKey: string,
-  opts: Pick<VerifyReceiptOptions, "trustedKeys" | "allowUntrustedKey">,
-): { keyTrusted: boolean | undefined; reason?: string } => {
+  rawOpts: Pick<VerifyReceiptOptions, "trustedKeys" | "allowUntrustedKey">,
+): { keyTrusted: boolean; reason?: string } => {
+  const opts = sanitizeOptions(rawOpts);
   // A supplied allowUntrustedKey that is not a boolean (realistic for
   // env-derived strings such as "false") is malformed trust configuration:
   // fail closed and typed, never silently treat it as omitted. This check
@@ -143,6 +264,19 @@ export const resolveKeyTrust = (
   if (opts.trustedKeys !== undefined) {
     const keys = normalizeTrustedKeys(opts.trustedKeys);
     if (keys === null) return { keyTrusted: false, reason: "trust_config_invalid" };
+    let hasUnsupportedKey = false;
+    for (const key of keys) {
+      const eligibility = classifyTrustKey(key);
+      if (eligibility === "invalid") {
+        return { keyTrusted: false, reason: "trust_config_invalid" };
+      }
+      if (eligibility === "unsupported") {
+        hasUnsupportedKey = true;
+      }
+    }
+    if (hasUnsupportedKey) {
+      return { keyTrusted: false, reason: "trust_key_type_unsupported" };
+    }
     const keyTrusted = keys.has(signerPublicKey);
     return keyTrusted ? { keyTrusted: true } : { keyTrusted: false, reason: "key_untrusted" };
   }
@@ -152,7 +286,7 @@ export const resolveKeyTrust = (
   if (opts.allowUntrustedKey === false) {
     return { keyTrusted: false, reason: "trust_config_invalid" };
   }
-  return { keyTrusted: undefined };
+  return { keyTrusted: false, reason: "trust_config_invalid" };
 };
 
 /**
@@ -174,11 +308,10 @@ const readSignerPublicKey = (receipt: unknown): string | null => {
 /**
  * Resolve the FULL trust axis on the receipt-shape early-return paths.
  *
- * Trust is a separate NON-FATAL axis, so it is reported whenever the caller
- * supplied a trust option — `keyTrusted` is documented as present in exactly
- * that case, and that promise cannot be conditional on receipt validity. The
- * main path already resolves trust after a FAILED signature check; a shape
- * failure must not report less.
+ * Trust is a separate NON-FATAL axis, so it is reported on every result —
+ * `keyTrusted` must never disappear just because receipt shape failed. The main
+ * path already resolves trust after a FAILED signature check; a shape failure
+ * must not report less.
  *
  * When the receipt carries no usable `signerPublicKey` there is nothing a
  * well-formed `trustedKeys` set can legitimately match, so trust resolves
@@ -193,19 +326,11 @@ const readSignerPublicKey = (receipt: unknown): string | null => {
 const resolveShapeFailureTrust = (
   receipt: unknown,
   opts: Pick<VerifyReceiptOptions, "trustedKeys" | "allowUntrustedKey">,
-): { keyTrusted: boolean | undefined; reason?: string } => {
-  // No policy supplied: the receipt is not inspected at all, so the shape
-  // result is byte-for-byte what it was before this change. Trust resolution
-  // is the ONLY reason this function reads a shape-failed receipt.
-  if (opts.trustedKeys === undefined && opts.allowUntrustedKey === undefined) {
-    return { keyTrusted: undefined };
-  }
+): { keyTrusted: boolean; reason?: string } => {
   const signerPublicKey = readSignerPublicKey(receipt);
-  const trust = resolveKeyTrust(signerPublicKey ?? "", opts);
-  if (signerPublicKey === null && trust.keyTrusted === true) {
-    return { keyTrusted: false, reason: "key_untrusted" };
-  }
-  return trust;
+  // An absent signer is represented by "". Since every eligible trust key is
+  // a canonical Ed25519 SPKI, that placeholder cannot match an accepted key.
+  return resolveKeyTrust(signerPublicKey ?? "", opts);
 };
 
 export interface VerifyReceiptResult {
@@ -218,8 +343,8 @@ export interface VerifyReceiptResult {
   rulesStatus: RulesStatus;
   /** Closed, ordered semantic reasons; never mixed into `reasons`. */
   rulesReasons: string[];
-  /** Present when `trustedKeys` or `allowUntrustedKey` was supplied. */
-  keyTrusted?: boolean;
+  /** Signer trust axis. False means untrusted, unevaluated by explicit opt-out, or malformed/missing trust config. */
+  keyTrusted: boolean;
 }
 
 const malformedRulesResult = (): ReceiptRulesResult => ({
@@ -249,7 +374,7 @@ const shapeNotObjectResult = (
         ? ["shape_not_an_object"]
         : ["shape_not_an_object", trust.reason],
     ...safeEvaluateReceiptRules(receipt, false),
-    ...(trust.keyTrusted === undefined ? {} : { keyTrusted: trust.keyTrusted }),
+    keyTrusted: trust.keyTrusted,
   };
 };
 
@@ -266,7 +391,7 @@ const hostileReceiptResult = (
         ? ["shape_not_an_object"]
         : ["shape_not_an_object", trust.reason],
     ...malformedRulesResult(),
-    ...(trust.keyTrusted === undefined ? {} : { keyTrusted: trust.keyTrusted }),
+    keyTrusted: trust.keyTrusted,
   };
 };
 
@@ -376,7 +501,7 @@ const verifyReceiptV1Internal = (
       stale: false,
       reasons: trust.reason === undefined ? shapeReasons : [...shapeReasons, trust.reason],
       ...safeEvaluateReceiptRules(r, false),
-      ...(trust.keyTrusted === undefined ? {} : { keyTrusted: trust.keyTrusted }),
+      keyTrusted: trust.keyTrusted,
     };
   }
 
@@ -452,7 +577,7 @@ const verifyReceiptV1Internal = (
   const valid = reasons.length === 0;
   const rules = evaluateReceiptRules(r, valid);
 
-  // 6. Key trust (optional, NON-FATAL). Reported separately from `valid`.
+  // 6. Key trust (NON-FATAL). Reported separately from `valid`.
   const trust = resolveKeyTrust(signerPublicKey, opts);
   const keyTrusted = trust.keyTrusted;
   if (trust.reason !== undefined) reasons.push(trust.reason);
@@ -476,7 +601,7 @@ const verifyReceiptV1Internal = (
     stale,
     reasons,
     ...rules,
-    ...(keyTrusted === undefined ? {} : { keyTrusted }),
+    keyTrusted,
   };
 };
 
@@ -489,17 +614,19 @@ export const verifyReceiptV1 = (
   receipt: unknown,
   opts: VerifyReceiptOptions = {},
 ): VerifyReceiptResult => {
+  const safeOpts = sanitizeOptions(opts);
   try {
-    return verifyReceiptV1Internal(receipt, opts);
+    return verifyReceiptV1Internal(receipt, safeOpts);
   } catch {
     try {
-      return hostileReceiptResult(receipt, opts);
+      return hostileReceiptResult(receipt, safeOpts);
     } catch {
       return {
         valid: false,
         stale: false,
-        reasons: ["shape_not_an_object"],
+        reasons: ["shape_not_an_object", "trust_config_invalid"],
         ...malformedRulesResult(),
+        keyTrusted: false,
       };
     }
   }

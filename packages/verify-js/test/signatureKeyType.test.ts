@@ -6,8 +6,9 @@
 // valid:true while the Python reference verifier returned signature_invalid.
 // These tests pin the corrected behavior: non-Ed25519 signer keys are
 // rejected with signature_invalid, and a genuine Ed25519 self-signed receipt
-// (attacker key, but correct algorithm) still passes the signature axis —
-// key trust remains a separate, non-fatal axis.
+// (attacker key, but correct algorithm) still passes the signature axis.
+// Trust remains separate and non-fatal, but only canonical Ed25519 trust
+// material is eligible to set keyTrusted:true.
 //
 // Vectors are constructed by tampering a shipped fixture and re-signing with
 // a fresh attacker key, the same construction as the permanent conformance
@@ -56,8 +57,10 @@ const resignAsAttacker = (kind: "ed25519" | "rsa" | "ec"): Record<string, unknow
 };
 
 test("control: Ed25519 self-signed tampered receipt passes the signature axis", () => {
-  const r = verifyReceiptV1(resignAsAttacker("ed25519"), { now: VECTOR.now });
+  const receipt = resignAsAttacker("ed25519");
+  const r = verifyReceiptV1(receipt, { now: VECTOR.now, trustedKeys: [receipt.signerPublicKey as string] });
   assert.equal(r.valid, true, JSON.stringify(r.reasons));
+  assert.equal(r.keyTrusted, true);
   assert.deepEqual(r.reasons, []);
 });
 
@@ -65,19 +68,24 @@ test("CR-1: Ed25519 SPKI with trailing DER bytes is rejected", () => {
   const receipt = resignAsAttacker("ed25519");
   const canonical = Buffer.from(receipt.signerPublicKey as string, "base64");
   receipt.signerPublicKey = Buffer.concat([canonical, Buffer.of(0)]).toString("base64");
-  const r = verifyReceiptV1(receipt, { now: VECTOR.now });
+  const r = verifyReceiptV1(receipt, { now: VECTOR.now, trustedKeys: [receipt.signerPublicKey as string] });
   assert.equal(r.valid, false);
-  assert.deepEqual(r.reasons, ["signature_invalid"]);
+  assert.equal(r.keyTrusted, false);
+  assert.deepEqual(r.reasons, ["signature_invalid", "trust_config_invalid"]);
 });
 
 test("D3: RSA-2048 self-signed receipt is rejected (signature_invalid)", () => {
-  const r = verifyReceiptV1(resignAsAttacker("rsa"), { now: VECTOR.now });
+  const receipt = resignAsAttacker("rsa");
+  const r = verifyReceiptV1(receipt, { now: VECTOR.now, trustedKeys: [receipt.signerPublicKey as string] });
   assert.equal(r.valid, false);
-  assert.deepEqual(r.reasons, ["signature_invalid"]);
+  assert.equal(r.keyTrusted, false);
+  assert.deepEqual(r.reasons, ["signature_invalid", "trust_key_type_unsupported"]);
 });
 
 test("D3: EC P-256 self-signed receipt is rejected (signature_invalid)", () => {
-  const r = verifyReceiptV1(resignAsAttacker("ec"), { now: VECTOR.now });
+  const receipt = resignAsAttacker("ec");
+  const r = verifyReceiptV1(receipt, { now: VECTOR.now, trustedKeys: [receipt.signerPublicKey as string] });
   assert.equal(r.valid, false);
-  assert.deepEqual(r.reasons, ["signature_invalid"]);
+  assert.equal(r.keyTrusted, false);
+  assert.deepEqual(r.reasons, ["signature_invalid", "trust_key_type_unsupported"]);
 });

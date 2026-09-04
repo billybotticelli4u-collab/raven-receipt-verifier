@@ -101,7 +101,7 @@ const bound: VerifyReceiptForSubjectResult = verifyReceiptV1ForSubject(
 );
 const subjectMatches: boolean | null = bound.subjectMatches;
 const subjectReasons: string[] = bound.subjectReasons;
-const keyTrusted: boolean | undefined = bound.keyTrusted;
+const keyTrusted: boolean = bound.keyTrusted;
 void subjectMatches;
 void subjectReasons;
 void keyTrusted;
