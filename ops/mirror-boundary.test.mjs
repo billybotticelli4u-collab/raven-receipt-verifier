@@ -76,6 +76,13 @@ test("customer tarball never ships proposed/EVM/key-manifest surfaces", () => {
     assert.ok(!shipped.includes(forbidden),
       `files[] allowlist would ship a non-customer surface: ${forbidden}`);
   }
+  assert.deepEqual(Object.keys(manifest.exports), ["."],
+    "the package export map must expose only the customer root entrypoint");
+  const manifestText = JSON.stringify(manifest);
+  for (const forbidden of ["proposed", "receiptEvmV1", "verifyReceiptEvmV1", "keyManifest", "Evm", "evm"]) {
+    assert.ok(!manifestText.includes(forbidden),
+      `package manifest would expose a non-customer surface: ${forbidden}`);
+  }
   assert.equal(manifest.files.filter((f) => f.startsWith("dist/")).length, 11);
 });
 
