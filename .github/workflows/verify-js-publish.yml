@@ -51,10 +51,12 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install pinned npm CLI
-        run: npm install --global "npm@${RAVEN_PINNED_NPM_VERSION}"
-      - name: Assert pinned npm CLI
-        run: node ops/npm-version-gate.mjs "${RAVEN_PINNED_NPM_VERSION}"
+      - name: Fetch governed npm artifact
+        run: curl -fsSL --proto '=https' --tlsv1.2 -o "$RUNNER_TEMP/governed-npm.tgz" "https://registry.npmjs.org/npm/-/npm-${RAVEN_PINNED_NPM_VERSION}.tgz"
+      - name: Verify governed npm by bytes and install it
+        run: node ops/install-governed-npm.mjs --tarball "$RUNNER_TEMP/governed-npm.tgz" --dest "$RUNNER_TEMP/governed-npm"
+      - name: Assert governed npm identity
+        run: node ops/npm-version-gate.mjs --governed-npm "$RUNNER_TEMP/governed-npm/package"
       - name: Install package development dependencies
         run: npm --prefix packages/verify-js ci
       - name: Build exact accepted verifier mirror
@@ -64,6 +66,8 @@ jobs:
       - name: Package contract tests
         run: npm --prefix packages/verify-js test
       - name: Publication policy and mutation tests
+        env:
+          RAVEN_GOVERNED_NPM_DIR: ${{ runner.temp }}/governed-npm/package
         run: node --test ops/*.test.mjs
 
   package-artifact:
@@ -88,10 +92,12 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "22.18.0"
-      - name: Install pinned npm CLI
-        run: npm install --global "npm@${RAVEN_PINNED_NPM_VERSION}"
-      - name: Assert pinned npm CLI
-        run: node ops/npm-version-gate.mjs "${RAVEN_PINNED_NPM_VERSION}"
+      - name: Fetch governed npm artifact
+        run: curl -fsSL --proto '=https' --tlsv1.2 -o "$RUNNER_TEMP/governed-npm.tgz" "https://registry.npmjs.org/npm/-/npm-${RAVEN_PINNED_NPM_VERSION}.tgz"
+      - name: Verify governed npm by bytes and install it
+        run: node ops/install-governed-npm.mjs --tarball "$RUNNER_TEMP/governed-npm.tgz" --dest "$RUNNER_TEMP/governed-npm"
+      - name: Assert governed npm identity
+        run: node ops/npm-version-gate.mjs --governed-npm "$RUNNER_TEMP/governed-npm/package"
       - name: Install package development dependencies
         run: npm --prefix packages/verify-js ci
       - name: Pack exactly once
@@ -108,7 +114,8 @@ jobs:
             --pack-json "$RUNNER_TEMP/release-package/pack.json" \
             --tarball-dir "$RUNNER_TEMP/release-package" \
             --out "$RUNNER_TEMP/release-package/release-artifact-identity.json" \
-            --release-ref "${{ inputs.release_ref }}"
+            --release-ref "${{ inputs.release_ref }}" \
+            --governed-npm "$RUNNER_TEMP/governed-npm/package"
       - name: Refuse unless actual tarball matches frozen authorization
         run: |
           node ops/verify-release-artifact.mjs \
@@ -161,10 +168,12 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install pinned npm CLI
-        run: npm install --global "npm@${RAVEN_PINNED_NPM_VERSION}"
-      - name: Assert pinned npm CLI
-        run: node ops/npm-version-gate.mjs "${RAVEN_PINNED_NPM_VERSION}"
+      - name: Fetch governed npm artifact
+        run: curl -fsSL --proto '=https' --tlsv1.2 -o "$RUNNER_TEMP/governed-npm.tgz" "https://registry.npmjs.org/npm/-/npm-${RAVEN_PINNED_NPM_VERSION}.tgz"
+      - name: Verify governed npm by bytes and install it
+        run: node ops/install-governed-npm.mjs --tarball "$RUNNER_TEMP/governed-npm.tgz" --dest "$RUNNER_TEMP/governed-npm"
+      - name: Assert governed npm identity
+        run: node ops/npm-version-gate.mjs --governed-npm "$RUNNER_TEMP/governed-npm/package"
       - name: Install declaration compiler only from lockfile
         run: npm --prefix packages/verify-js ci
       - name: Verify actual downloaded tarball
@@ -214,11 +223,12 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "22.18.0"
-          registry-url: "https://registry.npmjs.org"
-      - name: Install pinned npm CLI
-        run: npm install --global "npm@${RAVEN_PINNED_NPM_VERSION}"
-      - name: Assert pinned npm CLI
-        run: node ops/npm-version-gate.mjs "${RAVEN_PINNED_NPM_VERSION}"
+      - name: Fetch governed npm artifact
+        run: curl -fsSL --proto '=https' --tlsv1.2 -o "$RUNNER_TEMP/governed-npm.tgz" "https://registry.npmjs.org/npm/-/npm-${RAVEN_PINNED_NPM_VERSION}.tgz"
+      - name: Verify governed npm by bytes and install it
+        run: node ops/install-governed-npm.mjs --tarball "$RUNNER_TEMP/governed-npm.tgz" --dest "$RUNNER_TEMP/governed-npm"
+      - name: Assert governed npm identity
+        run: node ops/npm-version-gate.mjs --governed-npm "$RUNNER_TEMP/governed-npm/package"
       - name: Final in-process verification and immediate exact-tarball publish
         env:
           RAVEN_RELEASE_REF: ${{ inputs.release_ref }}
@@ -230,7 +240,8 @@ jobs:
             --tarball-dir "$RUNNER_TEMP/release-package" \
             --artifact-identity "$RUNNER_TEMP/release-package/release-artifact-identity.json" \
             --frozen-identity release/release-identity.json \
-            --confirm-version "${{ inputs.confirm_version }}"
+            --confirm-version "${{ inputs.confirm_version }}" \
+            --governed-npm "$RUNNER_TEMP/governed-npm/package"
       - name: Retain exact release evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

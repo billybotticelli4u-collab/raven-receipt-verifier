@@ -29,6 +29,7 @@ import {
   CANONICAL_TARBALL,
   EXPECTED_EXPORT_MAP,
   EXPECTED_PACKAGE_FILES,
+  GOVERNED_NPM,
   NODE_FLOOR,
   PACKAGE_NAME,
   PACKAGE_VERSION,
@@ -94,7 +95,7 @@ const refreshMutableHandoff = (fixture) => {
     schema: "raven-receipt-verifier-artifact-handoff/2",
     artifact: actual,
     source: { commit: fixture.commit, tree: fixture.tree, ref: PUBLICATION_REF },
-    toolchain: { node: "v22.18.0", npm: PINNED_NPM_VERSION },
+    toolchain: { node: "v22.18.0", npm: PINNED_NPM_VERSION, npmArtifact: { cliSha256: GOVERNED_NPM.cliSha256, treeSha256: GOVERNED_NPM.treeSha256, fileCount: GOVERNED_NPM.fileCount } },
   });
   return actual;
 };
@@ -289,6 +290,7 @@ test("M18 replacement after prior verification is caught by final wrapper before
   let publishCalls = 0;
   guardAndPublish({
     ...verifyArgs(fixture),
+    governedNpmDir: process.env.RAVEN_GOVERNED_NPM_DIR, inheritedEnvironment: Object.fromEntries(Object.entries(process.env).filter(([k]) => !/^(npm_config_|NPM_CONFIG_|NODE_OPTIONS|NPM_TOKEN|NODE_AUTH_TOKEN)/i.test(k))),
     githubRef: PUBLICATION_REF,
     githubSha: fixture.commit,
     remote: "origin",
@@ -308,6 +310,7 @@ test("M18 replacement after prior verification is caught by final wrapper before
   refreshMutableHandoff(fixture);
   assert.throws(() => guardAndPublish({
     ...verifyArgs(fixture),
+    governedNpmDir: process.env.RAVEN_GOVERNED_NPM_DIR, inheritedEnvironment: Object.fromEntries(Object.entries(process.env).filter(([k]) => !/^(npm_config_|NPM_CONFIG_|NODE_OPTIONS|NPM_TOKEN|NODE_AUTH_TOKEN)/i.test(k))),
     githubRef: PUBLICATION_REF,
     githubSha: fixture.commit,
     remote: "origin",

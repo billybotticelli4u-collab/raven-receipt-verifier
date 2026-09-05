@@ -22,13 +22,12 @@ test("positive control: current workflow satisfies every structural policy", () 
   assert.deepEqual(scanInvokedPublicationHelpers({ root: ROOT, workflow }), []);
 });
 
-test("M1 wrong npm version is refused before package work", () => {
-  const result = spawnSync(process.execPath, [path.join(ROOT, "ops/npm-version-gate.mjs"), "11.17.0"], {
-    cwd: ROOT,
-    encoding: "utf8",
-  });
-  assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /REFUSED npm version/);
+test("M1 an npm that is not the byte-pinned governed artifact is refused before package work", () => {
+  for (const dir of [path.join(ROOT, "node_modules/.bin"), "/nonexistent/npm", process.env.RAVEN_GOVERNED_NPM_DIR ? path.join(process.env.RAVEN_GOVERNED_NPM_DIR, "..") : "/nonexistent"]) {
+    const result = spawnSync(process.execPath, [path.join(ROOT, "ops/npm-version-gate.mjs"), "--governed-npm", dir], { cwd: ROOT, encoding: "utf8" });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /REFUSED npm/);
+  }
 });
 
 test("M7 second direct pack turns RED", () => {

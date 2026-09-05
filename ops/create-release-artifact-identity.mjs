@@ -1,13 +1,12 @@
 import { writeFileSync } from "node:fs";
 import path from "node:path";
 
+import { governedNodeIdentity, verifyGovernedNpm } from "./governed-npm.mjs";
 import {
   comparePackMetadataToActual,
   git,
   measureReleaseArtifact,
-  npmCommand,
   parseArgs,
-  run,
 } from "./release-artifact-utils.mjs";
 import { PINNED_NPM_VERSION } from "./release-policy.mjs";
 
@@ -18,10 +17,10 @@ const measured = measureReleaseArtifact({
 });
 comparePackMetadataToActual(measured);
 
-const npmVersion = run(npmCommand(), ["--version"]);
-if (npmVersion !== PINNED_NPM_VERSION) {
-  throw new Error(`npm version expected ${PINNED_NPM_VERSION}, actual ${npmVersion}`);
-}
+if (!args["governed-npm"]) throw new Error("--governed-npm <package dir> is required");
+const governed = verifyGovernedNpm(args["governed-npm"]);
+if (governed.version !== PINNED_NPM_VERSION) throw new Error(`governed npm ${governed.version} != pinned ${PINNED_NPM_VERSION}`);
+const npmVersion = governed.version;
 
 const identity = {
   schema: "raven-receipt-verifier-artifact-handoff/2",
@@ -34,7 +33,9 @@ const identity = {
   },
   toolchain: {
     node: process.version,
+    nodeExecPathSha256: governedNodeIdentity().execPathSha256,
     npm: npmVersion,
+    npmArtifact: { cliSha256: governed.cliSha256, treeSha256: governed.treeSha256, fileCount: governed.fileCount },
   },
 };
 

@@ -11,6 +11,7 @@ import {
   readJson,
 } from "./release-artifact-utils.mjs";
 import {
+  GOVERNED_NPM,
   NODE_FLOOR,
   PACKAGE_NAME,
   PACKAGE_VERSION,
@@ -77,6 +78,8 @@ export const verifyReleaseArtifact = ({
   same(failures, "checked-out commit", releaseSha, gitAt(cwd, "rev-parse", "HEAD"));
   same(failures, "checked-out tree", releaseTree, gitAt(cwd, "rev-parse", "HEAD^{tree}"));
   same(failures, "handoff npm", PINNED_NPM_VERSION, handoff.toolchain?.npm);
+  same(failures, "handoff npm artifact tree", GOVERNED_NPM.treeSha256, handoff.toolchain?.npmArtifact?.treeSha256);
+  same(failures, "handoff npm artifact cli", GOVERNED_NPM.cliSha256, handoff.toolchain?.npmArtifact?.cliSha256);
   if (!/^v(?:22\.18\.0|24\.[0-9]+\.[0-9]+)$/.test(handoff.toolchain?.node ?? "")) {
     failures.push(`handoff Node version is not governed: ${handoff.toolchain?.node ?? "<missing>"}`);
   }

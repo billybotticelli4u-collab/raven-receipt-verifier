@@ -7,6 +7,7 @@ import {
   APPROVED_ACTIONS,
   EXPECTED_JOB_STEPS,
   EXPECTED_WORKFLOW_SHAPE,
+  GOVERNED_NPM,
   WORKFLOW_SHA256,
   GOVERNED_NODE_MATRIX,
   GOVERNED_PUBLISH_NODE,
@@ -195,10 +196,17 @@ export const validateWorkflowText = (workflow) => {
   if ((publish.match(/node ops\/publish-exact-release\.mjs/g) ?? []).length !== 1) failures.push("publish job must invoke one guarded publisher");
   if (/\bnpm\s+publish\b/.test(workflow)) failures.push("raw npm publish must not appear in workflow YAML");
   for (const helper of workflow.matchAll(/node\s+((?!ops\/)[A-Za-z0-9._/-]+\.(?:mjs|js|cjs))/g)) failures.push(`workflow invokes a helper outside ops/: ${helper[1]}`);
+  const governedFetch = `curl -fsSL --proto '=https' --tlsv1.2 -o "$RUNNER_TEMP/governed-npm.tgz" "${GOVERNED_NPM.tarballUrl.replace(GOVERNED_NPM.version, "${RAVEN_PINNED_NPM_VERSION}")}"`;
   for (const job of [source, pack, tarball, publish]) {
     if (!/node ops\/verify-release-ref\.mjs/.test(job)) failures.push("every job must resolve release ref/SHA/tree");
-    if (!/node ops\/npm-version-gate\.mjs "\$\{RAVEN_PINNED_NPM_VERSION\}"/.test(job)) failures.push("every job must assert pinned npm");
+    if (!job.includes(governedFetch)) failures.push("every job must fetch the governed npm artifact from the policy URL");
+    if (!/node ops\/install-governed-npm\.mjs --tarball "\$RUNNER_TEMP\/governed-npm\.tgz" --dest "\$RUNNER_TEMP\/governed-npm"/.test(job)) failures.push("every job must verify and install the governed npm by bytes");
+    if (!/node ops\/npm-version-gate\.mjs --governed-npm "\$RUNNER_TEMP\/governed-npm\/package"/.test(job)) failures.push("every job must assert the governed npm identity");
   }
+  const curls = [...workflow.matchAll(/^\s+(?:run:\s*)?(?:curl|wget)\b[^\n]*/gm)].map((m) => m[0].replace(/^\s+(?:run:\s*)?/, "").trim());
+  if (curls.length !== 4 || curls.some((line) => line !== governedFetch)) failures.push("network fetches other than the governed npm artifact fetch are forbidden");
+  if (/npm\s+install\s+(?:-g|--global)/.test(workflow)) failures.push("workflow installs npm through npm; the governed artifact must be verified by bytes");
+  if (!/node ops\/publish-exact-release\.mjs[^\n]*(?:\n[^\n]*)*?--governed-npm "\$RUNNER_TEMP\/governed-npm\/package"/.test(publish)) failures.push("publish wrapper is not bound to the governed npm directory");
 
   // Action identity: every external action pinned to its approved SHA.
   for (const match of workflow.matchAll(/uses:\s*([^\s#]+)/g)) {
@@ -230,9 +238,10 @@ export const validateWorkflowText = (workflow) => {
 
   // Registry endpoint: exactly one registry-url, in publish, equal to policy;
   // no override channel anywhere.
-  const registryLines = [...workflow.matchAll(/^\s*registry-url:\s*(.+)$/gm)].map((m) => m[1].trim());
-  if (registryLines.length !== 1) failures.push(`expected exactly one registry-url, saw ${registryLines.length}`);
-  if (!publish.includes(`registry-url: "${PUBLICATION_REGISTRY}"`)) failures.push("publish setup-node does not name the pinned registry");
+  // The registry is bound in-process by the governed publisher (--registry,
+  // --userconfig, --globalconfig, constructed environment). setup-node must
+  // not write any npmrc or export NPM_CONFIG_USERCONFIG: no registry-url at all.
+  if (/registry-url:/.test(workflow)) failures.push("workflow configures a registry through setup-node; the governed publisher pins it in-process");
   for (const pattern of REGISTRY_OVERRIDE_PATTERNS) {
     if (pattern.test(workflow)) failures.push(`workflow contains a registry override channel (${pattern})`);
   }
@@ -259,7 +268,7 @@ const PACK_CREATION_PATTERNS = [
   // "npm pack" (or npx/npm exec ... pack) inside a string handed to an executor
   /(?:exec(?:Sync)?|spawn(?:Sync)?|execFile(?:Sync)?|run)\s*\(\s*["'`][^"'`\n]*\b(?:npm|npx)\b[^"'`\n]*\bpack\b/i,
   /["']npm(?:\.cmd)?["'][\s\S]{0,160}["']pack["']/i,
-  /libnpmpack|pacote\.tarball|npm-cli\.js/i,
+  /libnpmpack|pacote\.tarball|npm-cli\.js[^\n]*\bpack\b/i,
   /\b(?:spawn(?:Sync)?|execFile(?:Sync)?|exec(?:Sync)?|run)\(\s*["']tar["']\s*,\s*\[\s*["']-[A-Za-z]*c[A-Za-z]*["']/i,
   /\b(?:spawn(?:Sync)?|execFile(?:Sync)?|exec(?:Sync)?|run)\(\s*["'](?:bash|sh|zsh)["']/i,
   /\bexec(?:Sync)?\(\s*(?!["'](?:git|npm)\s)[^)]*\)/i,
@@ -284,11 +293,19 @@ export const scanInvokedPublicationHelpers = ({ root, workflow }) => {
     for (const pattern of PACK_CREATION_PATTERNS) {
       if (pattern.test(body)) failures.push(`${helper} can create or regenerate package bytes (${pattern})`);
     }
-    for (const pattern of [...TRUST_BOOTSTRAP_PATTERNS, ...HELPER_NETWORK_PATTERNS]) {
+    // release-policy.mjs is pure data: it carries the exact allowlisted
+    // workflow text (including the governed fetch line) and the names of the
+    // forbidden override channels. It may not execute anything.
+    const networkPatterns = helper === "ops/release-policy.mjs" ? TRUST_BOOTSTRAP_PATTERNS : [...TRUST_BOOTSTRAP_PATTERNS, ...HELPER_NETWORK_PATTERNS];
+    for (const pattern of networkPatterns) {
       if (pattern.test(body)) failures.push(`${helper} bootstraps trust or opens the network (${pattern})`);
     }
-    if (helper === "ops/publish-exact-release.mjs") {
-      if (/\.npmrc|npm_config_|NPM_CONFIG_|["']set["']/.test(body)) failures.push(`${helper} may only read the registry, never set it`);
+    if (helper === "ops/release-policy.mjs" && /\b(?:spawn|exec|fork|require|import)\s*\(/.test(body)) failures.push(`${helper} must be pure data`);
+    if (helper === "ops/publish-exact-release.mjs" || helper === "ops/release-policy.mjs") {
+      // The governed publisher binds registry/userconfig/globalconfig by flag
+      // and policy names the forbidden override channels; neither may write
+      // an npmrc or set configuration.
+      if (/\.npmrc|["']config["']\s*,\s*["']set["']|npm\s+config\s+set/i.test(body)) failures.push(`${helper} writes npm configuration`);
     } else {
       for (const pattern of HELPER_REGISTRY_PATTERNS) {
         if (pattern.test(body)) failures.push(`${helper} touches npm registry configuration (${pattern})`);

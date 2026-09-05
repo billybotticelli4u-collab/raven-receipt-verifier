@@ -88,23 +88,25 @@ export const EXPECTED_JOB_STEPS = {
     "uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 with: ref: ${{ inputs.release_sha }} fetch-depth: 0 persist-credentials: false",
     "env: RAVEN_RELEASE_REF: ${{ inputs.release_ref }} RAVEN_RELEASE_SHA: ${{ inputs.release_sha }} RAVEN_RELEASE_TREE: ${{ inputs.release_tree }} run: node ops/verify-release-ref.mjs",
     "uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 with: node-version: ${{ matrix.node-version }}",
-    "run: npm install --global \"npm@${RAVEN_PINNED_NPM_VERSION}\"",
-    "run: node ops/npm-version-gate.mjs \"${RAVEN_PINNED_NPM_VERSION}\"",
+    "run: curl -fsSL --proto '=https' --tlsv1.2 -o \"$RUNNER_TEMP/governed-npm.tgz\" \"https://registry.npmjs.org/npm/-/npm-${RAVEN_PINNED_NPM_VERSION}.tgz\"",
+    "run: node ops/install-governed-npm.mjs --tarball \"$RUNNER_TEMP/governed-npm.tgz\" --dest \"$RUNNER_TEMP/governed-npm\"",
+    "run: node ops/npm-version-gate.mjs --governed-npm \"$RUNNER_TEMP/governed-npm/package\"",
     "run: npm --prefix packages/verify-js ci",
     "run: npm --prefix packages/verify-js run build",
     "run: node ops/verify-byte-correspondence.mjs",
     "run: npm --prefix packages/verify-js test",
-    "run: node --test ops/*.test.mjs"
+    "env: RAVEN_GOVERNED_NPM_DIR: ${{ runner.temp }}/governed-npm/package run: node --test ops/*.test.mjs"
   ],
   "package-artifact": [
     "uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 with: ref: ${{ inputs.release_sha }} fetch-depth: 0 persist-credentials: false",
     "env: RAVEN_RELEASE_REF: ${{ inputs.release_ref }} RAVEN_RELEASE_SHA: ${{ inputs.release_sha }} RAVEN_RELEASE_TREE: ${{ inputs.release_tree }} run: node ops/verify-release-ref.mjs",
     "uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 with: node-version: \"22.18.0\"",
-    "run: npm install --global \"npm@${RAVEN_PINNED_NPM_VERSION}\"",
-    "run: node ops/npm-version-gate.mjs \"${RAVEN_PINNED_NPM_VERSION}\"",
+    "run: curl -fsSL --proto '=https' --tlsv1.2 -o \"$RUNNER_TEMP/governed-npm.tgz\" \"https://registry.npmjs.org/npm/-/npm-${RAVEN_PINNED_NPM_VERSION}.tgz\"",
+    "run: node ops/install-governed-npm.mjs --tarball \"$RUNNER_TEMP/governed-npm.tgz\" --dest \"$RUNNER_TEMP/governed-npm\"",
+    "run: node ops/npm-version-gate.mjs --governed-npm \"$RUNNER_TEMP/governed-npm/package\"",
     "run: npm --prefix packages/verify-js ci",
     "run: set -euo pipefail mkdir -p \"$RUNNER_TEMP/release-package\" cd packages/verify-js npm pack --json --pack-destination \"$RUNNER_TEMP/release-package\" > \"$RUNNER_TEMP/release-package/pack.json\"",
-    "env: GITHUB_REF: ${{ inputs.release_ref }} run: node ops/create-release-artifact-identity.mjs \\ --pack-json \"$RUNNER_TEMP/release-package/pack.json\" \\ --tarball-dir \"$RUNNER_TEMP/release-package\" \\ --out \"$RUNNER_TEMP/release-package/release-artifact-identity.json\" \\ --release-ref \"${{ inputs.release_ref }}\"",
+    "env: GITHUB_REF: ${{ inputs.release_ref }} run: node ops/create-release-artifact-identity.mjs \\ --pack-json \"$RUNNER_TEMP/release-package/pack.json\" \\ --tarball-dir \"$RUNNER_TEMP/release-package\" \\ --out \"$RUNNER_TEMP/release-package/release-artifact-identity.json\" \\ --release-ref \"${{ inputs.release_ref }}\" \\ --governed-npm \"$RUNNER_TEMP/governed-npm/package\"",
     "run: node ops/verify-release-artifact.mjs \\ --pack-json \"$RUNNER_TEMP/release-package/pack.json\" \\ --tarball-dir \"$RUNNER_TEMP/release-package\" \\ --artifact-identity \"$RUNNER_TEMP/release-package/release-artifact-identity.json\" \\ --frozen-identity release/release-identity.json \\ --confirm-version \"${{ inputs.confirm_version }}\" \\ --release-ref \"${{ inputs.release_ref }}\" \\ --release-sha \"${{ inputs.release_sha }}\" \\ --release-tree \"${{ inputs.release_tree }}\"",
     "uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2 with: path: | ${{ runner.temp }}/release-package/raven-receipt-verifier-0.1.0.tgz ${{ runner.temp }}/release-package/pack.json ${{ runner.temp }}/release-package/release-artifact-identity.json if-no-files-found: error"
   ],
@@ -113,8 +115,9 @@ export const EXPECTED_JOB_STEPS = {
     "env: RAVEN_RELEASE_REF: ${{ inputs.release_ref }} RAVEN_RELEASE_SHA: ${{ inputs.release_sha }} RAVEN_RELEASE_TREE: ${{ inputs.release_tree }} run: node ops/verify-release-ref.mjs",
     "uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0 with: path: ${{ runner.temp }}/release-package",
     "uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 with: node-version: ${{ matrix.node-version }}",
-    "run: npm install --global \"npm@${RAVEN_PINNED_NPM_VERSION}\"",
-    "run: node ops/npm-version-gate.mjs \"${RAVEN_PINNED_NPM_VERSION}\"",
+    "run: curl -fsSL --proto '=https' --tlsv1.2 -o \"$RUNNER_TEMP/governed-npm.tgz\" \"https://registry.npmjs.org/npm/-/npm-${RAVEN_PINNED_NPM_VERSION}.tgz\"",
+    "run: node ops/install-governed-npm.mjs --tarball \"$RUNNER_TEMP/governed-npm.tgz\" --dest \"$RUNNER_TEMP/governed-npm\"",
+    "run: node ops/npm-version-gate.mjs --governed-npm \"$RUNNER_TEMP/governed-npm/package\"",
     "run: npm --prefix packages/verify-js ci",
     "run: node ops/verify-release-artifact.mjs \\ --pack-json \"$RUNNER_TEMP/release-package/pack.json\" \\ --tarball-dir \"$RUNNER_TEMP/release-package\" \\ --artifact-identity \"$RUNNER_TEMP/release-package/release-artifact-identity.json\" \\ --frozen-identity release/release-identity.json \\ --confirm-version \"${{ inputs.confirm_version }}\" \\ --release-ref \"${{ inputs.release_ref }}\" \\ --release-sha \"${{ inputs.release_sha }}\" \\ --release-tree \"${{ inputs.release_tree }}\"",
     "run: node ops/test-release-tarball.mjs \\ --pack-json \"$RUNNER_TEMP/release-package/pack.json\" \\ --tarball-dir \"$RUNNER_TEMP/release-package\" \\ --package-dir packages/verify-js"
@@ -123,10 +126,11 @@ export const EXPECTED_JOB_STEPS = {
     "uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 with: ref: ${{ inputs.release_sha }} fetch-depth: 0 persist-credentials: false",
     "env: RAVEN_RELEASE_REF: ${{ inputs.release_ref }} RAVEN_RELEASE_SHA: ${{ inputs.release_sha }} RAVEN_RELEASE_TREE: ${{ inputs.release_tree }} run: node ops/verify-release-ref.mjs",
     "uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0 with: path: ${{ runner.temp }}/release-package",
-    "uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 with: node-version: \"22.18.0\" registry-url: \"https://registry.npmjs.org\"",
-    "run: npm install --global \"npm@${RAVEN_PINNED_NPM_VERSION}\"",
-    "run: node ops/npm-version-gate.mjs \"${RAVEN_PINNED_NPM_VERSION}\"",
-    "env: RAVEN_RELEASE_REF: ${{ inputs.release_ref }} RAVEN_RELEASE_SHA: ${{ inputs.release_sha }} RAVEN_RELEASE_TREE: ${{ inputs.release_tree }} run: node ops/publish-exact-release.mjs \\ --pack-json \"$RUNNER_TEMP/release-package/pack.json\" \\ --tarball-dir \"$RUNNER_TEMP/release-package\" \\ --artifact-identity \"$RUNNER_TEMP/release-package/release-artifact-identity.json\" \\ --frozen-identity release/release-identity.json \\ --confirm-version \"${{ inputs.confirm_version }}\"",
+    "uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0 with: node-version: \"22.18.0\"",
+    "run: curl -fsSL --proto '=https' --tlsv1.2 -o \"$RUNNER_TEMP/governed-npm.tgz\" \"https://registry.npmjs.org/npm/-/npm-${RAVEN_PINNED_NPM_VERSION}.tgz\"",
+    "run: node ops/install-governed-npm.mjs --tarball \"$RUNNER_TEMP/governed-npm.tgz\" --dest \"$RUNNER_TEMP/governed-npm\"",
+    "run: node ops/npm-version-gate.mjs --governed-npm \"$RUNNER_TEMP/governed-npm/package\"",
+    "env: RAVEN_RELEASE_REF: ${{ inputs.release_ref }} RAVEN_RELEASE_SHA: ${{ inputs.release_sha }} RAVEN_RELEASE_TREE: ${{ inputs.release_tree }} run: node ops/publish-exact-release.mjs \\ --pack-json \"$RUNNER_TEMP/release-package/pack.json\" \\ --tarball-dir \"$RUNNER_TEMP/release-package\" \\ --artifact-identity \"$RUNNER_TEMP/release-package/release-artifact-identity.json\" \\ --frozen-identity release/release-identity.json \\ --confirm-version \"${{ inputs.confirm_version }}\" \\ --governed-npm \"$RUNNER_TEMP/governed-npm/package\"",
     "if: always() uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2 with: path: | ${{ runner.temp }}/release-package/raven-receipt-verifier-0.1.0.tgz ${{ runner.temp }}/release-package/pack.json ${{ runner.temp }}/release-package/release-artifact-identity.json release/release-identity.json"
   ]
 };
@@ -137,7 +141,7 @@ export const GOVERNED_PUBLISH_NODE = "22.18.0";
 export const WORKFLOW_PATH = ".github/workflows/verify-js-publish.yml";
 // sha256 of the exact reviewed workflow bytes. Any change to the file — even
 // whitespace or a comment — is a reviewed change here.
-export const WORKFLOW_SHA256 = "b891fe176dc0dc53a8986723039848637f8e78f8afbc4db12224fc9879a1a1f1";
+export const WORKFLOW_SHA256 = "9b9944682007c899d41c55bad93f436cb284ff4693aec3d253362ee7356ca484";
 // Whole-workflow shape (everything except steps), derived from the reviewed
 // workflow with ops/publication-policy.mjs#parseWorkflowShape.
 export const EXPECTED_WORKFLOW_SHAPE = {
@@ -177,3 +181,56 @@ export const EXPECTED_WORKFLOW_SHAPE = {
     }
   ]
 };
+
+// The governed npm CLI: the exact registry artifact for npm@11.18.0 bound by
+// bytes. The publication boundary executes ONLY a tree that hashes to this
+// identity, through the governed Node runtime by absolute path. Version
+// strings printed by any program are never a trust anchor.
+export const GOVERNED_NPM = {
+  name: "npm",
+  version: "11.18.0",
+  tarballUrl: "https://registry.npmjs.org/npm/-/npm-11.18.0.tgz",
+  tarballBytes: 2997746,
+  tarballSha256: "73f6155215ebabf4ed96dca1f567c2372cc713c33af2e5b9b62fde4e92373e2e",
+  tarballSha512: "4faecce0be70366d1c67b1012c4adc1246354a6cc45bf589f92003073b05518d547403df1475c542d67a4845e22b4fafcd7cac0af02c7a96cc6814f09eb003fb",
+  tarballIntegrity: "sha512-T67M4L5wNm0cZ7EBLErcEkY1SmzEW/WJ+SADBzsFUY1UdAPfFHXFQtZ6SEXiK0+vzXysCvAsepbMaBTwnrAD+w==",
+  registrySha1: "6ba3a51a3f2ef1eb51cca3289eceafcdef82f31c",
+  fileCount: 1943,
+  cliSha256: "8e5f6f3429f8cdbe693cdc29904e9d5a7b127a494bd15c804bd54c7403bfcbe7",
+  treeSha256: "6600073ac88181666acb9428d2299588cfb933c557942a8e6a38a9fa07937e3f",
+  nodeLines: /^v(?:22\.18\.0|24\.[0-9]+\.[0-9]+)$/,
+};
+
+// The publisher's environment is constructed, never inherited. Exactly these
+// names may cross into the process that runs `npm publish`:
+//   PATH        — replaced with the governed Node's bin directory plus the
+//                 system tool directories npm needs (none for publish, kept
+//                 minimal for git-less, script-less publish)
+//   HOME        — replaced with a fresh private directory (no user npm config)
+//   TMPDIR      — the wrapper's private temp root
+//   GITHUB_ACTIONS, GITHUB_REPOSITORY, GITHUB_REPOSITORY_ID,
+//   GITHUB_REPOSITORY_OWNER_ID, GITHUB_SERVER_URL, GITHUB_EVENT_NAME,
+//   GITHUB_WORKFLOW_REF, GITHUB_SHA, GITHUB_REF, GITHUB_RUN_ID,
+//   GITHUB_RUN_ATTEMPT — read by npm's provenance/sigstore CI context
+//   ACTIONS_ID_TOKEN_REQUEST_URL, ACTIONS_ID_TOKEN_REQUEST_TOKEN — the OIDC
+//                 identity used for npm trusted publishing and provenance
+//   RUNNER_ENVIRONMENT, RUNNER_ID, RUNNER_DESCRIPTION, RUNNER_TAGS,
+//   RUNNER_EXECUTABLE_ARCH — runner metadata read by the provenance builder
+// Everything else (NODE_OPTIONS, npm/NPM configuration, tokens, git
+// configuration, proxies, CA overrides, locale, shell) is dropped.
+export const PUBLISH_ENV_PASSTHROUGH = [
+  "GITHUB_ACTIONS", "GITHUB_REPOSITORY", "GITHUB_REPOSITORY_ID", "GITHUB_REPOSITORY_OWNER_ID",
+  "GITHUB_SERVER_URL", "GITHUB_EVENT_NAME", "GITHUB_WORKFLOW_REF", "GITHUB_SHA", "GITHUB_REF",
+  "GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT",
+  "ACTIONS_ID_TOKEN_REQUEST_URL", "ACTIONS_ID_TOKEN_REQUEST_TOKEN",
+  "RUNNER_ENVIRONMENT", "RUNNER_ID", "RUNNER_DESCRIPTION", "RUNNER_TAGS", "RUNNER_EXECUTABLE_ARCH",
+];
+
+// Presence of any of these in the inherited environment means the runner is
+// not the reviewed environment: the wrapper refuses before publishing.
+export const PUBLISH_ENV_FORBIDDEN = [
+  /^NODE_OPTIONS$/, /^NODE_EXTRA_CA_CERTS$/, /^NODE_TLS_REJECT_UNAUTHORIZED$/,
+  /^npm_config_/i, /^NPM_CONFIG_/, /^NPM_TOKEN$/, /^NODE_AUTH_TOKEN$/, /^NPM_ID_TOKEN$/, /^SIGSTORE_ID_TOKEN$/,
+  /^GIT_CONFIG_/, /^GIT_DIR$/, /^GIT_WORK_TREE$/,
+  /^(?:HTTPS?|ALL|NO)_PROXY$/i, /^SSL_CERT_(?:FILE|DIR)$/, /^XDG_CONFIG_HOME$/, /^PREFIX$/, /^NPM_PREFIX$/,
+];

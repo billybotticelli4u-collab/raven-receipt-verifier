@@ -17,6 +17,7 @@ import { measureReleaseArtifact } from "./release-artifact-utils.mjs";
 import {
   APPROVED_ACTIONS,
   CANONICAL_TARBALL,
+  GOVERNED_NPM,
   EXPECTED_EXPORT_MAP,
   EXPECTED_PACKAGE_FILES,
   NODE_FLOOR,
@@ -177,7 +178,7 @@ const artifactFixture = () => {
   git(repo, "push", "-q", "origin", `HEAD:${PUBLICATION_REF}`);
   const handoffPath = path.join(root, "handoff.json");
   const frozenPath = path.join(root, "frozen.json");
-  writeFileSync(handoffPath, JSON.stringify({ schema: "raven-receipt-verifier-artifact-handoff/2", artifact: actual, source: { commit, tree, ref: PUBLICATION_REF }, toolchain: { node: "v22.18.0", npm: PINNED_NPM_VERSION } }));
+  writeFileSync(handoffPath, JSON.stringify({ schema: "raven-receipt-verifier-artifact-handoff/2", artifact: actual, source: { commit, tree, ref: PUBLICATION_REF }, toolchain: { node: "v22.18.0", npm: PINNED_NPM_VERSION, npmArtifact: { cliSha256: GOVERNED_NPM.cliSha256, treeSha256: GOVERNED_NPM.treeSha256, fileCount: GOVERNED_NPM.fileCount } } }));
   writeFileSync(frozenPath, JSON.stringify({
     schema: "raven-receipt-verifier-release-identity/2",
     package: { name: PACKAGE_NAME, version: PACKAGE_VERSION, nodeFloor: NODE_FLOOR, runtimeDependencies: 0, exportMap: EXPECTED_EXPORT_MAP },
@@ -186,7 +187,7 @@ const artifactFixture = () => {
     publicMirror: { repository: PUBLIC_REPOSITORY.replace(/^git\+/, "").replace(/\.git$/, ""), packageDirectory: "packages/verify-js", publicationRef: PUBLICATION_REF, commitBinding: "RAVEN_RELEASE_SHA == GITHUB_SHA == HEAD == freshly-resolved publicationRef^{commit}", treeBinding: "RAVEN_RELEASE_TREE == HEAD^{tree} == freshly-resolved publicationRef^{commit}^{tree}", packageTree: PUBLIC_MIRROR_PACKAGE_TREE },
     artifact: actual,
   }));
-  const args = { packJsonPath, tarballDir: artifactDir, artifactIdentityPath: handoffPath, frozenIdentityPath: frozenPath, confirmVersion: PACKAGE_VERSION, releaseRef: PUBLICATION_REF, releaseSha: commit, releaseTree: tree, githubRef: PUBLICATION_REF, githubSha: commit, remote: "origin", cwd: repo };
+  const args = { packJsonPath, tarballDir: artifactDir, artifactIdentityPath: handoffPath, frozenIdentityPath: frozenPath, confirmVersion: PACKAGE_VERSION, releaseRef: PUBLICATION_REF, releaseSha: commit, releaseTree: tree, githubRef: PUBLICATION_REF, githubSha: commit, remote: "origin", cwd: repo, governedNpmDir: process.env.RAVEN_GOVERNED_NPM_DIR, inheritedEnvironment: Object.fromEntries(Object.entries(process.env).filter(([k]) => !/^(npm_config_|NPM_CONFIG_|NODE_OPTIONS|NPM_TOKEN|NODE_AUTH_TOKEN)/i.test(k))), };
   return { root, artifactDir, tarball: path.join(artifactDir, CANONICAL_TARBALL), actual, args };
 };
 const withArtifact = (body) => { const f = artifactFixture(); try { return body(f); } finally { rmSync(f.root, { recursive: true, force: true }); } };
@@ -250,7 +251,7 @@ test("M28 (S15 runtime) publish refuses when npm resolves a registry other than 
   process.env.npm_config_registry = "https://registry.example.invalid/";
   let calls = 0;
   try {
-    assert.throws(() => guardAndPublish({ ...f.args, publisher: () => { calls += 1; } }), /registry/);
+    assert.throws(() => guardAndPublish({ ...f.args, inheritedEnvironment: process.env, publisher: () => { calls += 1; } }), /npm_config_registry/);
     assert.equal(calls, 0);
   } finally {
     if (previous === undefined) delete process.env.npm_config_registry; else process.env.npm_config_registry = previous;
@@ -264,7 +265,7 @@ test("M29 (S1) inserted SHA-pinned uses: step in the publish job turns RED", () 
 });
 
 test("M29b step removal, reordering, or edited run text in the publish job turns RED", () => {
-  red("removed npm gate", inJob("publish", "      - name: Assert pinned npm CLI\n        run: node ops/npm-version-gate.mjs \"${RAVEN_PINNED_NPM_VERSION}\"\n", ""));
+  red("removed npm gate", inJob("publish", "      - name: Assert governed npm identity\n        run: node ops/npm-version-gate.mjs --governed-npm \"$RUNNER_TEMP/governed-npm/package\"\n", ""));
   red("edited publish args", inJob("publish", "--frozen-identity release/release-identity.json", "--frozen-identity release/alt-identity.json"));
   red("edited tarball dir", inJob("publish", '--tarball-dir "$RUNNER_TEMP/release-package"', '--tarball-dir "$RUNNER_TEMP/alt"'));
   red("extra checkout with persisted credentials", inJob("publish", "          persist-credentials: false\n", "          persist-credentials: false\n      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683\n        with:\n          persist-credentials: true\n"));
@@ -322,10 +323,12 @@ test("M31 (S13) dynamic /pubkey trust bootstrap in the release ceremony turns RE
 // ---------------------------------------------------------------- 6. registry endpoint
 test("M32 (S15) registry endpoint is pinned; any alternate or extra registry target turns RED", () => {
   assert.equal(PUBLICATION_REGISTRY, "https://registry.npmjs.org");
-  assert.ok(WORKFLOW.includes(`registry-url: "${PUBLICATION_REGISTRY}"`));
-  red("rogue registry-url", WORKFLOW.replace(`registry-url: "${PUBLICATION_REGISTRY}"`, 'registry-url: "https://registry.example.invalid"'));
-  red("registry-url removed", WORKFLOW.replace(`          registry-url: "${PUBLICATION_REGISTRY}"\n`, ""));
-  red("second registry-url on a gate", inJob("source-gate", "          node-version: ${{ matrix.node-version }}\n", `          node-version: \${{ matrix.node-version }}\n          registry-url: "${PUBLICATION_REGISTRY}"\n`));
+  assert.ok(!WORKFLOW.includes("registry-url:"), "setup-node must not configure a registry; the governed publisher pins it in-process");
+  red("registry-url added to publish", inJob("publish", '          node-version: "22.18.0"\n', `          node-version: "22.18.0"\n          registry-url: "${PUBLICATION_REGISTRY}"\n`));
+  red("rogue registry-url on a gate", inJob("source-gate", "          node-version: ${{ matrix.node-version }}\n", "          node-version: ${{ matrix.node-version }}\n          registry-url: \"https://registry.example.invalid\"\n"));
+  red("governed fetch URL retargeted", WORKFLOW.replaceAll("https://registry.npmjs.org/npm/-/npm-", "https://registry.example.invalid/npm/-/npm-"));
+  red("extra curl", inJob("source-gate", "      - name: Package contract tests", "      - name: Extra\n        run: curl -fsSL -o x https://example.invalid/x\n      - name: Package contract tests"));
+  red("npm install --global restored", inJob("publish", "      - name: Assert governed npm identity\n", "      - name: Install\n        run: npm install --global npm@11.18.0\n      - name: Assert governed npm identity\n"));
   red("NPM_CONFIG_REGISTRY env", WORKFLOW.replace('  RAVEN_PINNED_NPM_VERSION: "11.18.0"\n', '  RAVEN_PINNED_NPM_VERSION: "11.18.0"\n  NPM_CONFIG_REGISTRY: "https://registry.example.invalid"\n'));
   red("--registry flag", inJob("publish", "            --confirm-version \"${{ inputs.confirm_version }}\"", "            --confirm-version \"${{ inputs.confirm_version }}\" --registry https://registry.example.invalid"));
   red(".npmrc write", inJob("publish", "      - name: Final in-process", "      - name: Prep\n        run: echo registry=https://registry.example.invalid > ~/.npmrc\n      - name: Final in-process"));
