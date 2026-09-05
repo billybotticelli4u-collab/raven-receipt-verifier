@@ -133,3 +133,47 @@ export const EXPECTED_JOB_STEPS = {
 
 export const GOVERNED_NODE_MATRIX = '["22.18.0", "24"]';
 export const GOVERNED_PUBLISH_NODE = "22.18.0";
+
+export const WORKFLOW_PATH = ".github/workflows/verify-js-publish.yml";
+// sha256 of the exact reviewed workflow bytes. Any change to the file — even
+// whitespace or a comment — is a reviewed change here.
+export const WORKFLOW_SHA256 = "b891fe176dc0dc53a8986723039848637f8e78f8afbc4db12224fc9879a1a1f1";
+// Whole-workflow shape (everything except steps), derived from the reviewed
+// workflow with ops/publication-policy.mjs#parseWorkflowShape.
+export const EXPECTED_WORKFLOW_SHAPE = {
+  "topKeys": [
+    "name",
+    "on",
+    "permissions",
+    "env",
+    "jobs"
+  ],
+  "blocks": {
+    "name": "name: verify-js publish",
+    "on": "on: workflow_dispatch: inputs: release_ref: description: \"Authorized protected source ref; policy currently permits refs/heads/main only\" required: true release_sha: description: \"Exact independently reviewed public mirror commit\" required: true release_tree: description: \"Exact independently reviewed public mirror tree\" required: true confirm_version: description: \"Package version; must be 0.1.0\" required: true",
+    "permissions": "permissions: contents: read",
+    "env": "env: RAVEN_PINNED_NPM_VERSION: \"11.18.0\""
+  },
+  "jobs": [
+    {
+      "name": "source-gate",
+      "header": "name: Source and correspondence gates (secretless) runs-on: ubuntu-latest timeout-minutes: 20 permissions: contents: read strategy: fail-fast: false matrix: node-version: [\"22.18.0\", \"24\"]",
+      "hasSteps": true
+    },
+    {
+      "name": "package-artifact",
+      "header": "name: Create the one release tarball (secretless) needs: source-gate runs-on: ubuntu-latest timeout-minutes: 20 permissions: contents: read",
+      "hasSteps": true
+    },
+    {
+      "name": "tarball-gate",
+      "header": "name: Downloaded artifact customer gates needs: package-artifact runs-on: ubuntu-latest timeout-minutes: 20 permissions: contents: read strategy: fail-fast: false matrix: node-version: [\"22.18.0\", \"24\"]",
+      "hasSteps": true
+    },
+    {
+      "name": "publish",
+      "header": "name: Protected atomic verification and publication needs: tarball-gate environment: npm-release runs-on: ubuntu-latest timeout-minutes: 20 permissions: contents: read id-token: write",
+      "hasSteps": true
+    }
+  ]
+};

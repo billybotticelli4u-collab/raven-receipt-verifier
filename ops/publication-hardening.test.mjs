@@ -166,7 +166,9 @@ const artifactFixture = () => {
   git(repo, "config", "user.email", "release-test@invalid.example");
   git(repo, "config", "user.name", "Raven Release Test");
   writeFileSync(path.join(repo, "source.txt"), "exact source\n");
-  git(repo, "add", "source.txt");
+  mkdirSync(path.join(repo, ".github/workflows"), { recursive: true });
+  copyFileSync(path.join(ROOT, ".github/workflows/verify-js-publish.yml"), path.join(repo, ".github/workflows/verify-js-publish.yml"));
+  git(repo, "add", "source.txt", ".github");
   git(repo, "commit", "-q", "-m", "exact source");
   const commit = git(repo, "rev-parse", "HEAD");
   const tree = git(repo, "rev-parse", "HEAD^{tree}");

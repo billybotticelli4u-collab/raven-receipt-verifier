@@ -1,9 +1,13 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
+import { createHash } from "node:crypto";
+
 import {
   APPROVED_ACTIONS,
   EXPECTED_JOB_STEPS,
+  EXPECTED_WORKFLOW_SHAPE,
+  WORKFLOW_SHA256,
   GOVERNED_NODE_MATRIX,
   GOVERNED_PUBLISH_NODE,
   PINNED_NPM_VERSION,
@@ -66,6 +70,14 @@ const WORKFLOW_TRUST_PATTERNS = [
   /production-pins|trusted-keys|trustedKeys|signerPublicKey/i,
 ];
 // Helpers reached from the workflow may not open the network at all.
+const HELPER_REGISTRY_PATTERNS = [
+  /\.npmrc/,
+  /npm_config_/i,
+  /NPM_CONFIG_/,
+  /["']config["']\s*,\s*["']set["']/,
+  /npm\s+config\s+set/i,
+  /--registry\b/,
+];
 const HELPER_NETWORK_PATTERNS = [
   /\bfetch\s*\(/,
   /["']node:https?["']|["']https?["']|["']undici["']/,
@@ -80,8 +92,66 @@ const REGISTRY_OVERRIDE_PATTERNS = [
   /npm\s+config\s+set/i,
 ];
 
+// Whole-workflow shape: every top-level block (except jobs) as exact
+// normalised text, the ordered job list, and each job's header — every key
+// between `  job:` and `    steps:` (needs, runs-on, timeout-minutes,
+// permissions, environment, strategy, and anything an attacker adds such as
+// defaults:, env:, container:, services:, concurrency:). Steps are covered by
+// EXPECTED_JOB_STEPS; together they allowlist the entire file. Comments are
+// kept — they are part of the reviewed text.
+const normaliseLines = (lines) => lines.map((line) => line.trim()).filter(Boolean).join(" ").replace(/\s+/g, " ");
+
+export const parseWorkflowShape = (workflow) => {
+  const top = [];
+  let current = null;
+  for (const line of workflow.split("\n")) {
+    const match = /^([A-Za-z_-]+):(.*)$/.exec(line);
+    if (match) { current = { key: match[1], lines: [line] }; top.push(current); continue; }
+    if (current) current.lines.push(line);
+    else if (line.trim() && !line.startsWith("#")) top.push({ key: `invalid:${line.trim()}`, lines: [line] });
+  }
+  const jobsBlock = top.find((block) => block.key === "jobs");
+  const jobs = [];
+  let job = null;
+  for (const line of jobsBlock ? jobsBlock.lines.slice(1) : []) {
+    const match = /^  ([A-Za-z0-9_-]+):\s*$/.exec(line);
+    if (match) { job = { name: match[1], header: [], hasSteps: false }; jobs.push(job); continue; }
+    if (!job) continue;
+    if (/^    steps:\s*$/.test(line)) { job.hasSteps = true; continue; }
+    if (!job.hasSteps) job.header.push(line);
+  }
+  return {
+    topKeys: top.map((block) => block.key),
+    blocks: Object.fromEntries(top.filter((block) => block.key !== "jobs").map((block) => [block.key, normaliseLines(block.lines)])),
+    jobs: jobs.map(({ name, header, hasSteps }) => ({ name, header: normaliseLines(header), hasSteps })),
+  };
+};
+
+const FORBIDDEN_JOB_KEYS = ["defaults", "env", "container", "services", "concurrency", "continue-on-error", "uses", "secrets", "with"];
+const FORBIDDEN_TOP_KEYS = ["defaults", "concurrency", "run-name"];
+
 export const validateWorkflowText = (workflow) => {
   const failures = [];
+
+  // Whole-workflow shape allowlist (everything except steps).
+  const shape = parseWorkflowShape(workflow);
+  if (JSON.stringify(shape.topKeys) !== JSON.stringify(EXPECTED_WORKFLOW_SHAPE.topKeys)) failures.push(`top-level keys differ from policy: ${JSON.stringify(shape.topKeys)}`);
+  for (const key of Object.keys(EXPECTED_WORKFLOW_SHAPE.blocks)) {
+    if (shape.blocks[key] !== EXPECTED_WORKFLOW_SHAPE.blocks[key]) failures.push(`top-level block ${key} differs from policy allowlist`);
+  }
+  for (const key of FORBIDDEN_TOP_KEYS) if (shape.topKeys.includes(key)) failures.push(`forbidden top-level key ${key}`);
+  if (/^\s{8}default:/m.test(workflow.slice(0, workflow.indexOf("\npermissions:")))) failures.push("dispatch inputs may not carry defaults");
+  if (JSON.stringify(shape.jobs.map((j) => j.name)) !== JSON.stringify(EXPECTED_WORKFLOW_SHAPE.jobs.map((j) => j.name))) failures.push(`job list differs from policy: ${JSON.stringify(shape.jobs.map((j) => j.name))}`);
+  for (const expectedJob of EXPECTED_WORKFLOW_SHAPE.jobs) {
+    const actualJob = shape.jobs.find((j) => j.name === expectedJob.name);
+    if (!actualJob) continue;
+    if (!actualJob.hasSteps) failures.push(`${expectedJob.name} has no steps block`);
+    if (actualJob.header !== expectedJob.header) failures.push(`${expectedJob.name} job header differs from policy allowlist: ${actualJob.header.slice(0, 120)}`);
+    for (const key of FORBIDDEN_JOB_KEYS) {
+      if (new RegExp(`(^| )${key}:`).test(actualJob.header)) failures.push(`${expectedJob.name} carries forbidden job key ${key}`);
+    }
+  }
+
   const jobs = Object.fromEntries(JOB_ORDER.map((name, index) => [name, sliceJob(workflow, name, JOB_ORDER[index + 1])]));
   const { "source-gate": source, "package-artifact": pack, "tarball-gate": tarball, publish } = jobs;
 
@@ -174,6 +244,17 @@ export const validateWorkflowText = (workflow) => {
   return failures;
 };
 
+// Byte-level identity pin. Structural checks explain WHAT changed; this pin
+// makes ANY change to the reviewed workflow — whitespace, comments, ordering —
+// a reviewed policy change. Kept separate so the structural layer stays
+// non-vacuous under test.
+export const validateWorkflowIdentity = (workflow) => {
+  const actual = createHash("sha256").update(workflow, "utf8").digest("hex");
+  return actual === WORKFLOW_SHA256 ? [] : [`workflow identity sha256 ${actual} is not the policy-pinned ${WORKFLOW_SHA256}`];
+};
+
+export const validateWorkflow = (workflow) => [...validateWorkflowText(workflow), ...validateWorkflowIdentity(workflow)];
+
 const PACK_CREATION_PATTERNS = [
   // "npm pack" (or npx/npm exec ... pack) inside a string handed to an executor
   /(?:exec(?:Sync)?|spawn(?:Sync)?|execFile(?:Sync)?|run)\s*\(\s*["'`][^"'`\n]*\b(?:npm|npx)\b[^"'`\n]*\bpack\b/i,
@@ -205,6 +286,13 @@ export const scanInvokedPublicationHelpers = ({ root, workflow }) => {
     }
     for (const pattern of [...TRUST_BOOTSTRAP_PATTERNS, ...HELPER_NETWORK_PATTERNS]) {
       if (pattern.test(body)) failures.push(`${helper} bootstraps trust or opens the network (${pattern})`);
+    }
+    if (helper === "ops/publish-exact-release.mjs") {
+      if (/\.npmrc|npm_config_|NPM_CONFIG_|["']set["']/.test(body)) failures.push(`${helper} may only read the registry, never set it`);
+    } else {
+      for (const pattern of HELPER_REGISTRY_PATTERNS) {
+        if (pattern.test(body)) failures.push(`${helper} touches npm registry configuration (${pattern})`);
+      }
     }
     for (const match of body.matchAll(/from\s+["']\.\/([A-Za-z0-9._-]+\.mjs)["']/g)) {
       queue.push(`ops/${match[1]}`);

@@ -6,7 +6,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { npmCommand, parseArgs, run } from "./release-artifact-utils.mjs";
-import { CANONICAL_TARBALL, PINNED_NPM_VERSION, PUBLICATION_REGISTRY } from "./release-policy.mjs";
+import { CANONICAL_TARBALL, PINNED_NPM_VERSION, PUBLICATION_REGISTRY, WORKFLOW_PATH, WORKFLOW_SHA256 } from "./release-policy.mjs";
 import { verifyReleaseArtifact } from "./verify-release-artifact.mjs";
 import { verifyReleaseRef } from "./verify-release-ref.mjs";
 
@@ -17,6 +17,17 @@ const defaultPublisher = (tarball) => {
     "publish", tarball, "--provenance", "--access", "public", "--registry", PUBLICATION_REGISTRY,
   ], { stdio: "inherit" });
   if (result.status !== 0) throw new Error(`npm publish exited ${result.status}`);
+};
+
+// The workflow that dispatched this process is the one at HEAD (ref gate).
+// Refuse unless those exact bytes are the policy-pinned workflow, so a
+// workflow edit can never publish without a matching, reviewed policy edit.
+export const assertPinnedWorkflow = (cwd) => {
+  let bytes;
+  try { bytes = readFileSync(path.join(cwd, WORKFLOW_PATH)); }
+  catch { throw new Error(`checked-out workflow ${WORKFLOW_PATH} is missing; refusing to publish`); }
+  const actual = createHash("sha256").update(bytes).digest("hex");
+  if (actual !== WORKFLOW_SHA256) throw new Error(`checked-out workflow sha256 ${actual} is not the policy-pinned workflow ${WORKFLOW_SHA256}`);
 };
 
 const assertPinnedRegistry = () => {
@@ -50,6 +61,7 @@ export const guardAndPublish = ({
   }
   assertPinnedRegistry();
   verifyReleaseRef({ releaseRef, releaseSha, releaseTree, githubRef, githubSha, remote, cwd });
+  assertPinnedWorkflow(cwd);
   const measured = verifyReleaseArtifact({
     packJsonPath, tarballDir, artifactIdentityPath, frozenIdentityPath,
     confirmVersion, releaseRef, releaseSha, releaseTree, cwd,
