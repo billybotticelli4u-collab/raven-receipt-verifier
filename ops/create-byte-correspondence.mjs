@@ -3,7 +3,9 @@ import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import {
+  PUBLIC_MIRROR_PACKAGE_TREE,
   UPSTREAM_ACCEPTED_COMMIT,
+  UPSTREAM_ACCEPTED_PACKAGE_TREE,
   UPSTREAM_ACCEPTED_TREE,
 } from "./release-policy.mjs";
 import { gitObjectHash, gitTreeHash } from "./verify-byte-correspondence.mjs";
@@ -69,6 +71,9 @@ const publicTreeEntries = entries.map((entry) => ({
 const privatePackageTree = gitTreeHash(privateTreeEntries);
 const expectedPrivatePackageTree = git(upstreamRoot, ["rev-parse", `${UPSTREAM_ACCEPTED_COMMIT}:packages/verify-js`]);
 if (privatePackageTree !== expectedPrivatePackageTree) throw new Error("manifest does not reconstruct accepted package tree");
+if (privatePackageTree !== UPSTREAM_ACCEPTED_PACKAGE_TREE) throw new Error("accepted package tree is not the policy-pinned package tree");
+const publicPackageTree = gitTreeHash(publicTreeEntries);
+if (publicPackageTree !== PUBLIC_MIRROR_PACKAGE_TREE) throw new Error("public package tree is not the policy-pinned public package tree");
 
 const manifest = {
   schema: "raven-private-public-byte-correspondence/1",
@@ -80,7 +85,7 @@ const manifest = {
     packageTree: privatePackageTree,
   },
   publicMirror: {
-    packageTree: gitTreeHash(publicTreeEntries),
+    packageTree: publicPackageTree,
     authorizedDelta: "packages/verify-js/package.json repository metadata only",
   },
   entries,

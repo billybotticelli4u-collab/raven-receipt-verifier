@@ -211,6 +211,9 @@ export const measureReleaseArtifact = ({ packJsonPath, tarballDir }) => {
   return {
     packed,
     tarball,
+    // The exact bytes hashed above; the publish wrapper seals THESE, never a
+    // later re-read of the shared path.
+    bytes: compressed,
     actual: {
       filename: CANONICAL_TARBALL,
       compressedBytes: compressed.length,

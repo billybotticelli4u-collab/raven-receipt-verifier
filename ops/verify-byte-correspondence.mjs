@@ -5,8 +5,10 @@ import { spawnSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
 
 import {
+  PUBLIC_MIRROR_PACKAGE_TREE,
   PUBLIC_REPOSITORY,
   UPSTREAM_ACCEPTED_COMMIT,
+  UPSTREAM_ACCEPTED_PACKAGE_TREE,
   UPSTREAM_ACCEPTED_TREE,
 } from "./release-policy.mjs";
 
@@ -60,8 +62,13 @@ const normalizedMetadataBuffer = (bytes) => {
 
 export const verifyCorrespondence = ({ root, manifest }) => {
   const failures = [];
-  if (manifest.upstreamSource?.commit !== UPSTREAM_ACCEPTED_COMMIT) failures.push("wrong upstream commit");
-  if (manifest.upstreamSource?.tree !== UPSTREAM_ACCEPTED_TREE) failures.push("wrong upstream tree");
+  // The manifest is evidence, never the oracle: every identity it records
+  // must equal the policy-pinned constant, and every tree below is recomputed
+  // from actual bytes and compared to the policy constant, not to the manifest.
+  if (manifest.upstreamSource?.commit !== UPSTREAM_ACCEPTED_COMMIT) failures.push("wrong upstream commit (policy)");
+  if (manifest.upstreamSource?.tree !== UPSTREAM_ACCEPTED_TREE) failures.push("wrong upstream tree (policy)");
+  if (manifest.upstreamSource?.packageTree !== UPSTREAM_ACCEPTED_PACKAGE_TREE) failures.push("manifest upstream package tree is not the policy-accepted package tree");
+  if (manifest.publicMirror?.packageTree !== PUBLIC_MIRROR_PACKAGE_TREE) failures.push("manifest public package tree is not the policy public package tree");
 
   const publicTreeEntries = [];
   const privateTreeEntries = [];
@@ -101,8 +108,8 @@ export const verifyCorrespondence = ({ root, manifest }) => {
 
   const privateTree = gitTreeHash(privateTreeEntries);
   const publicTree = gitTreeHash(publicTreeEntries);
-  if (privateTree !== manifest.upstreamSource?.packageTree) failures.push(`upstream package tree mismatch: ${privateTree}`);
-  if (publicTree !== manifest.publicMirror?.packageTree) failures.push(`public package tree mismatch: ${publicTree}`);
+  if (privateTree !== UPSTREAM_ACCEPTED_PACKAGE_TREE) failures.push(`reconstructed private blobs do not form the policy-accepted package tree: ${privateTree}`);
+  if (publicTree !== PUBLIC_MIRROR_PACKAGE_TREE) failures.push(`actual public bytes do not form the policy public package tree: ${publicTree}`);
   if (failures.length) throw new Error(failures.join("\n"));
   return { privateTree, publicTree, entries: manifest.entries.length };
 };

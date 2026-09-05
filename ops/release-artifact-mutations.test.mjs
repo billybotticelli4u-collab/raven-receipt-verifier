@@ -15,6 +15,7 @@ import {
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { gunzipSync, gzipSync } from "node:zlib";
@@ -291,7 +292,11 @@ test("M18 replacement after prior verification is caught by final wrapper before
     remote: "origin",
     publisher: (tarball) => {
       publishCalls += 1;
-      assert.equal(tarball, path.join(fixture.artifactDir, CANONICAL_TARBALL));
+      // The wrapper seals the authenticated bytes into a private copy; npm
+      // never receives the shared artifact path.
+      assert.notEqual(tarball, path.join(fixture.artifactDir, CANONICAL_TARBALL));
+      assert.equal(path.basename(tarball), CANONICAL_TARBALL);
+      assert.equal(createHash("sha256").update(readFileSync(tarball)).digest("hex"), JSON.parse(readFileSync(fixture.frozenPath)).artifact.sha256);
     },
   });
   assert.equal(publishCalls, 1, "positive control must reach the injected non-publishing sink");
