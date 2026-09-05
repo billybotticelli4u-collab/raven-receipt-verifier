@@ -4,16 +4,16 @@
 // governed npm CLI run by absolute path under the governed Node — never a
 // PATH-resolved, self-attesting program.
 import assert from "node:assert/strict";
-import { chmodSync, copyFileSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { chmodSync, copyFileSync, cpSync, existsSync, linkSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { spawnSync } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { gunzipSync, gzipSync } from "node:zlib";
 
-import { measureNpmTree, verifyGovernedNpm, verifyGovernedNpmTarball } from "./governed-npm.mjs";
+import { copyGovernedNpmTreeIntoSeal, measureNpmTree, sealGovernedNpmExecution, verifyGovernedNpm, verifyGovernedNpmTarball } from "./governed-npm.mjs";
 import { assertNoForbiddenEnvironment, buildPublishEnvironment, guardAndPublish } from "./publish-exact-release.mjs";
 import { measureReleaseArtifact } from "./release-artifact-utils.mjs";
 import {
@@ -124,12 +124,12 @@ test("(B2) tampered npm-cli.js with same version string turns RED", () => withFi
   assert.throws(() => guardAndPublish({ ...f.args, governedNpmDir: copy, publisher: () => {} }), /governed npm CLI bytes/);
 }));
 
-test("(C) npm-cli.js substituted after the first verification is caught at the boundary", () => withFixture((f) => {
+test("(C) npm-cli.js sealed CLI substituted after seal is caught at the boundary", () => withFixture((f) => {
   const copy = tamperedCopy(f.root, () => {});
   let calls = 0;
   assert.throws(() => guardAndPublish({ ...f.args, governedNpmDir: copy,
-    beforePublish: () => { const t = path.join(copy, "bin/npm-cli.js"); writeFileSync(t, `${readFileSync(t, "utf8")}\n// swapped\n`); },
-    publisher: () => { calls += 1; } }), /CLI bytes|tree identity|changed before publication/);
+    beforePublish: (_sealed, governed) => { chmodSync(governed.cli, 0o600); writeFileSync(governed.cli, `${readFileSync(governed.cli, "utf8")}\n// swapped\n`); },
+    publisher: () => { calls += 1; } }), /CLI bytes|tree identity|changed before publication|sealed/);
   assert.equal(calls, 0);
 }));
 
@@ -227,8 +227,154 @@ test("(K) governed npm tarball identity: one changed byte or wrong size turns RE
 test("(L) publisher is invoked as governed Node + absolute governed CLI, from the sealed directory", () => withFixture((f) => {
   let ctx = null;
   guardAndPublish({ ...f.args, publisher: (sealed, c) => { ctx = { ...c, sealed }; return {}; } });
-  assert.equal(ctx.cli, path.join(GOVERNED, "bin/npm-cli.js"));
+  assert.ok(ctx.execRoot && ctx.cli.startsWith(ctx.execRoot + path.sep));
+  assert.ok(ctx.cli.includes("/bin/") && ctx.cli.endsWith("cli.js"));
+  assert.ok(!ctx.cli.startsWith(path.resolve(GOVERNED) + path.sep));
   assert.ok(path.isAbsolute(ctx.cli));
   assert.equal(path.dirname(ctx.sealed), ctx.sealDir);
   assert.ok(ctx.env.PATH.startsWith(path.dirname(process.execPath)));
 }));
+
+// ---------------- v6 TOCTOU execution seal ----------------
+test("CONTROL no-op: sealed publish path remains GREEN", () => withFixture((f) => {
+  let ctx = null;
+  const result = guardAndPublish({ ...f.args, publisher: (sealed, c) => { ctx = c; return { shasum: f.actual.sha1, registry: "https://registry.npmjs.org", totalFiles: String(f.actual.fileCount) }; } });
+  assert.ok(ctx.cli.startsWith(ctx.execRoot + path.sep), "cli must be under private exec seal");
+  assert.equal(result.governedNpm.sealed, true);
+  assert.equal(result.governedNpm.treeSha256, GOVERNED_NPM.treeSha256);
+  assert.ok(!ctx.cli.startsWith(path.resolve(GOVERNED) + path.sep));
+}));
+
+test("M-TOCTOU-04 mutate original AFTER seal stays GREEN", () => withFixture((f) => {
+  const copy = tamperedCopy(f.root, () => {});
+  let ctx = null;
+  const result = guardAndPublish({ ...f.args, governedNpmDir: copy,
+    beforePublish: () => {
+      const target = path.join(copy, "node_modules/libnpmpublish/lib/publish.js");
+      writeFileSync(target, `${readFileSync(target, "utf8")}\n// after-seal source mutation\n`);
+    },
+    publisher: (sealed, c) => { ctx = c; return { shasum: f.actual.sha1, registry: "https://registry.npmjs.org" }; },
+  });
+  assert.ok(ctx.cli.startsWith(ctx.execRoot + path.sep));
+  assert.equal(path.resolve(ctx.sourcePackageDir), path.resolve(copy));
+  assert.equal(result.governedNpm.treeSha256, GOVERNED_NPM.treeSha256);
+}));
+
+test("M-TOCTOU-02 mutate sealed CLI after seal turns RED", () => withFixture((f) => {
+  let calls = 0;
+  assert.throws(() => guardAndPublish({ ...f.args,
+    beforePublish: (_s, governed) => {
+      chmodSync(governed.cli, 0o600);
+      writeFileSync(governed.cli, `${readFileSync(governed.cli, "utf8")}\n`);
+    },
+    publisher: () => { calls += 1; },
+  }), /CLI bytes|tree identity|sealed|changed before publication/);
+  assert.equal(calls, 0);
+}));
+
+test("M-TOCTOU-03 mutate sealed tree file after seal turns RED", () => withFixture((f) => {
+  let calls = 0;
+  assert.throws(() => guardAndPublish({ ...f.args,
+    beforePublish: (_s, governed) => {
+      const target = path.join(governed.packageDir, "node_modules/libnpmpublish/lib/publish.js");
+      chmodSync(path.dirname(target), 0o700);
+      chmodSync(target, 0o600);
+      writeFileSync(target, `${readFileSync(target, "utf8")}\n// sealed tree mutate\n`);
+    },
+    publisher: () => { calls += 1; },
+  }), /tree identity|sealed|changed before publication/);
+  assert.equal(calls, 0);
+}));
+
+test("M-TOCTOU-05 seal refuses symlink in source tree", () => withFixture((f) => {
+  const sym = path.join(f.root, "sym"); cpSync(GOVERNED, sym, { recursive: true });
+  const victim = path.join(sym, "node_modules/libnpmpublish/lib/publish.js");
+  const bak = `${victim}.real`;
+  renameSync(victim, bak);
+  symlinkSync(path.basename(bak), victim);
+  assert.throws(() => sealGovernedNpmExecution(sym, path.join(f.root, "out-sym")), /link|symlink/i);
+}));
+
+test("M-TOCTOU-06 seal refuses hardlink surprise", () => withFixture((f) => {
+  const hard = path.join(f.root, "hard"); cpSync(GOVERNED, hard, { recursive: true });
+  const a = path.join(hard, "node_modules/libnpmpublish/lib/publish.js");
+  const b = path.join(hard, "node_modules/libnpmpublish/lib/publish.js.hardlink");
+  linkSync(a, b);
+  assert.throws(() => copyGovernedNpmTreeIntoSeal(hard, path.join(f.root, "out-hard")), /hardlink/);
+}));
+
+test("M-TOCTOU-07 seal refuses FIFO", () => withFixture((f) => {
+  const fifoRoot = path.join(f.root, "fifo"); cpSync(GOVERNED, fifoRoot, { recursive: true });
+  const fifoPath = path.join(fifoRoot, "node_modules/libnpmpublish/lib/fifo-node");
+  const made = spawnSync("mkfifo", [fifoPath], { encoding: "utf8" });
+  if (made.status !== 0) {
+    assert.ok(true, "mkfifo unavailable on this host; covered by non-regular refusal path in unit copy");
+    return;
+  }
+  assert.throws(() => sealGovernedNpmExecution(fifoRoot, path.join(f.root, "out-fifo")), /non-regular|fifo|FIFO/i);
+}));
+
+test("M-TOCTOU-08 publisher cli is under seal and not the shared tree", () => withFixture((f) => {
+  let ctx = null;
+  guardAndPublish({ ...f.args, publisher: (_s, c) => { ctx = c; } });
+  assert.ok(ctx.execRoot);
+  assert.ok(ctx.cli.startsWith(ctx.execRoot + path.sep));
+  assert.ok(ctx.cli.includes(`${path.sep}package${path.sep}bin${path.sep}`));
+  assert.notEqual(path.resolve(path.dirname(path.dirname(ctx.cli))), path.resolve(GOVERNED));
+}));
+
+test("M-TOCTOU-09 sealed exec tree destroyed after publish", () => withFixture((f) => {
+  let execRoot = null;
+  guardAndPublish({ ...f.args, publisher: (_s, c) => { execRoot = c.execRoot; } });
+  assert.ok(execRoot);
+  assert.ok(!existsSync(execRoot), "execution seal must be destroyed in finally");
+}));
+
+test("M-TOCTOU-01 concurrent writer on shared source cannot pwn sealed publish", () => withFixture((f) => {
+  const copy = tamperedCopy(f.root, () => {});
+  const target = path.join(copy, "node_modules/libnpmpublish/lib/publish.js");
+  const marker = path.join(f.root, "TOCTOU_PWNED");
+  const pristine = readFileSync(target);
+  const mutated = Buffer.concat([Buffer.from(`require("fs").writeFileSync(${JSON.stringify(marker)}, "pwned");\n`), pristine]);
+  const pristinePath = path.join(f.root, "pristine.bin");
+  const mutatedPath = path.join(f.root, "mutated.bin");
+  writeFileSync(pristinePath, pristine);
+  writeFileSync(mutatedPath, mutated);
+  const racer = spawn(process.execPath, ["-e", `
+    const fs = require("node:fs");
+    const a = fs.readFileSync(${JSON.stringify(pristinePath)});
+    const b = fs.readFileSync(${JSON.stringify(mutatedPath)});
+    const t = ${JSON.stringify(target)};
+    for (;;) { try { fs.writeFileSync(t, b); fs.writeFileSync(t, a); } catch {} }
+  `], { stdio: "ignore" });
+  try {
+    let wins = 0;
+    for (let i = 0; i < 20; i++) {
+      rmSync(marker, { force: true });
+      try {
+        guardAndPublish({ ...f.args, governedNpmDir: copy, dryRun: true });
+      } catch {
+        // refuse-closed on a mid-copy/measure race against source is acceptable
+      }
+      if (existsSync(marker)) wins += 1;
+    }
+    assert.equal(wins, 0, "mutated shared publish.js must never execute");
+  } finally {
+    racer.kill();
+    try { writeFileSync(target, pristine); } catch {}
+  }
+}));
+
+test("M-TOCTOU-12 re-measure mismatch on sealed copy refuses", () => {
+  const scratch = mkdtempSync(path.join(tmpdir(), "raven-toctou-remeasure-"));
+  try {
+    const dest = path.join(scratch, "package");
+    copyGovernedNpmTreeIntoSeal(GOVERNED, dest);
+    const target = path.join(dest, "node_modules/libnpmpublish/lib/publish.js");
+    chmodSync(target, 0o600);
+    writeFileSync(target, `${readFileSync(target, "utf8")}\n`);
+    assert.throws(() => verifyGovernedNpm(dest), /tree identity/);
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
+  }
+});

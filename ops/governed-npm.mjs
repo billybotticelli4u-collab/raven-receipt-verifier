@@ -1,5 +1,17 @@
 import { createHash } from "node:crypto";
-import { lstatSync, readdirSync, readFileSync, realpathSync } from "node:fs";
+import {
+  chmodSync,
+  closeSync,
+  fchmodSync,
+  lstatSync,
+  mkdirSync,
+  mkdtempSync,
+  openSync,
+  readdirSync,
+  readFileSync,
+  realpathSync,
+  writeSync,
+} from "node:fs";
 import path from "node:path";
 
 import { GOVERNED_NPM } from "./release-policy.mjs";
@@ -64,6 +76,87 @@ export const verifyGovernedNpm = (packageDir) => {
   }
   if (failures.length) throw new Error(failures.join("\n"));
   return { packageDir: dir, cli, name: GOVERNED_NPM.name, version: GOVERNED_NPM.version, cliSha256: GOVERNED_NPM.cliSha256, treeSha256: GOVERNED_NPM.treeSha256, fileCount: GOVERNED_NPM.fileCount };
+};
+
+export const copyGovernedNpmTreeIntoSeal = (sourceRoot, destRoot) => {
+  const srcRoot = path.resolve(sourceRoot);
+  const dstRoot = path.resolve(destRoot);
+  const srcReal = realpathSync(srcRoot);
+  const seenInodes = new Map();
+  const copyBytes = (from, to, mode) => {
+    const bytes = readFileSync(from);
+    const fd = openSync(to, "wx", mode & 0o777);
+    try {
+      writeSync(fd, bytes);
+      fchmodSync(fd, mode & 0o777);
+    } finally {
+      closeSync(fd);
+    }
+  };
+  const walk = (srcDir, dstDir) => {
+    for (const entry of readdirSync(srcDir, { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : 1))) {
+      const src = path.join(srcDir, entry.name);
+      const dst = path.join(dstDir, entry.name);
+      const rel = path.relative(srcRoot, src).split(path.sep).join("/");
+      if (entry.name === "." || entry.name === "..") throw new Error("seal traversal entry: " + entry.name);
+      if (!rel || rel.startsWith("..") || path.isAbsolute(rel)) throw new Error("seal path escape: " + src);
+      const stat = lstatSync(src);
+      if (stat.isSymbolicLink()) throw new Error("seal link: " + rel);
+      if (stat.isDirectory()) {
+        const real = realpathSync(src);
+        if (real !== srcReal && !real.startsWith(srcReal + path.sep)) throw new Error("seal realpath escape: " + rel);
+        mkdirSync(dst, { mode: 0o700 });
+        chmodSync(dst, 0o700);
+        walk(src, dst);
+        continue;
+      }
+      if (!stat.isFile()) throw new Error("seal non-regular: " + rel);
+      const inodeKey = String(stat.dev) + ":" + String(stat.ino);
+      if (seenInodes.has(inodeKey)) throw new Error("seal hardlink: " + rel + " -> " + seenInodes.get(inodeKey));
+      seenInodes.set(inodeKey, rel);
+      copyBytes(src, dst, 0o400);
+      chmodSync(dst, 0o400);
+    }
+  };
+  mkdirSync(dstRoot, { recursive: true, mode: 0o700 });
+  chmodSync(dstRoot, 0o700);
+  walk(srcRoot, dstRoot);
+};
+
+export const freezeGovernedNpmSealTree = (root) => {
+  const walk = (dir) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      const stat = lstatSync(full);
+      if (stat.isSymbolicLink()) throw new Error("seal post-copy link: " + full);
+      if (stat.isDirectory()) { walk(full); chmodSync(full, 0o500); continue; }
+      if (!stat.isFile()) throw new Error("seal post-copy non-regular: " + full);
+      chmodSync(full, 0o400);
+    }
+  };
+  walk(root);
+  chmodSync(root, 0o500);
+};
+
+export const sealGovernedNpmExecution = (packageDir, sealParent) => {
+  const source = verifyGovernedNpm(packageDir);
+  mkdirSync(sealParent, { recursive: true, mode: 0o700 });
+  chmodSync(sealParent, 0o700);
+  const makeTmp = mkdtempSync;
+  const sealPrefix = path.join(sealParent, "gexec-");
+  const execRoot = makeTmp(sealPrefix, { mode: 0o700 });
+  chmodSync(execRoot, 0o700);
+  const sealedPackageDir = path.join(execRoot, "package");
+  copyGovernedNpmTreeIntoSeal(source.packageDir, sealedPackageDir);
+  freezeGovernedNpmSealTree(sealedPackageDir);
+  chmodSync(execRoot, 0o700);
+  const sealed = verifyGovernedNpm(sealedPackageDir);
+  if (sealed.treeSha256 !== GOVERNED_NPM.treeSha256) throw new Error("sealed tree identity mismatch");
+  if (sha("sha256", readFileSync(sealed.cli)) !== GOVERNED_NPM.cliSha256) throw new Error("sealed CLI bytes mismatch");
+  const expectedCli = path.join(sealedPackageDir, "bin", "npm-cli.js");
+  if (sealed.cli !== expectedCli) throw new Error("sealed CLI path escaped package");
+  if (!sealed.cli.startsWith(execRoot + path.sep)) throw new Error("sealed CLI outside exec seal");
+  return { ...sealed, sourcePackageDir: source.packageDir, execRoot, sealed: true };
 };
 
 export const governedNodeIdentity = () => ({

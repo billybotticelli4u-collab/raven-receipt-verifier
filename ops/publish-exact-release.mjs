@@ -1,11 +1,11 @@
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, lstatSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-import { assertGovernedNodeLine, governedNodeIdentity, verifyGovernedNpm } from "./governed-npm.mjs";
+import { assertGovernedNodeLine, governedNodeIdentity, sealGovernedNpmExecution, verifyGovernedNpm } from "./governed-npm.mjs";
 import { parseArgs } from "./release-artifact-utils.mjs";
 import {
   CANONICAL_TARBALL,
@@ -108,7 +108,7 @@ export const guardAndPublish = ({
   if (!governedNpmDir) throw new Error("governed npm package directory is required; PATH npm is never used");
   assertGovernedNodeLine();
   assertNoForbiddenEnvironment(inheritedEnvironment);
-  const governed = verifyGovernedNpm(governedNpmDir);
+  const sourceGoverned = verifyGovernedNpm(governedNpmDir);
   verifyReleaseRef({ releaseRef, releaseSha, releaseTree, githubRef, githubSha, remote, cwd });
   assertPinnedWorkflow(cwd);
   const measured = verifyReleaseArtifact({
@@ -128,15 +128,17 @@ export const guardAndPublish = ({
     // Seal as late as possible: the exact in-memory bytes that were hashed.
     writeFileSync(sealed, measured.bytes, { mode: 0o400, flag: "wx" });
     chmodSync(sealed, 0o400);
+    const governed = sealGovernedNpmExecution(sourceGoverned.packageDir, sealRoot);
     beforePublish(sealed, governed);
     // Boundary re-checks, immediately before the governed CLI is executed:
     // the sealed bytes AND the npm tree that will read them.
     if (sha512(readFileSync(sealed)) !== expectedSha512) throw new Error("sealed tarball changed before publication; refusing to publish");
-    const late = verifyGovernedNpm(governedNpmDir);
-    if (late.treeSha256 !== governed.treeSha256) throw new Error("governed npm changed before publication; refusing to publish");
+    const late = verifyGovernedNpm(governed.packageDir);
+    if (late.treeSha256 !== governed.treeSha256 || late.cli !== governed.cli) throw new Error("governed npm changed before publication; refusing to publish");
+    if (!governed.cli.startsWith(governed.execRoot + path.sep)) throw new Error("publication CLI outside execution seal");
     const env = buildPublishEnvironment({ inherited: inheritedEnvironment, home, tmp, nodeBinDir: path.dirname(process.execPath) });
     const observed = publisher
-      ? publisher(sealed, { cli: governed.cli, env, sealDir })
+      ? publisher(sealed, { cli: governed.cli, env, sealDir, execRoot: governed.execRoot, sourcePackageDir: governed.sourcePackageDir })
       : governedPublisher({ cli: governed.cli, sealed, sealDir, env, dryRun });
     if (observed && observed.shasum && observed.shasum !== sha1(measured.bytes)) throw new Error(`governed npm observed shasum ${observed.shasum}, not the frozen ${sha1(measured.bytes)}; published bytes are UNCERTAIN`);
     if (observed && observed.integrity && observed.integrity !== measured.actual.integrity && !measured.actual.integrity.startsWith(observed.integrity.replace(/\[\.\.\.\].*$/, ""))) throw new Error("governed npm observed a different integrity; published bytes are UNCERTAIN");
@@ -148,6 +150,21 @@ export const guardAndPublish = ({
     };
   } finally {
     try { chmodSync(sealed, 0o600); } catch {}
+    try {
+      // Owner must regain write bits to destroy a 0500/0400 execution seal.
+      const unlock = (dir) => {
+        try { chmodSync(dir, 0o700); } catch { return; }
+        for (const name of readdirSync(dir)) {
+          const full = path.join(dir, name);
+          try {
+            const st = lstatSync(full);
+            if (st.isDirectory()) unlock(full);
+            else chmodSync(full, 0o600);
+          } catch {}
+        }
+      };
+      unlock(sealRoot);
+    } catch {}
     rmSync(sealRoot, { recursive: true, force: true });
   }
 };
