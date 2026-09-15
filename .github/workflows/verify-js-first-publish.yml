@@ -105,7 +105,15 @@ env:
                     error = json.loads(ex.read(4096))
                 except Exception as parse_error:
                     raise Refusal('REGISTRY_INVALID_ABSENCE_RESPONSE') from parse_error
-                require(error.get('error') == 'Not found', 'REGISTRY_INVALID_ABSENCE_RESPONSE')
+                # Measured npm 404 shapes only (status already required == 404):
+                # 1) package metadata: {"error":"Not found"}
+                # 2) version document: JSON string "Not Found"
+                if isinstance(error, dict):
+                    require(error.get('error') == 'Not found', 'REGISTRY_INVALID_ABSENCE_RESPONSE')
+                elif isinstance(error, str):
+                    require(error == 'Not Found', 'REGISTRY_INVALID_ABSENCE_RESPONSE')
+                else:
+                    raise Refusal('REGISTRY_INVALID_ABSENCE_RESPONSE')
 
     MODULES = (
         'canonicalDataSnapshot', 'canonicalJson', 'detect', 'ed25519KeyDomain',

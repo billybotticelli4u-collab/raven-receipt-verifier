@@ -160,6 +160,7 @@ Count: **126** paths from `ALLOWLIST_VERIFY_JS.txt` (PRIVATE_BASELINE.txt exclud
 | `RELEASE_CONTROL.md` | ceremony / blocker status |
 | `scripts/test-packed-ed25519-corpus.mjs` | packed Ed25519 corpus gate |
 | `scripts/negative-control-pack-identity.mjs` | mutate/restore pack-identity negative control |
+| `scripts/test-registry-absent-shapes.py` | CONTROL_PY registry_absent npm 404 shape unit/control |
 
 ## Metadata delta vs private tip
 
