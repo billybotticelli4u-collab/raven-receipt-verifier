@@ -1,0 +1,429 @@
+# Owner-authorized release-control successor for public raven-receipt-verifier.
+# FIRST_PUBLISH_CEREMONY=BLOCKED — publish_bootstrap refuses until a reviewed
+# repository-file change clears the hold. Dispatch inputs cannot clear it.
+# Reference control ideas from private PR #211; pins are freshly measured for
+# this public single-package tree (do not copy private 48-file / -launchguard pins).
+name: verify-js first publish (ceremony BLOCKED)
+
+on:
+  workflow_dispatch:
+    inputs:
+      reviewed_sha:
+        description: 'Full reviewed workflow/source commit; must equal workflow SHA and event SHA'
+        required: true
+        type: string
+      version:
+        description: 'Exact reviewed first version'
+        required: true
+        type: string
+      mode:
+        description: 'validate_only never publishes; publish_bootstrap still refused while ceremony BLOCKED'
+        required: true
+        default: validate_only
+        type: choice
+        options: [validate_only, publish_bootstrap]
+
+permissions: {}
+concurrency:
+  group: raven-receipt-verifier-first-publish
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash --noprofile --norc -euo pipefail {0}
+
+env:
+  EXPECTED_REPOSITORY: billybotticelli4u-collab/raven-receipt-verifier
+  EXPECTED_PACKAGE: raven-receipt-verifier
+  EXPECTED_VERSION: '0.1.0'
+  EXPECTED_DECODED_TAR_SHA256: 74df0f57e9e93c5b06552651b9a0003091e2dd11541aae750339d9cc9eb852a5
+  EXPECTED_MEMBERS: '56'
+  FIRST_PUBLISH_CEREMONY: BLOCKED
+  PINNED_NPM: '11.18.0'
+  MIN_NPM: '11.5.1'
+  REVIEWED_SHA: ${{ inputs.reviewed_sha }}
+  REQUESTED_VERSION: ${{ inputs.version }}
+  MODE: ${{ inputs.mode }}
+  WORKFLOW_SHA: ${{ github.workflow_sha }}
+  CONTROL_PY: |
+    import gzip, hashlib, io, json, os, re, subprocess, sys, tarfile
+    import urllib.error, urllib.request
+    from pathlib import Path
+
+    class Refusal(Exception):
+        pass
+
+    def require(ok, code):
+        if not ok:
+            raise Refusal(code)
+
+    def ver_tuple(s):
+        return tuple(int(p) for p in s.split('.')[:3])
+
+    def dispatch(e):
+        sha = e['REVIEWED_SHA']
+        require(re.fullmatch(r'[0-9a-f]{40}', sha) is not None, 'SOURCE_SHA_FORMAT')
+        require(e['GITHUB_EVENT_NAME'] == 'workflow_dispatch', 'MANUAL_TRIGGER_REQUIRED')
+        require(e['GITHUB_REPOSITORY'] == e['EXPECTED_REPOSITORY'], 'WRONG_REPOSITORY')
+        require(e['REQUESTED_VERSION'] == e['EXPECTED_VERSION'], 'VERSION_INPUT_MISMATCH')
+        require(e['MODE'] in ('validate_only', 'publish_bootstrap'), 'UNKNOWN_MODE')
+        require(e['GITHUB_SHA'] == sha, 'PROVENANCE_SOURCE_SHA_MISMATCH')
+        require(e['WORKFLOW_SHA'] == sha, 'WORKFLOW_SOURCE_SHA_MISMATCH')
+        return sha
+
+    def git(*args):
+        return subprocess.check_output(['git', *args], text=True).strip()
+
+    def source(e):
+        sha = dispatch(e)
+        require(git('rev-parse', 'HEAD') == sha, 'CHECKOUT_SHA_MISMATCH')
+        require(not git('status', '--porcelain', '--untracked-files=normal'), 'DIRTY_CHECKOUT')
+        package = json.loads(Path('package.json').read_text())
+        require(package['name'] == e['EXPECTED_PACKAGE'], 'WRONG_PACKAGE_NAME')
+        require(package['version'] == e['REQUESTED_VERSION'], 'PACKAGE_VERSION_MISMATCH')
+        require(package.get('publishConfig', {}).get('provenance') is True, 'PROVENANCE_DISABLED')
+        require(package.get('publishConfig', {}).get('access') == 'public', 'ACCESS_NOT_PUBLIC')
+        repo = package.get('repository', {})
+        url = repo.get('url') if isinstance(repo, dict) else repo
+        accepted = {
+            'https://github.com/' + e['EXPECTED_REPOSITORY'],
+            'https://github.com/' + e['EXPECTED_REPOSITORY'] + '.git',
+            'git+https://github.com/' + e['EXPECTED_REPOSITORY'] + '.git',
+        }
+        require(url in accepted, 'MATCHING_PUBLIC_REPOSITORY_METADATA_REQUIRED')
+        return {'source': sha, 'tree': git('rev-parse', 'HEAD^{tree}'), 'package': package}
+
+    def registry_absent(name, version, opener=urllib.request.urlopen):
+        for url in (f'https://registry.npmjs.org/{name}', f'https://registry.npmjs.org/{name}/{version}'):
+            try:
+                with opener(urllib.request.Request(url, headers={'Accept':'application/json'}), timeout=20) as r:
+                    r.read(1024)
+                    raise Refusal('REGISTRY_PACKAGE_ALREADY_EXISTS')
+            except urllib.error.HTTPError as ex:
+                require(ex.code == 404, 'REGISTRY_NOT_CONFIRMED_ABSENT')
+                try:
+                    error = json.loads(ex.read(4096))
+                except Exception as parse_error:
+                    raise Refusal('REGISTRY_INVALID_ABSENCE_RESPONSE') from parse_error
+                require(error.get('error') == 'Not found', 'REGISTRY_INVALID_ABSENCE_RESPONSE')
+
+    MODULES = (
+        'canonicalDataSnapshot', 'canonicalJson', 'detect', 'ed25519KeyDomain',
+        'ed25519NodeVerify', 'index', 'outcomeProjection', 'receiptRules',
+        'receiptV1', 'solanaAddress', 'trustAnchor', 'verifyReceiptV1',
+        'verifyReceiptV1ForSubject',
+    )
+    MEMBERS = {'package/' + n for n in ('LICENSE', 'README.md', 'SECURITY.md', 'package.json')}
+    MEMBERS |= {'package/dist/' + m + x for m in MODULES for x in ('.js', '.js.map', '.d.ts', '.d.ts.map')}
+
+    def archive(filename, e):
+        p = Path(filename)
+        require(p.is_file() and not p.is_symlink(), 'TARBALL_NOT_REGULAR')
+        require(p.stat().st_size <= 2 * 1024 * 1024, 'TARBALL_SIZE_LIMIT')
+        packed = p.read_bytes()
+        with gzip.GzipFile(fileobj=io.BytesIO(packed)) as gz:
+            decoded = gz.read(8 * 1024 * 1024 + 1)
+        require(len(decoded) <= 8 * 1024 * 1024, 'DECODED_SIZE_LIMIT')
+        digest = hashlib.sha256(decoded).hexdigest()
+        require(digest == e['EXPECTED_DECODED_TAR_SHA256'], 'DECODED_TAR_MISMATCH')
+        hashes = {}
+        package = None
+        with tarfile.open(fileobj=io.BytesIO(decoded), mode='r:') as tf:
+            for item in tf:
+                require(item.isfile() and not item.issym() and not item.islnk(), 'NON_REGULAR_MEMBER')
+                require(item.name in MEMBERS, 'UNEXPECTED_MEMBER')
+                require(item.name not in hashes, 'DUPLICATE_MEMBER')
+                data = tf.extractfile(item).read()
+                hashes[item.name] = hashlib.sha256(data).hexdigest()
+                if item.name == 'package/package.json':
+                    package = json.loads(data)
+        require(len(hashes) == int(e['EXPECTED_MEMBERS']) and set(hashes) == MEMBERS, 'MEMBER_SET_MISMATCH')
+        require(package['name'] == e['EXPECTED_PACKAGE'], 'WRONG_PACKAGE_NAME')
+        require(package['version'] == e['REQUESTED_VERSION'], 'PACKAGE_VERSION_MISMATCH')
+        require(package.get('publishConfig', {}).get('provenance') is True, 'PROVENANCE_DISABLED')
+        require(package.get('publishConfig', {}).get('access') == 'public', 'ACCESS_NOT_PUBLIC')
+        require(not package.get('dependencies'), 'UNEXPECTED_RUNTIME_DEPENDENCY')
+        require(not any(k in package.get('scripts', {}) for k in ('preinstall', 'install', 'postinstall')),
+                'INSTALL_HOOK_PRESENT')
+        import base64
+        return {
+            'name': package['name'], 'version': package['version'], 'bytes': len(packed),
+            'sha1': hashlib.sha1(packed).hexdigest(), 'sha256': hashlib.sha256(packed).hexdigest(),
+            'sha512': hashlib.sha512(packed).hexdigest(),
+            'integrity': 'sha512-' + base64.b64encode(hashlib.sha512(packed).digest()).decode(),
+            'decoded_tar_sha256': digest, 'members': hashes, 'package': package,
+        }
+
+    def eligibility(e, package, event):
+        issues = []
+        if e.get('FIRST_PUBLISH_CEREMONY') != 'CLEARED_BY_OWNER_REVIEW':
+            issues.append('FIRST_PUBLISH_CEREMONY_BLOCKED')
+        if event.get('repository', {}).get('private') is not False:
+            issues.append('PUBLIC_SOURCE_REPOSITORY_REQUIRED')
+        repo = package.get('repository', {})
+        url = repo.get('url') if isinstance(repo, dict) else repo
+        accepted = {
+            'https://github.com/' + e['EXPECTED_REPOSITORY'],
+            'https://github.com/' + e['EXPECTED_REPOSITORY'] + '.git',
+            'git+https://github.com/' + e['EXPECTED_REPOSITORY'] + '.git',
+        }
+        if url not in accepted:
+            issues.append('MATCHING_PUBLIC_REPOSITORY_METADATA_REQUIRED')
+        return issues
+
+    def publish_allowed(e, package, event):
+        dispatch(e)
+        require(e['MODE'] == 'publish_bootstrap', 'VALIDATE_ONLY_NO_PUBLICATION')
+        require(e.get('TESTS_RESULT') == 'success', 'REQUIRED_TESTS_NOT_SUCCESS')
+        require(e.get('PACK_RESULT') == 'success', 'REQUIRED_PACK_NOT_SUCCESS')
+        issues = eligibility(e, package, event)
+        require(not issues, ','.join(issues))
+        require(e.get('RUNNER_ENVIRONMENT') == 'github-hosted', 'GITHUB_HOSTED_RUNNER_REQUIRED')
+        require(bool(e.get('ACTIONS_ID_TOKEN_REQUEST_URL')) and bool(e.get('ACTIONS_ID_TOKEN_REQUEST_TOKEN')),
+                'OIDC_PERMISSION_REQUIRED')
+
+    if __name__ == '__main__':
+        try:
+            e = dict(os.environ)
+            command = sys.argv[1]
+            if command == 'source':
+                result = source(e)
+                event = json.loads(Path(e['GITHUB_EVENT_PATH']).read_text())
+                result['publication_blockers'] = eligibility(e, result['package'], event)
+                result['first_publish_ceremony'] = e.get('FIRST_PUBLISH_CEREMONY')
+                print(json.dumps(result, indent=2))
+                if e['MODE'] == 'publish_bootstrap':
+                    require(not result['publication_blockers'], ','.join(result['publication_blockers']))
+                registry_absent(e['EXPECTED_PACKAGE'], e['REQUESTED_VERSION'])
+            elif command == 'archive':
+                result = archive(sys.argv[2], e)
+                result.update(source_sha=e['REVIEWED_SHA'], workflow_sha=e['WORKFLOW_SHA'],
+                              run_id=e.get('GITHUB_RUN_ID'), run_attempt=e.get('GITHUB_RUN_ATTEMPT'))
+                Path(sys.argv[3]).write_text(json.dumps(result, indent=2) + '\n')
+                print(json.dumps(result, indent=2))
+            elif command == 'permission':
+                result = archive(sys.argv[2], e)
+                publish_allowed(e, result['package'], json.loads(Path(e['GITHUB_EVENT_PATH']).read_text()))
+                registry_absent(e['EXPECTED_PACKAGE'], e['REQUESTED_VERSION'])
+                print('PUBLISH_PRECONDITIONS_VERIFIED; NO_PUBLICATION_PERFORMED_BY_GUARD')
+            else:
+                raise Refusal('UNKNOWN_GUARD_COMMAND')
+        except Exception as ex:
+            print(f'RELEASE_GUARD_REFUSAL: {ex}', file=sys.stderr)
+            sys.exit(1)
+
+jobs:
+  identity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout requested immutable source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.reviewed_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check identity, ceremony hold, provenance prerequisites, registry absence
+        run: python3 -c "$CONTROL_PY" source
+
+  tests:
+    needs: identity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['22.18.0', '24.20.0']
+    steps:
+      - name: Checkout the same source without credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.reviewed_sha }}
+          persist-credentials: false
+      - name: Use exact contractual Node line
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Pin npm (>=11.5.1) and assert both tools before build
+        env:
+          EXPECTED_NODE: ${{ matrix.node }}
+        run: |
+          node --version
+          npm --version
+          test "$(node --version)" = "v$EXPECTED_NODE"
+          npm install --global --ignore-scripts --no-audit --no-fund "npm@$PINNED_NPM"
+          test "$(node --version)" = "v$EXPECTED_NODE"
+          test "$(npm --version)" = "$PINNED_NPM"
+          python3 - <<'PY'
+          import os
+          pinned = tuple(int(x) for x in os.environ['PINNED_NPM'].split('.')[:3])
+          minimum = tuple(int(x) for x in os.environ['MIN_NPM'].split('.')[:3])
+          assert pinned >= minimum, (pinned, minimum)
+          print(f'npm_pin_ok pinned={os.environ["PINNED_NPM"]} min={os.environ["MIN_NPM"]}')
+          PY
+          printf 'Node=%s npm=%s\n' "$(node --version)" "$(npm --version)"
+      - name: Install package-local locked dependencies
+        run: npm ci
+      - name: Source tests (includes #212 three regression locks)
+        run: |
+          npm test
+          node --test \
+            test/receiptIdTamper.test.ts \
+            test/unexpectedTopLevelField.test.ts \
+            test/noncanonicalSignerKey.test.ts
+      - name: Packed consumer gate
+        run: npm run test:packed
+      - name: CommonJS consumer gate
+        run: npm run test:cjs
+      - name: Declaration consumer gate
+        run: npm run test:declarations
+      - name: Packed Ed25519 corpus (0-forgeable / 100 positives)
+        run: node scripts/test-packed-ed25519-corpus.mjs
+      - name: Refuse tracked build/test mutations
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEWED_SHA"
+          test -z "$(git status --porcelain --untracked-files=normal)"
+
+  pack:
+    needs: [identity, tests]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+      sealed_sha256: ${{ steps.seal.outputs.sealed_sha256 }}
+    steps:
+      - name: Checkout immutable source for the sole release pack
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.reviewed_sha }}
+          persist-credentials: false
+      - name: Use exact publishing Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22.18.0'
+      - name: Pin and assert publishing toolchain
+        run: |
+          node --version
+          npm --version
+          test "$(node --version)" = v22.18.0
+          npm install --global --ignore-scripts --no-audit --no-fund "npm@$PINNED_NPM"
+          test "$(node --version)" = v22.18.0
+          test "$(npm --version)" = "$PINNED_NPM"
+          printf 'Node=%s npm=%s\n' "$(node --version)" "$(npm --version)"
+      - name: Install from package-local lockfile
+        run: npm ci
+      - name: Pack once and verify the decoded content
+        id: seal
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEWED_SHA"
+          test -z "$(git status --porcelain --untracked-files=normal)"
+          mkdir -p "$RUNNER_TEMP/d1-sealed"
+          npm pack --json --pack-destination "$RUNNER_TEMP/d1-sealed" > "$RUNNER_TEMP/d1-pack-output.json"
+          TARBALL="$RUNNER_TEMP/d1-sealed/raven-receipt-verifier-0.1.0.tgz"
+          python3 -c "$CONTROL_PY" archive "$TARBALL" "$RUNNER_TEMP/d1-sealed/identity.json"
+          test -z "$(git status --porcelain --untracked-files=normal)"
+          printf 'sealed_sha256=%s\n' "$(sha256sum "$TARBALL" | cut -d ' ' -f1)" >> "$GITHUB_OUTPUT"
+          chmod 0444 "$TARBALL" "$RUNNER_TEMP/d1-sealed/identity.json"
+          { echo '## Sealed candidate — NOT a release approval (ceremony BLOCKED)'; cat "$RUNNER_TEMP/d1-sealed/identity.json"; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload only the sealed archive and identity
+        id: upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: d1-first-publish-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/d1-sealed/
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+
+  publish:
+    needs: [identity, tests, pack]
+    if: ${{ inputs.mode == 'publish_bootstrap' && needs.identity.result == 'success' && needs.tests.result == 'success' && needs.pack.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # Existing public Environment. Required reviewers / prevent_self_review are
+    # external prerequisites; a YAML reference does not create those rules.
+    environment: npm-release
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TESTS_RESULT: ${{ needs.tests.result }}
+      PACK_RESULT: ${{ needs.pack.result }}
+      SEALED_SHA256: ${{ needs.pack.outputs.sealed_sha256 }}
+    steps:
+      # Deliberately NO source checkout, dependency build, or package lifecycle
+      # execution in this credential-bearing job.
+      - name: Refuse while FIRST_PUBLISH_CEREMONY is BLOCKED
+        run: |
+          echo "FIRST_PUBLISH_CEREMONY=$FIRST_PUBLISH_CEREMONY"
+          test "$FIRST_PUBLISH_CEREMONY" = "CLEARED_BY_OWNER_REVIEW"
+      - name: Use publishing Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22.18.0'
+          registry-url: https://registry.npmjs.org
+      - name: Pin and assert publisher without exposing npm credential
+        run: |
+          node --version
+          npm --version
+          test "$(node --version)" = v22.18.0
+          npm install --global --ignore-scripts --no-audit --no-fund "npm@$PINNED_NPM"
+          test "$(node --version)" = v22.18.0
+          test "$(npm --version)" = "$PINNED_NPM"
+      - name: Download the exact artifact from this run
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          artifact-ids: ${{ needs.pack.outputs.artifact_id }}
+          path: ${{ runner.temp }}/d1-publish
+          merge-multiple: true
+      - name: Recheck content, same-run transport, holds, and registry before credentials
+        run: |
+          TARBALL="$RUNNER_TEMP/d1-publish/raven-receipt-verifier-0.1.0.tgz"
+          test "$(sha256sum "$TARBALL" | cut -d ' ' -f1)" = "$SEALED_SHA256"
+          python3 -c "$CONTROL_PY" archive "$TARBALL" "$RUNNER_TEMP/d1-publish/rechecked.json"
+          python3 -c "$CONTROL_PY" permission "$TARBALL"
+          chmod 0444 "$TARBALL"
+      - name: First publish — Owner-supplied short-lived token, OIDC provenance
+        env:
+          # Environment secret name only. Token is registry authentication;
+          # Actions OIDC is provenance. No token is read by build/tests;
+          # no token is created by this workflow or present in source.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_BOOTSTRAP_TOKEN }}
+        run: |
+          test -n "$NODE_AUTH_TOKEN"
+          test "$(node --version)" = v22.18.0
+          test "$(npm --version)" = "$PINNED_NPM"
+          TARBALL="$RUNNER_TEMP/d1-publish/raven-receipt-verifier-0.1.0.tgz"
+          test "$(sha256sum "$TARBALL" | cut -d ' ' -f1)" = "$SEALED_SHA256"
+          python3 -c "$CONTROL_PY" permission "$TARBALL"
+          cd "$RUNNER_TEMP/d1-publish"
+          npm publish "$TARBALL" --access public --provenance --ignore-scripts --registry=https://registry.npmjs.org --json > "$RUNNER_TEMP/d1-publish-result.json"
+      - name: Record public identity and provenance locator (read only)
+        run: |
+          npm view raven-receipt-verifier@0.1.0 --json --registry=https://registry.npmjs.org > "$RUNNER_TEMP/d1-public.json"
+          python3 - <<'PY_RECEIPT'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          public = json.loads((root/'d1-public.json').read_text())
+          sealed = json.loads((root/'d1-publish'/'rechecked.json').read_text())
+          assert public['name'] == sealed['name'] and public['version'] == sealed['version']
+          assert public['dist']['integrity'] == sealed['integrity'], 'PUBLIC_INTEGRITY_MISMATCH'
+          attest = public['dist'].get('attestations', {}).get('url')
+          assert isinstance(attest, str) and attest.startswith('https://registry.npmjs.org/'), 'PROVENANCE_LOCATOR_MISSING'
+          receipt = {'sourceSHA':os.environ['REVIEWED_SHA'], 'workflowSHA':os.environ['WORKFLOW_SHA'],
+                     'name':sealed['name'], 'version':sealed['version'], 'tgzSHA256':sealed['sha256'],
+                     'tgzSHA512':sealed['sha512'], 'decodedTarSHA256':sealed['decoded_tar_sha256'],
+                     'tarball':public['dist']['tarball'], 'provenanceBundleURL':attest,
+                     'independentPostPublicationReview':'REQUIRED; not performed by this workflow'}
+          (root/'D1_PUBLICATION_RECEIPT.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as out:
+              out.write('## Registry publication observed — independent closeout still required\n')
+              out.write('```json\n'+json.dumps(receipt,indent=2)+'\n```\n')
+          PY_RECEIPT

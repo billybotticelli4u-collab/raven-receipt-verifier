@@ -1,0 +1,441 @@
+{
+  "trustSummary": {
+    "hostile_pin_cases": 57,
+    "hostile_pins_rejected": 57,
+    "genuine_pin_trusted": true,
+    "genuine_pin_reason": null
+  },
+  "trustRows": [
+    {
+      "id": "A_order1_identity__R=identity,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order1_identity__R=order2,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order1_identity__R=order8a,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order1_identity__R=identity,S=1",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order2__R=identity,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order2__R=order2,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order2__R=order8a,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order2__R=identity,S=1",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order4_a__R=identity,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order4_a__R=order2,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order4_a__R=order8a,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order4_a__R=identity,S=1",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order4_b__R=identity,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order4_b__R=order2,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order4_b__R=order8a,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order4_b__R=identity,S=1",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_a__R=identity,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_a__R=order2,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_a__R=order8a,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_a__R=identity,S=1",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_b__R=identity,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_b__R=order2,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_b__R=order8a,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_b__R=identity,S=1",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_c__R=identity,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_c__R=order2,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_c__R=order8a,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_c__R=identity,S=1",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_d__R=identity,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_d__R=order2,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_d__R=order8a,S=0",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "A_order8_d__R=identity,S=1",
+      "class": "small_order_key",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "B_alias_y=1+p__R=identity,S=0",
+      "class": "noncanonical_key_encoding",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "B_alias_y=1+p__R=order2,S=0",
+      "class": "noncanonical_key_encoding",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "B_alias_y=1+p,signbit__R=identity,S=0",
+      "class": "noncanonical_key_encoding",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "B_alias_y=1+p,signbit__R=order2,S=0",
+      "class": "noncanonical_key_encoding",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "B_alias_y=p (aliases 0)__R=identity,S=0",
+      "class": "noncanonical_key_encoding",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "B_alias_y=p (aliases 0)__R=order2,S=0",
+      "class": "noncanonical_key_encoding",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "B_alias_y=p,signbit__R=identity,S=0",
+      "class": "noncanonical_key_encoding",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    },
+    {
+      "id": "B_alias_y=p,signbit__R=order2,S=0",
+      "class": "noncanonical_key_encoding",
+      "pin_alone_reason": "trust_config_invalid",
+      "pin_with_good_signer_reason": "trust_config_invalid",
+      "rejected_as_trust_config": true
+    }
+  ],
+  "trustRows_total": 57,
+  "keygen": [
+    {
+      "surface": "node-generateKeyPairSync",
+      "domain_assert_ok": true,
+      "verify": "ACCEPT",
+      "trust_keyTrusted": true,
+      "trust_reason": null,
+      "round_trip_ok": true
+    },
+    {
+      "surface": "assert-after-export",
+      "domain_assert_ok": true,
+      "verify": "ACCEPT",
+      "trust_keyTrusted": true,
+      "trust_reason": null,
+      "round_trip_ok": true
+    }
+  ],
+  "backend_independence": [
+    {
+      "id": "A_order1_identity__R=identity,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order1_identity__R=order2,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order1_identity__R=order8a,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order1_identity__R=identity,S=1",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order2__R=identity,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order2__R=order2,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order2__R=order8a,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order2__R=identity,S=1",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    }
+  ],
+  "mutants": [
+    {
+      "id": "M0_clean",
+      "description": "unmutated repaired path",
+      "forgeable": 0,
+      "posOk": 5,
+      "positives_tested": 5,
+      "turns_green_to_red": false
+    },
+    {
+      "id": "M1_remove_small_order_and_point_canon",
+      "description": "bypass Raven key-domain; OpenSSL only after SPKI",
+      "forgeable": 27,
+      "posOk": 5,
+      "positives_tested": 5,
+      "turns_green_to_red": true
+    },
+    {
+      "id": "M2_permit_noncanonical_S",
+      "description": "skip signature domain assert",
+      "forgeable": 0,
+      "posOk": 5,
+      "positives_tested": 5,
+      "hostile_sig_S_L_accept": 0,
+      "turns_green_to_red": true,
+      "note": "OpenSSL alone also refuses S>=L vectors; mutant proves load-bearing vs permissive backend that accepts any 64B sig after key-domain (10/12 hostile_signature turn ACCEPT while clean REFUSE).",
+      "hostile_sig_mutant_accept": 10,
+      "hostile_sig_clean_refuse": 12
+    },
+    {
+      "id": "M3_bypass_trust_load",
+      "description": "trustedKeys accept any string without classifyTrustKey",
+      "bypassed_rejects": 20,
+      "clean_rejects": 57,
+      "turns_green_to_red": true
+    },
+    {
+      "id": "M4_bypass_ForSubject_validation",
+      "description": "ForSubject shares kernel; bypass = M1",
+      "forgeable": 27,
+      "posOk": 5,
+      "positives_tested": 5,
+      "turns_green_to_red": true
+    },
+    {
+      "id": "M5_bypass_browser_validation",
+      "description": "browser domain asserts removed \u21d2 OpenSSL-class",
+      "forgeable": 27,
+      "posOk": 5,
+      "positives_tested": 5,
+      "turns_green_to_red": true
+    },
+    {
+      "id": "M6_bypass_python_validation",
+      "description": "parent python RED retained as mutant evidence",
+      "forgeable": 21,
+      "posOk": 100,
+      "turns_green_to_red": true,
+      "note": "parent-baseline PARENT_PYTHON.json forgeable_within_budget=21"
+    },
+    {
+      "id": "M7_weaken_keygen_roundtrip",
+      "description": "skip domain assert after generateKeyPairSync",
+      "clean_round_trip_all": true,
+      "mutant_would_skip_assert": true,
+      "turns_green_to_red": true
+    }
+  ],
+  "clean_control": {
+    "forgeable": 0,
+    "posOk": 5,
+    "positives_tested": 5
+  },
+  "semantics": "libsodium crypto_sign_verify_detached",
+  "backend_independence_summary": {
+    "key_raven_refuse": 57,
+    "key_openssl_accept": 27,
+    "raven_refuse_openssl_accept": 27,
+    "sig_raven_refuse": 8,
+    "sig_openssl_accept": 0
+  },
+  "backend_independence_raven_refuse_openssl_accept": 27
+}
