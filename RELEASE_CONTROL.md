@@ -16,7 +16,7 @@ provenance. It is **not** authorization to publish.
 
 ## Measured pack identity (after `repository` field)
 
-Measured locally on 2026-09-15 (Europe/Rome) after setting:
+Measured locally on 2026-09-23 (Europe/Rome) after setting:
 
 ```json
 "repository": {
@@ -29,13 +29,16 @@ Measured locally on 2026-09-15 (Europe/Rome) after setting:
 | --- | --- |
 | Package | `raven-receipt-verifier@0.1.0` |
 | Members | `56` |
-| Decoded-tar SHA-256 | `74df0f57e9e93c5b06552651b9a0003091e2dd11541aae750339d9cc9eb852a5` |
-| Archive SHA-256 (host gzip; transport only) | `bd9930ecc294f56ec1d1517a712c9a91aeac8ec5781cf1dfb12011c1415abd69` |
-| npm integrity | `sha512-++wAs2Maekm/7bpDSXfN1Uhm+WZr9AETQRCPZpECDYYucI0ReuO8m2IpNvWHhzUvTyLlSq7bxHmiWrAF4ocd6Q==` |
-| Content fingerprint | `297a3ced56cddc687700c3b7398e0da7fb5ec51fc586677d5e06520ddffa9eb2` |
-| Private tip decoded-tar (no repository; do not reuse) | `0be0a2c36e6e611ff6d7bbe64235bd6225b5207d38368100a39c52769a5218b0` |
+| Decoded-tar SHA-256 | `6764b02da729d502b6b3cb0072366fe0cb23ab46829d4b53e3afecb99bd63520` |
+| Archive SHA-256 (host gzip; transport only) | `848d13d3cc6483ded1711a015c74a7421571368fa2a43ec2325c1364ab556d62` |
+| npm integrity | `sha512-hhyKHfXMPYeCe3LRSq3q4u+H/PpQ4Tg2h7DH1Hf/mSgBhjHH3asyrYTVevjAOIr7qPR+zgikdIweF7IXUjs6eA==` |
+| Sorted member-hash manifest SHA-256 | `b2141bdf2fb547d65acd35905ba723506670e8276efb98e6100ea37fe80d9d21` |
+| Reviewed private candidate decoded-tar (no repository; do not reuse) | `aa1be924d0f22e25c756a62a687be90ac7dcf7ed3ae98268e149657fa5154a18` |
 
 Cross-build equivalence uses **decoded-tar**, never gzip archive identity.
+The public successor and reviewed private candidate have the same 56-member allowlist;
+55 members are byte-identical. The only packed difference is `package/package.json`, where
+the public successor adds the matching public `repository` field.
 
 ## Workflow
 
@@ -50,7 +53,7 @@ Cross-build equivalence uses **decoded-tar**, never gzip archive identity.
 
 ## Ceremony steps remaining (Owner / Glen)
 
-1. Independent review of this public tree ↔ decoded-tar `74df0f57…52a5` and Ed25519 packed corpus (0-forgeable expected).
+1. Independent review of this public tree ↔ decoded-tar `6764b02d…3520` and Ed25519 packed corpus (0-forgeable expected).
 2. Owner GO / no-GO on first publication (this document is not GO).
 3. Confirm public repo remains the provenance source (not private `-launchguard`).
 4. Repository-file change only: set `FIRST_PUBLISH_CEREMONY` from `BLOCKED` to the reviewed clear value after pins/review match.

@@ -30,7 +30,7 @@ const root = join(__dirname, "..");
 const pkgPath = join(root, "package.json");
 const EXPECTED =
   process.env.EXPECTED_DECODED_TAR_SHA256 ||
-  "74df0f57e9e93c5b06552651b9a0003091e2dd11541aae750339d9cc9eb852a5";
+  "6764b02da729d502b6b3cb0072366fe0cb23ab46829d4b53e3afecb99bd63520";
 
 function decodedTarSha256() {
   const scratch = mkdtempSync(join(tmpdir(), "rrv-neg-"));

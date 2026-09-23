@@ -344,3 +344,157 @@ test("successfully read malformed or cryptographically wrong signature bytes sta
     assert.deepEqual(result.reasons, ["signature_invalid", "trust_config_missing"]);
   }
 });
+
+// --- A caller's Date option is not a receipt read ---------------------------
+//
+// The containment above is for RECEIPT values: a receipt that cannot be read
+// must still produce an outcome. Converting the caller's own `now` option is
+// not a receipt read. When that conversion fails the caller made the mistake,
+// so the caller keeps the exception they would have seen before containment
+// existed. Reporting `shape_not_an_object` plus `malformed_rules_version` would
+// blame the receipt for the caller's option and make diagnostics untrustworthy.
+// No new reason or status is introduced by these cases.
+//
+// The assertions are on OBJECT IDENTITY, not class and message: rethrowing a
+// newly constructed error of the same class and message hands the caller a
+// different value, and must fail here.
+
+/** The exact object the subclass throws, created outside it so identity is testable. */
+const nowFailure = new TypeError("hostile now");
+
+class ThrowingDate extends Date {
+  toISOString(): string {
+    throw nowFailure;
+  }
+}
+
+/** An invalid Date that records the engine's own RangeError, so its identity can be asserted. */
+class CapturingInvalidDate extends Date {
+  thrown: unknown = undefined;
+  toISOString(): string {
+    try {
+      return super.toISOString();
+    } catch (error) {
+      this.thrown = error;
+      throw error;
+    }
+  }
+}
+
+/** The value `run` threw, boxed so that a thrown `undefined` is distinguishable from no throw. */
+const thrownBy = (run: () => unknown): { value: unknown } => {
+  try {
+    run();
+  } catch (error) {
+    return { value: error };
+  }
+  assert.fail("the call was expected to throw");
+};
+
+/** A receipt whose `chain` read throws `value`, whatever `value` is. */
+const receiptThrowing = (value: unknown): Record<string, unknown> =>
+  new Proxy(validInput(), {
+    get(target, property, receiver) {
+      if (property === "chain") throw value;
+      return Reflect.get(target, property, receiver);
+    },
+  });
+
+test("an invalid Date `now` keeps its own RangeError instead of blaming the receipt", () => {
+  assert.throws(
+    () => verifyReceiptV1(validInput(), { now: new Date(NaN) }),
+    RangeError,
+    "a documented Date option failure must retain its pre-containment exception",
+  );
+});
+
+test("the invalid-Date RangeError is the engine's own object, not a copy", () => {
+  const now = new CapturingInvalidDate(NaN);
+  const caught = thrownBy(() => verifyReceiptV1(validInput(), { now }));
+  assert.ok(now.thrown instanceof RangeError, "control: the engine must have thrown a RangeError");
+  assert.strictEqual(caught.value, now.thrown, "a reconstructed RangeError is not the original");
+});
+
+test("a throwing Date subclass preserves the exact object it threw", () => {
+  const caught = thrownBy(() => verifyReceiptV1(validInput(), { now: new ThrowingDate(T0) }));
+  assert.strictEqual(
+    caught.value,
+    nowFailure,
+    "a reconstructed error of the same class and message is not the original",
+  );
+});
+
+// Whatever the caller's `toISOString` throws comes back unchanged, so the
+// contract cannot be met by matching error classes.
+const arbitraryOptionThrows: [string, unknown][] = [
+  ["a frozen plain object", Object.freeze({ raven: "not an error" })],
+  ["a string", "plain string failure"],
+  ["undefined", undefined],
+  ["null", null],
+  ["false", false],
+  ["zero", 0],
+  ["a symbol", Symbol("date option failure")],
+  ["a function", function hostileNow() {}],
+  ["a revoked Proxy", revokedProxy()],
+];
+
+for (const [label, value] of arbitraryOptionThrows) {
+  test(`a Date option that throws ${label} gets that exact value back`, () => {
+    class Thrower extends Date {
+      toISOString(): string {
+        throw value;
+      }
+    }
+    const caught = thrownBy(() => verifyReceiptV1(validInput(), { now: new Thrower(T0) }));
+    assert.strictEqual(caught.value, value);
+  });
+}
+
+test("an ordinary Date `now` still verifies the valid receipt", () => {
+  const result = contained(validInput(), { now: new Date(validFixture.now) });
+  assert.equal(result.valid, true);
+  assert.deepEqual(result.reasons, ["trust_config_missing"]);
+});
+
+test("a hostile receipt stays contained even when the Date option is also invalid", () => {
+  // Receipt containment still wins: the receipt fails long before freshness.
+  assert.deepEqual(contained(revokedProxy(), { now: new Date(NaN) }), HOSTILE_RESULT);
+});
+
+// Whatever a RECEIPT throws stays contained. Non-objects take the boundary's
+// early return; objects are looked up by private identity and never matched by
+// shape, message or prototype.
+const receiptThrows: [string, unknown][] = [
+  ["null", null],
+  ["undefined", undefined],
+  ["a string", "not an object"],
+  ["a number", 42],
+  ["a symbol", Symbol("receipt failure")],
+  ["a function", function hostileReceipt() {}],
+  ["a Date-option lookalike RangeError", new RangeError("Invalid time value")],
+  ["the very object a Date option once threw", nowFailure],
+  ["a revoked Proxy", revokedProxy()],
+];
+
+for (const [label, value] of receiptThrows) {
+  test(`a receipt that throws ${label} stays contained`, () => {
+    assert.deepEqual(contained(receiptThrowing(value), { now: T0 }), HOSTILE_RESULT);
+  });
+}
+
+test("a receipt that throws a value with a hostile getPrototypeOf stays contained, trap untouched", () => {
+  // `instanceof` on the thrown value would run this trap and escape the
+  // boundary; a closure-private identity lookup never consults it.
+  let consulted = false;
+  const hostilePrototype = new Proxy(
+    {},
+    {
+      getPrototypeOf() {
+        consulted = true;
+        throw new TypeError("hostile getPrototypeOf");
+      },
+    },
+  );
+  assert.deepEqual(contained(receiptThrowing(hostilePrototype), { now: T0 }), HOSTILE_RESULT);
+  assert.equal(consulted, false, "the boundary must not consult the thrown value's prototype");
+});

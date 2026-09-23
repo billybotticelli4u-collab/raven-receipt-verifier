@@ -1,8 +1,9 @@
 # EXPORTED_FILE_MANIFEST — raven-receipt-verifier release-control public source
 
-Generated: 2026-09-15 (Europe/Rome / CEST).
+Generated: 2026-09-23 (Europe/Rome / CEST).
 Purpose: single-package public release source for `raven-receipt-verifier@0.1.0`,
-derived from private `-launchguard` tip `0b01458` via Owner-prepared allowlist export.
+updated from the Owner-prepared public allowlist export to the independently reviewed
+private `-launchguard` tip `8f527a2b`.
 This file is release-control metadata; it is **not** packed into the npm tarball.
 
 ## Private baseline (read-only reference)
@@ -11,21 +12,23 @@ This file is release-control metadata; it is **not** packed into the npm tarball
 | --- | --- |
 | Private repo | `billybotticelli4u-collab/-launchguard` (PRIVATE; do not flip visibility) |
 | Private path | `packages/verify-js` |
-| origin/main HEAD | `0b01458fdc96be47fdc17e23085c3006be7440f8` |
-| TREE | `f8f0c2aae5becc42f0be4e88f85365c0eede0c3c` |
-| Export tarball | `verify-js-allowlist-export-0b01458.tar.gz` |
+| origin/main HEAD | `8f527a2bed3dc5567a2303fe5d09452e4f46c2a5` |
+| Repository TREE | `62c214248d82938b1699b4d3037bbf387ca4ba92` |
+| `packages/verify-js` TREE | `59d8495c9a2580469129b0d17912a6e83a18384f` |
 | Public repo | `billybotticelli4u-collab/raven-receipt-verifier` |
-| Branch | `billy/release-control-public-source-0b01458-2026-09-15` |
+| Predecessor branch | `billy/release-control-npm-404-shape-2026-09-16` at `405dfe3473d3b6f4cf50a19b8327e67b428b7f44` |
+| Local successor branch | `codex/public-mirror-successor-8f527a2-2026-09-23` (not pushed) |
 
 ## Allowlist files (single-package root)
 
-Count: **126** paths from `ALLOWLIST_VERIFY_JS.txt` (PRIVATE_BASELINE.txt excluded).
+Count: **131** paths from the private `packages/verify-js` subtree.
 
 | path |
 | --- |
 | `LICENSE` |
 | `README.md` |
 | `SECURITY.md` |
+| `fixtures/evm-safe-integer-wire.json` |
 | `fixtures/holder-outcome-v1.json` |
 | `fixtures/receipt-evm-v1/canonical-ordering-evm.json` |
 | `fixtures/receipt-evm-v1/d7-ec-evm.json` |
@@ -99,6 +102,7 @@ Count: **126** paths from `ALLOWLIST_VERIFY_JS.txt` (PRIVATE_BASELINE.txt exclud
 | `test/canonicalJson.test.ts` |
 | `test/detect.test.ts` |
 | `test/ed25519-corpus/AGENT_A_REPAIR_REPORT.md` |
+| `test/ed25519-corpus/EVIDENCE-SUPERSESSION.md` |
 | `test/ed25519-corpus/FROZEN_CONTRACT.md` |
 | `test/ed25519-corpus/README.md` |
 | `test/ed25519-corpus/RESULT_acp.json` |
@@ -128,8 +132,11 @@ Count: **126** paths from `ALLOWLIST_VERIFY_JS.txt` (PRIVATE_BASELINE.txt exclud
 | `test/ed25519-corpus/parent-baseline/run_backend_local.mjs` |
 | `test/ed25519-corpus/parent-baseline/run_parent_js_kernel.mjs` |
 | `test/ed25519-corpus/parent-baseline/run_parent_python.py` |
+| `test/ed25519-corpus/run_browser_applications.mjs` |
 | `test/ed25519-corpus/run_corpus.mjs` |
 | `test/ed25519-corpus/run_surface.mjs` |
+| `test/evidence-surface-integrity.test.ts` |
+| `test/evmSafeIntegerWire.test.ts` |
 | `test/exportSurface.test.ts` |
 | `test/fixture-parity.test.ts` |
 | `test/helpers/readmeTrustContract.ts` |
@@ -166,7 +173,7 @@ Count: **126** paths from `ALLOWLIST_VERIFY_JS.txt` (PRIVATE_BASELINE.txt exclud
 
 - `package.json` `repository` set to `https://github.com/billybotticelli4u-collab/raven-receipt-verifier.git`
   (absent on private tip). This **changes** packed `package.json` bytes and therefore decoded-tar.
-- Do **not** reuse private-tip decoded-tar `0be0a2c3…18b0` after this metadata edit.
+- Do **not** reuse reviewed private-tip decoded-tar `aa1be924…4a18` after this metadata edit.
 
 ## Standalone adaptations (public single-package)
 
@@ -175,5 +182,6 @@ Allowlist tests that hard-require private monorepo peers are made skip-safe here
 
 - `test/vectors.test.ts` — lazy-load `apps/raven-solana-holders` + `apps/raven-solana-outcome`; skip three cross-surface tests when absent
 - `test/readmeTrustContract.test.ts` — skip python README guard when `reference-verifiers/python` is absent
+- `test/evidence-surface-integrity.test.ts` — skip two source-equality checks when the monorepo application peers are absent; its six detached-predicate refusal checks still run
 
 These adaptations do **not** change packed runtime bytes (`files` / `dist` / `package.json` publish surface).

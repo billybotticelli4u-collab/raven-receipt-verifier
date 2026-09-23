@@ -569,8 +569,34 @@ const extractBody = (receipt: Record<string, unknown>): ReceiptV1Body => {
 const recomputePayloadHash = (body: ReceiptV1Body): string =>
   "sha256:" + createHash("sha256").update(canonicalJson(body), "utf8").digest("hex");
 
-const toIso = (now: string | Date | undefined): string =>
-  now === undefined ? new Date().toISOString() : typeof now === "string" ? now : now.toISOString();
+/**
+ * Failures raised while converting the CALLER's `now` option, tagged so the
+ * hostile-receipt boundary rethrows them unchanged instead of reporting them as
+ * a receipt failure. Recognition is closure-private identity: a WeakMap lookup
+ * cannot be forged by an attacker-thrown value, and it never runs attacker code
+ * — unlike `instanceof`, which would hand `[[GetPrototypeOf]]` to a revoked
+ * Proxy and escape the boundary it is meant to hold.
+ */
+const dateOptionFailures = new WeakMap<object, { readonly thrown: unknown }>();
+
+const toIso = (now: string | Date | undefined): string => {
+  if (now === undefined) return new Date().toISOString();
+  if (typeof now === "string") return now;
+  try {
+    return now.toISOString();
+  } catch (thrown) {
+    const marker = new Error("raven-verify: date option conversion failed");
+    dateOptionFailures.set(marker, { thrown });
+    throw marker;
+  }
+};
+
+/** Rethrow the caller's own option failure, exactly as it was thrown. */
+const rethrowDateOptionFailure = (failure: unknown): void => {
+  if (failure === null || typeof failure !== "object") return;
+  const tagged = dateOptionFailures.get(failure);
+  if (tagged !== undefined) throw tagged.thrown;
+};
 
 /**
  * Verify a receipt v1 (SPEC §8). All of steps 1–5 must hold for `valid: true`.
@@ -721,7 +747,10 @@ export const verifyReceiptV1 = (
   const safeOpts = sanitizeOptions(opts);
   try {
     return verifyReceiptV1Internal(receipt, safeOpts);
-  } catch {
+  } catch (failure) {
+    // A caller's own option failure is not a receipt outcome: it keeps the
+    // exception the caller would have seen before this boundary existed.
+    rethrowDateOptionFailure(failure);
     try {
       return hostileReceiptResult(receipt, safeOpts);
     } catch {

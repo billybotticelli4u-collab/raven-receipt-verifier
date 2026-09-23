@@ -94,7 +94,8 @@ const checkShape = (receipt: Record<string, unknown>): string[] => {
   ) {
     reasons.push("shape_type:implementationAddress");
   }
-  if (!Number.isInteger(r.blockNumber)) reasons.push("shape_type:blockNumber");
+  // #149: EVM-v1 integer fields use the safe JSON-number domain, without a positivity rule.
+  if (!Number.isSafeInteger(r.blockNumber)) reasons.push("shape_type:blockNumber");
   if (typeof r.blockHash !== "string" || !HEX_HASH.test(r.blockHash as string)) {
     reasons.push("shape_type:blockHash");
   }
@@ -106,7 +107,7 @@ const checkShape = (receipt: Record<string, unknown>): string[] => {
   if (!isStringArray(r.coverageGaps)) reasons.push("shape_type:coverageGaps");
   if (!isFindingArray(r.findings)) reasons.push("shape_type:findings");
   if (!isInterpretationArray(r.interpretations)) reasons.push("shape_type:interpretations");
-  if (!Number.isInteger(r.maxAgeSeconds)) reasons.push("shape_type:maxAgeSeconds");
+  if (!Number.isSafeInteger(r.maxAgeSeconds)) reasons.push("shape_type:maxAgeSeconds");
   str("disclaimer");
   str("payloadHash");
   str("receiptId");

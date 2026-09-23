@@ -1,5 +1,12 @@
 # Agent A — Ed25519 key-domain repair
 
+> **Historical report — surface attribution superseded 2026-09-18.** The original
+> table below is retained as the historical claim, not as application evidence.
+> Six labels ran the same `ed25519NodeVerify.ts` predicate. They did not run the
+> named browser applications, ACP verifier, ForSubject wrapper, packed package,
+> or full verify-js receipt kernel. See [EVIDENCE-SUPERSESSION.md](EVIDENCE-SUPERSESSION.md)
+> for the corrected matrix and reproducible application-entry-point procedure.
+
 ## Named semantics
 **libsodium `crypto_sign_verify_detached`**
 
@@ -28,7 +35,7 @@ Canonicalize point encoding first; reject small-order public keys; reject non-ca
 ## Corpus
 `raven-ed25519-corpus` v1.0.0 vendored at `packages/verify-js/test/ed25519-corpus/` (unchanged vectors).
 
-## Results at TRIALS=256
+## Historical reported results at TRIALS=256 (application attribution withdrawn)
 
 | Surface | forgeable_within_budget | positives_accepted | pass |
 |---|---|---|---|
