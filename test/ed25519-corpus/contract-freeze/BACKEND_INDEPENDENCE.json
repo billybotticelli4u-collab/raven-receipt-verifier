@@ -1,0 +1,496 @@
+{
+  "key_cases": [
+    {
+      "id": "A_order1_identity__R=identity,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order1_identity__R=order2,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order1_identity__R=order8a,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order1_identity__R=identity,S=1",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order2__R=identity,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order2__R=order2,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order2__R=order8a,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order2__R=identity,S=1",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order4_a__R=identity,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order4_a__R=order2,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order4_a__R=order8a,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order4_a__R=identity,S=1",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order4_b__R=identity,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order4_b__R=order2,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order4_b__R=order8a,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order4_b__R=identity,S=1",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order8_a__R=identity,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_a__R=order2,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_a__R=order8a,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_a__R=identity,S=1",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order8_b__R=identity,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_b__R=order2,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_b__R=order8a,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_b__R=identity,S=1",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order8_c__R=identity,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_c__R=order2,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_c__R=order8a,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_c__R=identity,S=1",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "A_order8_d__R=identity,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_d__R=order2,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_d__R=order8a,S=0",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "A_order8_d__R=identity,S=1",
+      "class": "small_order_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "B_alias_y=1+p__R=identity,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "B_alias_y=1+p__R=order2,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "B_alias_y=1+p,signbit__R=identity,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "B_alias_y=1+p,signbit__R=order2,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "B_alias_y=p (aliases 0)__R=identity,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "B_alias_y=p (aliases 0)__R=order2,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "B_alias_y=p,signbit__R=identity,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "B_alias_y=p,signbit__R=order2,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "B_alias_y=p+1+p? (>2^255)__R=identity,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "B_alias_y=p+1+p? (>2^255)__R=order2,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "B_alias_y=0,signbit_set__R=identity,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "B_alias_y=0,signbit_set__R=order2,S=0",
+      "class": "noncanonical_key_encoding",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "ACCEPT"
+    },
+    {
+      "id": "D_p256_key",
+      "class": "malformed_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "D_rsa2048_key",
+      "class": "malformed_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "D_ed448_key",
+      "class": "malformed_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "D_x25519_key",
+      "class": "malformed_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "D_raw32_no_spki",
+      "class": "malformed_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "D_spki_trailing_byte",
+      "class": "malformed_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "D_spki_truncated",
+      "class": "malformed_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "D_spki_null_params",
+      "class": "malformed_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "D_spki_key_31_bytes",
+      "class": "malformed_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "D_empty",
+      "class": "malformed_key",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "E_b64_unpadded",
+      "class": "noncanonical_base64",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "E_b64_whitespace",
+      "class": "noncanonical_base64",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    },
+    {
+      "id": "E_b64_tail_bits_mangled",
+      "class": "noncanonical_base64",
+      "raven_precondition": "REFUSE",
+      "openssl_alone_may_accept": "REFUSE"
+    }
+  ],
+  "signature_cases": [
+    {
+      "id": "C_genuinekey__S=0",
+      "class": "hostile_signature",
+      "raven_precondition": "ACCEPT_SIG",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__S=L",
+      "class": "hostile_signature",
+      "raven_precondition": "REFUSE",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__S=L+1",
+      "class": "hostile_signature",
+      "raven_precondition": "REFUSE",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__S=2^255-1",
+      "class": "hostile_signature",
+      "raven_precondition": "REFUSE",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__S high bit set",
+      "class": "hostile_signature",
+      "raven_precondition": "REFUSE",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__S+L (malleable)",
+      "class": "hostile_signature",
+      "raven_precondition": "REFUSE",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__R=identity",
+      "class": "hostile_signature",
+      "raven_precondition": "ACCEPT_SIG",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__R=order2",
+      "class": "hostile_signature",
+      "raven_precondition": "ACCEPT_SIG",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__R zeroed",
+      "class": "hostile_signature",
+      "raven_precondition": "ACCEPT_SIG",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__one bit flipped",
+      "class": "hostile_signature",
+      "raven_precondition": "REFUSE",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__truncated 63B",
+      "class": "hostile_signature",
+      "raven_precondition": "REFUSE",
+      "openssl_verify": "REFUSE"
+    },
+    {
+      "id": "C_genuinekey__extended 65B",
+      "class": "hostile_signature",
+      "raven_precondition": "REFUSE",
+      "openssl_verify": "REFUSE"
+    }
+  ],
+  "summary": {
+    "key_raven_refuse": 57,
+    "key_openssl_accept": 27,
+    "raven_refuse_openssl_accept": 27,
+    "sig_raven_refuse": 8,
+    "sig_openssl_accept": 0
+  },
+  "m1b_remove_small_order_only": {
+    "forgeable_within_budget_64": 0,
+    "turns_green_to_red": false
+  },
+  "m2": {
+    "turns_green_to_red": true,
+    "rows": [
+      {
+        "id": "C_genuinekey__S=0",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "ACCEPT"
+      },
+      {
+        "id": "C_genuinekey__S=L",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "ACCEPT"
+      },
+      {
+        "id": "C_genuinekey__S=L+1",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "ACCEPT"
+      },
+      {
+        "id": "C_genuinekey__S=2^255-1",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "ACCEPT"
+      },
+      {
+        "id": "C_genuinekey__S high bit set",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "ACCEPT"
+      },
+      {
+        "id": "C_genuinekey__S+L (malleable)",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "ACCEPT"
+      },
+      {
+        "id": "C_genuinekey__R=identity",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "ACCEPT"
+      },
+      {
+        "id": "C_genuinekey__R=order2",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "ACCEPT"
+      },
+      {
+        "id": "C_genuinekey__R zeroed",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "ACCEPT"
+      },
+      {
+        "id": "C_genuinekey__one bit flipped",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "ACCEPT"
+      },
+      {
+        "id": "C_genuinekey__truncated 63B",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "REFUSE"
+      },
+      {
+        "id": "C_genuinekey__extended 65B",
+        "clean": "REFUSE",
+        "mutant_permit_noncanonical_S_or_any_64B": "REFUSE"
+      }
+    ]
+  }
+}

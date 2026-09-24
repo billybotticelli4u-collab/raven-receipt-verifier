@@ -1,0 +1,1708 @@
+{
+ "name": "raven-hostile-ed25519-corpus",
+ "version": "1.0.0",
+ "generated_utc": "2026-09-13T20:28:46.995Z",
+ "authored_by": "independent review lane (not the repair lane)",
+ "classification_rule": {
+  "REJECT_KEY": "key is not a canonical, on-curve, prime-order-subgroup Ed25519 point, or not a canonical Ed25519 SPKI, or a non-canonical base64 spelling — must be refused BEFORE any backend signature check",
+  "REJECT_SIG": "key domain is fine; the signature must not verify",
+  "ACCEPT": "genuine key, genuine signature"
+ },
+ "counts": {
+  "REJECT_KEY": 57,
+  "REJECT_SIG": 12,
+  "ACCEPT": 100
+ },
+ "vectors": [
+  {
+   "id": "A_order1_identity__R=identity,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order1_identity__R=order2,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order1_identity__R=order8a,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+   "sig": "JuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order1_identity__R=identity,S=1",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order2__R=identity,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7P///////////////////////////////////////38=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order2__R=order2,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7P///////////////////////////////////////38=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order2__R=order8a,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7P///////////////////////////////////////38=",
+   "sig": "JuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order2__R=identity,S=1",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7P///////////////////////////////////////38=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order4_a__R=identity,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order4_a__R=order2,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order4_a__R=order8a,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+   "sig": "JuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order4_a__R=identity,S=1",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order4_b__R=identity,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order4_b__R=order2,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order4_b__R=order8a,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=",
+   "sig": "JuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order4_b__R=identity,S=1",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_a__R=identity,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAJuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AU=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_a__R=order2,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAJuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AU=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_a__R=order8a,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAJuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AU=",
+   "sig": "JuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_a__R=identity,S=1",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAJuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AU=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_b__R=identity,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAxxdqcD1N2E+6PAt2DRBnDyogU/osOczGTsf9d5KsA3o=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_b__R=order2,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAxxdqcD1N2E+6PAt2DRBnDyogU/osOczGTsf9d5KsA3o=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_b__R=order8a,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAxxdqcD1N2E+6PAt2DRBnDyogU/osOczGTsf9d5KsA3o=",
+   "sig": "JuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_b__R=identity,S=1",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAxxdqcD1N2E+6PAt2DRBnDyogU/osOczGTsf9d5KsA3o=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_c__R=identity,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAJuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/IU=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_c__R=order2,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAJuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/IU=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_c__R=order8a,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAJuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/IU=",
+   "sig": "JuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_c__R=identity,S=1",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAJuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/IU=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_d__R=identity,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAxxdqcD1N2E+6PAt2DRBnDyogU/osOczGTsf9d5KsA/o=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_d__R=order2,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAxxdqcD1N2E+6PAt2DRBnDyogU/osOczGTsf9d5KsA/o=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_d__R=order8a,S=0",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAxxdqcD1N2E+6PAt2DRBnDyogU/osOczGTsf9d5KsA/o=",
+   "sig": "JuiVj8KyJ7BFw/SJ8u+Y8NXfrAXTxjM5sTgCiG1T/AUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "A_order8_d__R=identity,S=1",
+   "class": "small_order_key",
+   "expected": "REJECT_KEY",
+   "note": "public key has order dividing 8; universal forgery class",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAxxdqcD1N2E+6PAt2DRBnDyogU/osOczGTsf9d5KsA/o=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=1+p__R=identity,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7v///////////////////////////////////////38=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=1+p__R=order2,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7v///////////////////////////////////////38=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=1+p,signbit__R=identity,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7v////////////////////////////////////////8=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=1+p,signbit__R=order2,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7v////////////////////////////////////////8=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=p (aliases 0)__R=identity,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7f///////////////////////////////////////38=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=p (aliases 0)__R=order2,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7f///////////////////////////////////////38=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=p,signbit__R=identity,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7f////////////////////////////////////////8=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=p,signbit__R=order2,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA7f////////////////////////////////////////8=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=p+1+p? (>2^255)__R=identity,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA/////////////////////////////////////////38=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=p+1+p? (>2^255)__R=order2,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA/////////////////////////////////////////38=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=0,signbit_set__R=identity,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "B_alias_y=0,signbit_set__R=order2,S=0",
+   "class": "noncanonical_key_encoding",
+   "expected": "REJECT_KEY",
+   "note": "y >= p or sign-bit alias; an 8-entry blacklist does not catch these",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=",
+   "sig": "7P///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__S=0",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__S=L",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntTt0/VcGmMSWNac96Le+d4UAAAAAAAAAAAAAAAAAAAAEA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__S=L+1",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntTu0/VcGmMSWNac96Le+d4UAAAAAAAAAAAAAAAAAAAAEA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__S=2^255-1",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntT/////////////////////////////////////////fw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__S high bit set",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703hw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__S+L (malleable)",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntRraVdlhys95Ykj/OuJecT9zFoG3+Y68/t3Lrr3O703Fw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__R=identity",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__R=order2",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "7P///////////////////////////////////////39+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__R zeroed",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__one bit flipped",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iUDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__truncated 63B",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "C_genuinekey__extended 65B",
+   "class": "hostile_signature",
+   "expected": "REJECT_SIG",
+   "note": "well-formed prime-order key; signature must not verify",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703BwA=",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "D_p256_key",
+   "class": "malformed_key",
+   "expected": "REJECT_KEY",
+   "note": "not a canonical Ed25519 SPKI public key",
+   "keyFormat": "spki-ed25519",
+   "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZ2BLRe8mGHTAJlLDvn247VefGFYTUMznMLK4bz8BwiDi6GVD6oC2PQEd4urcO43nyhz+AzY4HoetZKkBp+TXIg==",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "D_rsa2048_key",
+   "class": "malformed_key",
+   "expected": "REJECT_KEY",
+   "note": "not a canonical Ed25519 SPKI public key",
+   "keyFormat": "spki-ed25519",
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu/pCyUjM+ZFG6xp57cJkz29iz4/DhhT2YFLS1xL1owYiqyplHJrbVjCxRn5yhU0RnNsFdZDOSK2Fp7GnN4PpZ3Z/C/2wO+Tq3Y7CwmcyXAK+KDhr6SFR6FDb/nUMyzmk6lEecOXZiOZ7S0tWjSCaDiZ+h5qNQyCqzpFfQMb+kMlRnLz0igzhVMIHGpAjYVwRN5g/l/oQT8fdZqj8odDIfuwc7v/XFmW0VEg7Yi5g68f619jbtXOYTIrK9bUl6JQgegzcVusayhB+lTHI2/sRUGUQC5tmjTGWePVWCBZDUMCzpM7F+b5zlHC+JqPj1w4M7KnwoOh8JmUye3+MmmL95QIDAQAB",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "D_ed448_key",
+   "class": "malformed_key",
+   "expected": "REJECT_KEY",
+   "note": "not a canonical Ed25519 SPKI public key",
+   "keyFormat": "spki-ed25519",
+   "key": "MEMwBQYDK2VxAzoAvtVpNeS667dDDdhXGIR4DyqXtCayqt/3NfLs7FQdAyXz6K/66xS5KLwsXVr487sVwc8CS9C10jKA",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "D_x25519_key",
+   "class": "malformed_key",
+   "expected": "REJECT_KEY",
+   "note": "not a canonical Ed25519 SPKI public key",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VuAyEAxT2XUbbZY5Mz5i2bCq43yZ4Zw/nrN8ffow8pTsziXhM=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "D_raw32_no_spki",
+   "class": "malformed_key",
+   "expected": "REJECT_KEY",
+   "note": "not a canonical Ed25519 SPKI public key",
+   "keyFormat": "spki-ed25519",
+   "key": "BgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "D_spki_trailing_byte",
+   "class": "malformed_key",
+   "expected": "REJECT_KEY",
+   "note": "not a canonical Ed25519 SPKI public key",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/EA",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "D_spki_truncated",
+   "class": "malformed_key",
+   "expected": "REJECT_KEY",
+   "note": "not a canonical Ed25519 SPKI public key",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphA==",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "D_spki_null_params",
+   "class": "malformed_key",
+   "expected": "REJECT_KEY",
+   "note": "not a canonical Ed25519 SPKI public key",
+   "keyFormat": "spki-ed25519",
+   "key": "MC4wCQYDK2VwBQADIQAGCIlh/FsflyVX412n9E/9gAu7ey1n3G2d4imE7+uX8Q==",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "D_spki_key_31_bytes",
+   "class": "malformed_key",
+   "expected": "REJECT_KEY",
+   "note": "not a canonical Ed25519 SPKI public key",
+   "keyFormat": "spki-ed25519",
+   "key": "MCkwBQYDK2VwAyAABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rlw==",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "D_empty",
+   "class": "malformed_key",
+   "expected": "REJECT_KEY",
+   "note": "not a canonical Ed25519 SPKI public key",
+   "keyFormat": "spki-ed25519",
+   "key": "",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "E_b64_unpadded",
+   "class": "noncanonical_base64",
+   "expected": "REJECT_KEY",
+   "note": "non-canonical base64 spelling must not resolve to a trusted key",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "E_b64_whitespace",
+   "class": "noncanonical_base64",
+   "expected": "REJECT_KEY",
+   "note": "non-canonical base64 spelling must not resolve to a trusted key",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2\nVwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/E=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "E_b64_tail_bits_mangled",
+   "class": "noncanonical_base64",
+   "expected": "REJECT_KEY",
+   "note": "non-canonical base64 spelling must not resolve to a trusted key",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABgiJYfxbH5clV+Ndp/RP/YALu3stZ9xtneIphO/rl/B=",
+   "sig": "zswUYmsqBGGI+iQDttCriRF1xhMpBgUm64UHAeHGntR+lWEIbcgqjbOGBEmrf+XozFoG3+Y68/t3Lrr3O703Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_000",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA+QeIq6fjy3PRDIajj/GZtvnNm8Jq7FhCStFZxMlheek=",
+   "sig": "dohrqozZw/lSwV7vDHXfyYlE+KIevtLFa2oAJYR3QbvszOpGAxcateprB3PX/8Cm+EcMYLt03rlesUFEpftXCw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NzkyYTYzYjg3NmMzZTJiZGMwMjJjMDdhZWNjNjUyY2ExZGEwYzAwZGQ4MWFmYTkyZmYzM2NiNDY1M2JmY2UyNyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_001",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEATfUz29e6+sOmazKMkaI5TPTMT0KTTW6KZ5ykUkgsiLI=",
+   "sig": "5PwzO1g5yuoOkE9pgSCoMJXi/pTNfvGcZbEt5XrePKi1egu3r1AUFoFJvGEwmH8Evk9ayJMkvh64AZFAu+meCA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MzY5MzdkZGI5Zjg4MDA4M2QxYzI0MDE3ZTNiN2U4Y2I4Y2Y5ZWY4ZGZhNzM4ZWEwOTRhZmUwYWYyZDJmMmM2ZiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_002",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAbelyYDG7374+I4kJuC949TVO0bGUCQAZd8yUnzg+V78=",
+   "sig": "mCXKr1B0Zr+nqDvIb+X+zYijCW2cLLCtYyWRrwO0iQiNWwq70UXJaHFke0B7+iYMK4OiUH2Ox4pkM1CGrrmrAw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZTU3YzlhNzBiYmY2OGFlYmEwNWY1MWE0NGViNmE3Y2QyODhmMTAxNDNjYjViYTFjNmVmNjEzZGFiZWJlYTc2YSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_003",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAm6L9SoWeu0n5zbPiheq0HzfxuOCiM76wgsEcIx6veSU=",
+   "sig": "rIWdUIXIrS9QnI4m4AkbpJ5RaJkrn7GK0Dx4Gxoh+MTZjYYN2Xofg/BfSGcOu4bo3OdkkiNEYMdqPz94zkmLBg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YTNkMzNkM2NiNzU3NDdlNTE2MzA2ZWY2NzJlMzRkZmY0YTI0OWQwMzc5NjMzNjdjYWNhZTA0ODMwNTdhYmJmMyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_004",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAZ5EYDblyCu5Y7yrDUaRiNWqn2D/zCymADQJl35WIFDk=",
+   "sig": "hWc+nnGnTw4Gwup7cMtiqMgGeSZYMTs6rsOLVDZMuaR30NIU0X6cc6zP2a/YzgGB+ObEIY8w3uHwcg4nexNvBw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YTRhNmFhODcyN2Q2OWQ2NmMwNGVlMWUyYzk5Mzc2NjVmZmQxZGFkZTc3NGQ2MTI1NGE5NGY3ZmIyN2VlOWYxYyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_005",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAktlWi8J6E6Eoql5WOVVZnEMAd2QRnzkfhd7FS0jvCWM=",
+   "sig": "MMsAMFwz/pFktAsTWjr1BzyDM9s3Dm3pTH4by507Mv6kNhtTIj0AkrVG54mFiiHQDVxiWfwVb8cirsi6seDLCw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MWQxYzgyOWYzOGE5ZmVkMzUwNzBiNDA1ODc2NWRiMjBhYTQxZDA4ZTQyNzNiMGM3YmNlNjUyMGNmNmRhMDMzNiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_006",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAN+46HE1i2vIwYsSqdbIT7V6H0OhQAaACZYpglu+5Im0=",
+   "sig": "4/pbIWz9bK5eNMVPd2fUGVphIqnNoX6a2SkXIrXwhpb7lHKgc/9q1sp6UJvp4olPmZhlRNZnhrAmjbljz9vbCg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YjAzNzEwNzVlNzBmNDc2MTMzYjBlZWMyMjE2ZmQ3ZmU2YmJiMDA0OWM1ZTk0MDg2MmQ3YWRlZTU5M2NhOWE5YiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_007",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAHkoQMAdCpxtkG5czzO2LqZCu275Is9M2QntcpCu23R4=",
+   "sig": "Lgyxmx+5pQoAaX/EM6sW4hqFWUunEVT+eqcgyJfcFBXu0QnxHYEjeF7Gyiejt5nSmaXK+ScF6mH6Asuy4ie7Dg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZDllYjdkMzU1NzdhZjdkODAzZGUyOGU0Nzk5NTFlYWQwZTM2YmRiZWEyZmU2NDQ1NGNhNjUzYzM3MWNmMGMwOSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_008",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAvQsP0gSoma4Qf5sp2FXUCtnutA6qINov2XhaUw0k4W8=",
+   "sig": "WV2rQOBrDxU3ovj6vmxloAU/Vc71fQ2E+GUzSUcM1WqnQ3WJTkDsQJJthoc/pF3a0JHV3nRF+m9ETbpI5vVyAg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MTZmY2MzODBlZGI4MWY4ZjZlMjBiYTE2Njg1MWI1ZDYwMWQyNWEyNDM3OTZiMTI5NjkxOGMwMTQ1ZjU4OTdlZiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_009",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAZb9Q0ELm7lI65EN6t99oJ4VUWDcqt4JqjX5QGbgn+RQ=",
+   "sig": "4q1hBtLBRvqW8u3kglwkv4pID+1NHDVHNK7/5uT9zI6UffUIosKXi0icnjif80WF/f6IcEFeLtiqirkfQEAtAQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NTEzYTQ2NWYwNTA5NWIwMjhiODdjNzk2Zjk2MWU2NGI3OWI3MjM4NjcwYjBkNTljMTk2ZWE2NDYzY2E3NGMyOCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_010",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAQan6kQMWNnn1mFUno3KDx6YXDqinNbIafmLu7WERyjM=",
+   "sig": "M/NK14y52S0nd5fcenZMG1se9I6w0LEq8pk3fqMDp439VBjY3FbtkNcRdNDMGRnL5+dZTbbuhZkMQzDrfPNbDQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6OWM0MGI1NjFmYzg2ODk3MmU3ZmU3MjYwMWU2YmU0NjhmMjZjNjE2MDJiYjM5YTQ3NzliNjljOWZhZWY0YWM0NSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_011",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAOA+GhHj5Y26eP40g1damBAwl/HXgZIj5JZ+e7LJuSjo=",
+   "sig": "OLOLMjbbglejcN9tA/rIiX4RuYzT7YsZMKL3neA79chy68y1fN8c91VSxp8M4K3ncSyRI6ujisZVzYVE1yRxDA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MjQxNzcwYTMxZDUyODZkZDkyODk5YzRlN2FiOGRlNTM5MmMyNDk3OTBiMTNlNzUxYWIwZDVkNTc3OGIzYWY1MCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_012",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAJiYWCXCIyxSAEtEXzJIUqudH/EqgEqoysyhRb3ZP0Xs=",
+   "sig": "DCpcUE4fTGzzG64A3dGcDUQ2Rd1i+va19PYr2IQ4zcY0YGO2WwHwBJnyw5pQQv3cp1ng+Q/mI2hFF2WskKcFAg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ODYxZjFmODE1NmM3YTA5MGEwMTlhNjA3YmQ1OGM4OTQ1YWJmYzdhMzQ5NTczYTM2N2IwZWNmZTgzMTc0MDcxNSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_013",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAA8P1PcIxnLTpfGpvOEADRsW7ANPiW4fI4iONZLnG+6g=",
+   "sig": "4bKFL7g7OFb/XMXI/ZciZ3r/dRGdsKBYQvLpYE4ueLsMWhVrEM9Bfdk9+5Z/VZr8/fDQTED8iAz53TZLI5S6BA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YWVmMTQyZGY2NTQ1M2EwZjNmNzFmMTc5NDhjMGZhZTVjNTM0OWQzMDIxNmYxMWQ4NmQyNzYxZmJhMzhhYTFjYSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_014",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAa7tQ8WrUUJg+OfPBv34Ym0Q21FKQySHsLaGv7+eU3UQ=",
+   "sig": "UeY2epF4y2RT6skutekY1eqgVBgx7X5sg9a6g38YSm41PLKtk7e9ujdAlWFsjAL2j0wRMixE9fKlkpo76j98Bg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MmVjNmEwZTUzMGUxNzZlOTYyNzdkYjM2ODI0MmRiOTU5NGMwNzFiMmE0MTEwMDkxYjA5NzY0NmRkYzYzNDZkNyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_015",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA6wyu8XPr4KJuj6dPugUdDL2IqgJyH8BVJAZzQrdQCLk=",
+   "sig": "GnkXrVji/jFKlgXmWi1XWFuU5jTwyTYRN8tbw1fIjVeRVV0uRLF/NvKOH+H+bnnzGdK+kaUfLjWU0hNBwWLnAg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YjY2MTJkNzRjOWZmNDM2OWI2Yjg0NTQ3Zjg2ZDU2MThkZTFmNzUzYTU1NzY5YzA5N2EyMGMzMTMzMjc4YmFkMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_016",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAK/D7roaigWrL5IOAP+rDIMmklMiAzBGWH34/VdYD4Fo=",
+   "sig": "18aOdeGM+PosdtvyqW5nCXN9GvWDCPEMDkBR3F65kqrWqkVeNfA47cZinnUUww8lOx/40dVN4dYEebViBbNsDA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZmI0NDZkZjVhMTEzZDQxZWY2MThjYjg0YTk1Y2Y5ZWUyZGE0Y2M1YjM3MWJmYzVkMzdlZjUwZmEzZDNiODJkZiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_017",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAD8l1v+FDpWvog+bedV0hLvBRkoziwONwP2RPi2/tA4I=",
+   "sig": "aPlp6HRkovsfRDKtISilcgDM53obEmPOCpk+Ily+FbRt47yTIJpNoNeU8XtGgIskPw0gGph1Vo7fbNV4BKyoBg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MzgyNmY2NTFhMzc1YTUwM2ZiYjQxODc3MjIyN2ExNTVjNmYzMGFmYjI5MWJjZGI5ZmE4OWQxNDM2MzgzNTg0NSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_018",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAHF16el9W/yJmLQM4QpgVGAh8pXl2Ehe9R0G/HD4NCRw=",
+   "sig": "O8Pi2/myojDCzRuqrZACQTSnjsQnlUxmdpa9iAKq9ZbzA4rZ1YA7jsky34ja76nkgXiijQVebtMTdkyUFLpqDA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YzkxMDY4ZTZmNzYyNzA2YmQyMDk3NzRjMmU4MzlhNGY1YTkzMTNkYjRhYmEwZmM4MjBmYTg2ODE4NGRhNzhhMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_019",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAmDJA4BntBmMqPgOjmmU/xo3w51Dhqf3obBCHIx7kSIs=",
+   "sig": "M0YeOLyr/vtqqUl245IlxGlnwu16rR24VYLSkT2r/qW+BrsUDZwPOhoyyxqVO4H4p8XLfls592BDAMcY63MXDw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZjAwMTRkMzNjZDVlODUwNmRhYzBiNTE5MTQxMGQ4Y2IyNzJjYmUzM2E2NjU3YTBhN2IxNDdlNjcxYjY3NGJjYyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_020",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAzGZFR5BgdVsOah3Ta7HKAJ+EDcRR/nN20vNZd9eiwYU=",
+   "sig": "c1CbHOAE2pS9U+INFmmhE08TFNUpedVnxtUKsRZdEShCgLkmoxkHVjB0jzHtTahfk7VfVHJTxW4I3RtAuW/PCA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YTA3MjlhM2JjZGQwY2JmMDAyODU5MTRjMmJlNjEyNjAzZDMxZDAxMTIxMmE2MDM3NTY1MjY0YTc4YTBjZWZjZCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_021",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA0m72NyzJdalvhZuavkSvED2qQq1oPTsnK4SPjXrWBS4=",
+   "sig": "yNHhjtCPZ80GmTN36+dJWbBNzj1ayF3jVdRc7AFriA3T0haLv50uUDV2o7tVGuBgATC5E0ooLUmYY6WWurGNDw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZGM1YTg4YjQ2NWE5ZDk1ZTk3MmRlOWJlYTk3ZDNmNjIyM2Y0NmE5NzgxNmY1Mjc0MjAwM2IxMDUwZTMwNzM4YSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_022",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAFYx+jAxI6Y+lv7yQx83EuvbjWAfWToBCDDIanmfSqTk=",
+   "sig": "pOMOjfekvsYtaJg90rXmGI+exyljbr3CSWAULHwX/88j08TWjR0QOUZBcCIILfJt9ZeTUZNnCJHveu7GF+AJAw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MzlkNjE4ODU4MTZiOTVlZTljMTQxMzVhZmIwMmMwN2JkN2JmYWMzZTFmZTMyYjFmMDkwYzFjYjY5MGY5YWJmYSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_023",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEANwjqqOVNvc6Nh3j++Ulu9WMKsCYysFgR7+yvNzMGSNQ=",
+   "sig": "l9tRQEOEPnlePP76x/StuQKPTCysSFJdGHwCYB82RwKzCT5AofIMDU13Eg4sSFdGKKMjQj3FCH9EJ+1sTqIIDg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZWIzZGUyZjY0OTNhYmU3OGE4YTYyMTM2NGFiMmViYjUxMjQ4ZjRjZjI2ZjhiZjJjYTZkZWM2M2EwYjk5YjA3NSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_024",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAtUFM8N+zBCGGheh9NE/+XoqpLvrbeNqZNpJ61JRbZkg=",
+   "sig": "H3zmK0w9nSwNturOKvEIP491tTtmrzQkKuba0utJCM7fRQGLriOQcj5fqY9g1be7iohBmhsiWWv4PTxrZvmnAw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6M2U5NTRhMjUyNTJjODAwZjY3YWMxN2U1ZDk4ZjUxZjUwODA3OWZiNzYzZTE2YTE3NDkxYzhiMmVjOTQyYTcwYyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_025",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAEIjuvxIqmuLeSiArxX+i4kOKCn/ebsetYOaYG74yzKo=",
+   "sig": "Qg+ccZP3Hlohh0paTNOTUoHwfH1QDvXo9HIvfxpk1qpoRGhtFi/fPaFJmvPazum+SXKiHLC4VkB42ttX484iDQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6M2NmOGM3M2YyMTUwZTVmYzI1ZGU0MWUxNjZiODk1Yzg4NWE0YzRkNWViMWJiNTY1ZTExODcyMzcwMGMyMGQ2NyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_026",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAeRH+DgrOP3J24khMSb4vgb7mOKO+oRL59P8IY++hGFo=",
+   "sig": "QWHoJMNPD8FldAMSmC8dyDYFdnSAbLunhBJHKJXgWJ7V2UDoypNjvgLjBAbgZet5ZWg80wEa5UVJnL8hYE6yCQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6M2I3ODU5OGVlNGNlNzUwMDRjN2M0M2Y2YThjYWM1ZjBiZTBjNWY2ZTRjNDE2Y2JjZDkwZTQxNTQ5NzgxNTE0NCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_027",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAsE9dhABe9apTI7Rg82CFqVNALjCSXpS1setsZo0Monw=",
+   "sig": "AKQi/ARyXO9UROfc+B/DGAjpglgHuLyVua001ud2V7jn+B9DvJI7JV0kx4Vt6kNwce/s8eVkeb+ei0Yl8O9OCQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6M2U2ZWQyZmYyMjJlNzA4MWRmZjBjYTViYjU3MmY4YmUyOWI3ZDQzYzc5YzRkM2MxODZmNTYwOTBiMjU0ODdjZiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_028",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAEljQnnHOvBIdikrhCJ/vF5fn834G+kgjja84GWrgfRA=",
+   "sig": "ewXyjyGY4bcMQP1a09SdZQ5mRqkpMb+OFIlX7IzdJsjiOgagRkPCHEsbGwio6zmjb47/H5KexZiKlL5WjeW/CQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ODFkMzg3ZWViODE4ZjA4OWY0N2ZlOWNmYWY4NGRlN2I0YzdkNWM2YzQxYzdhYjZhM2M5MjdjMWQzNzY1NWFiNCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_029",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAO3rqj8ugD6aOzwOSISVTfoZeFQfGmKeKvQ2jPHCRA3w=",
+   "sig": "tBSxb2r817LRLE9kvjxxUgpsHfL24QolZ7CuZ1Ca0Db7IFj0Bfsr1gHfy6QFMc2dxdOLLG8EE5nJ30UWwsuuAQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZDNmYzhmYWQxMzNhNDI0NjdhMTRkYjIzNWNjZWY1NDlhODA1Njk1YzAxYjk3NDUzYjdjNDIxYTJmMjc1MjliZCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_030",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA9mOwOCCemxVZofEIb2IDKiXWcENKt451EAUclqMwwDM=",
+   "sig": "+icyypfX0xMJ3z7Uzip8fIYBkaeHIzchxggEDOpkai5xGj5nZ+ex+pOzGg3fFgEuc9l5ri3coBlR8+HcywxPBg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YzgxMDEzN2EwMTU4ODZiZjdhYjk4MDBjZmZhOWU0Yjc5YzcwYzFjYTAzZmY1OTRmMzA1ZDZlZjdmNzQwZWVlMiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_031",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAbX7G9CYAYjfulrQ7Spes9WQ2LmcT6lrToZksXX4iNzM=",
+   "sig": "j51x6dX4LefvFEa0RxCwQkfQGiyI/Ixo8XVOW/Ve4/qcEGNSDFWdgPwPHR083PEXCtFFWctvSh/bzDlKj6zXAg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MzYxNDZhZmE2NWQ0Mjg5OGM3NjVmMThiNWFkYzdkMTlmNjIxNWFhMzIwMWY0YjhmZjhjYTVjMTJhOTZlMWRhZiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_032",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAMDUrieF6fh+1u9P3bIMCw9QBp4DW0sYcsLOFibpYKGs=",
+   "sig": "m9cnQoi7C5cZVuiuSi1x2k7NOhNIfmWCt0pXZVABdnZ/SJHM8n1GxMjQbvLlJruNJpeIfDzqnI2ArGqCxWp6DA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YzM1NjU3YWVmOGMwYTVhOWYwNTZkNzY5MjY0ODFiMGIxNWI4MzcyNjlmMWZiZmNjNjE3ODgwN2IzMTM2YTRmYSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_033",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAry/Cey4WYsDmsmUtkuE/Qbkqxr7GtD7gQY9JUJOFez4=",
+   "sig": "igKShjt82TEpKqm/1FTrmoYZjYkD2veWsXPItAHVEF1ltNyrRmTy/8CkyIhTfGnVhFO3+ZxrnmfnGRuUw46QCw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YjViOGFmMjcxMmE0MjgyYmNlNWM3MGE0ZmFjNDQwNmMwNGJmMzIwNDYwYmM0YmIwNGU3N2ZiNjczM2NkNTBjMyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_034",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAO/0xpTVe1Vwm00Dos9bfws+DyVO8YyYL4sdSiC0G5wI=",
+   "sig": "Lu/FUtgSaW2lNWBA9PV7cTUcGnwdApe0mEVqdEzGGsXRePps/JPTnficTRInqwP1pWdBCPeMIyK51WNBVaCCAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YThhNWQyN2Y2YWY3YWY0ZjY1M2M2ZTkwMWVhZmQ0NTRjNTE3Y2Q2NmEwMDQ2ZTk2MTY1NDJkZjI0MTMyNzljMyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_035",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEALBDi4ie/E5mtZuvkUzie6nc+XWvk2am3fObxEJ+mTx8=",
+   "sig": "bqib4fRJs1zPZhpBaDTC+3gSvJ43OWZNAto/LMxOa+MhD/BMxDTwZvjfbXyzm8WyChlQSZejqpWMIsqn+/JyDg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YzhjOTQ4MGYwOWEzNzc4ZGZjZWJkMmI3OWRkN2U1NWI3NWI3NDQ1ODFjYWYyZWZhYmYzZjU2ZjJhMzdkYjcwMSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_036",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAHkZw5SySyKXWBxBdP8fOl1jXQWiZzffZ1BdChzCpOqU=",
+   "sig": "4BwpX7yzYmF7HNbET7e+jnz1EjBGlOVtQDQz5FD1zh5NwJE8uOGMWLLhBk0CsvnTgzRXAGDzK3jaxDvxiIcnCA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YjAxNjkwNzE0YmE1NDBiZTU4OTBiNzcyZmMzN2QwNDhmYzY4NDkxYWY2NGU1MjUwY2EzMmU4MTY0MmI2NGQ5OSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_037",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAp9bQ5YTmeThTzTG5Ua1yJfYfJNOexLOS6dMsOmKXvCo=",
+   "sig": "M5Yntzb8vSl6g+bVO+gqB7SvCcDWyr8wNbP1N4I+0TsCq6guf/YNCChdeNbLTaGNNazZ3HUi2p53wUj56rxyCA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MmUwN2NhYzMzNWNmYmJiNTRmNTA1NThmMmIzYzMwZWIyNDNmOTU3Njk4ZjBjOTZiMTEyOWFhNTk0MTFmNjY4MiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_038",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAyjZWRaL2FM6TW8HGQ0rmgbfJdpylSch0s/9a9OMlH+Y=",
+   "sig": "uaKuC57pQaVqyzP2azLeK8NC86yQoOONph6MJeWjlZzyNPUqho2diMWNk0y0DgnxD1RMpVnrSrBeQR0Jvb7iBA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YzhlM2U5MjUyNjVkMjhlNTFmOWU4MTBmZmE0MjkyNjAxMGZhZDU4NWQxYWFlMGJiMDM1YmU0YTQwYjBlNjg4YiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_039",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAanmJ7ebBLML0IWMkP4w9Q8SDcKuIz4BLlA5ySHoZ64Y=",
+   "sig": "0kkKAeT+52JBD8J0vyqXM19zUE4ZTm39VX5DttxRC3xWkX6lwF3NF9DGf93qYHdtNylair8oLQCaaxmDXnpoDg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6Y2E1NzJkMzFjNDI3MzY3YjUxOGQ2ODkwODhlZmJkZDVlYTQzMmJjYTVhMzVmMjQwOGQxMWVhMGQzNzY3YmYyMiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_040",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABI6C0z73dsd3GbCviyak5VqR72dGTB0UHmdlIs2EFPM=",
+   "sig": "t0J2gYkOesRtc6M8zJmz3R9dcgMJb3FQhYNGmg2Z1OxlY2lCcNZoHChwukeTi87/PZR64Z7O7wdoYssrnIA2CQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6M2U0MjYwN2U5MzY4MjI5ZTM4ZjdmZTdlZmRlZmQwMmU1ZDQzODE0MTYyMmMyNGMwMzNmYjNjNWZlOWQ0MmZhZSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_041",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA+8qnx99cmByqgnxVg4+zruPmLmoOguQ6/+NySL/k29E=",
+   "sig": "CsOIu5dQT6PF85+k1/b9w2SQAWxsBhWU5QbfOCKJD9v1YCdVBjlvfZZENMdCSCqCjYgqm2bR5n+4ffQwMHGHAQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZjE0NWM3YzFjOTU4OGI5YTc3NzY5Nzg0MGY5YWVjMDhiYzBkZWNjMDE5YjhlNTk1MzNjMmM3MzYxM2Q5ODk3YSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_042",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAsC2oXbIrwp8VGTb1VcKdku0jxfAayLTJ0v7QQlKTesw=",
+   "sig": "vG404fnv6WlHTVZaVuw/DZxiU6IqYPfv+TO74BJCHbta3wDiNmJRuZxRPBQ9YaBEhHaVPLVJ1PNjTk/JfVjQDQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZWVkNWQwODlmODJjZWZlODc5OTRiMWJlZGRmMjYwN2I3Mzc1ZmUzODZkODk3ZGQ1ZDIyODU2ZTZlYTJjYzMwOCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_043",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAZvf4uqC43KP36z/HJ/piGQmrKRbakj911vPg1JT7wco=",
+   "sig": "BLEkiQT0cT5+lZiDJC4LMY+5dEozCSau5SviEywnM6o3c3qVZvRS9YxuauKPaPNm5tb/tH3ZrUOlgh0U+z44DQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NzdlOTVlMGFhNTkwY2Y0ZWYwMTA4Y2UwOGVlYWM3MmE4NTE3YTgwM2I2OGJiMzA3ZDNhOWNlY2ZmYzEyYjcxZCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_044",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEApWyaPb2mwEefxKhwwNw1W6uumEyCJ8xUXsn5OWwghVc=",
+   "sig": "csOm5JLX+9r+IgpvmH/erumd28VhMdisNMTmQOT1g4odWa5nXnGFA6ffIo0uO/o0lSWsyw6VOmCLl3pTYfFxCQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NTc0ZGFiODAxNmEwNjNlMTk5Yjc0MjkxOGM0NWY5NjhkY2NiYjgzNWEzYTZkN2VhODYzOThjM2RiOTk2MDAzNiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_045",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAgy9W+TV3xnc5tVyTmK9K9jhiXRb67abBCAMolpw+xkE=",
+   "sig": "FNaTdRdMxPIUuXLb5Np077xdAfWJVeJNdJLm2uj9Y2LMUCNTBbr9CmxV9SqVp1qszlkUkkDo4opBK3ViMegsBA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NzBmNzVkNTUxMzVmMmE3ODYxOWZkNzk1N2E1ZTU1OGNiMzI1MTM3ZDRhOTA3ZTM4YWNhZWYzNTQ0MzU0YjY1NiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_046",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEArLskWqqSLtOXcpSQM4uBi1gliQ3bGmaI63t3Vyy8i4o=",
+   "sig": "4hi0rKehVvafZ93AIFbe7l6+rIyNPYmkboKSWzGEXbdtNvlxlS9lGFCW6ETTuoF7no9hv1+LoQb0TH+LmvDiAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MmU1ZDNiYWU3ZDA3OWZlYTRlOTBiYzdlNWJlODkzOWNlNWYxY2ExNGY5ZDdmZGRhYWMxNTYwMzJlYzYyMGE2MyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_047",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA6Sh1ZLfM7lgfSEA0n2KSXAHzFL3bZSlPnEeO++LDWWA=",
+   "sig": "XD1nppufEb+2oNiNk0oet8F2UAmuCW/ncMox30HGmYdI2JhqwDoH/yLd1KoN5ZQpSp7pupTsyVswg0QE3xG4Cw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZGQ1YTU3YjllNTM0OTdmOGVmNzczODM0ODdlNjkwODE5MDA2ZDlkMjgxZmMwNDMyZTQxOTg3Mjk0Mjc5ZTYzMCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_048",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA2eWaqVdDkx3jLdB17u2Yg7UXrVQzFLy7pdoU6IrUA5U=",
+   "sig": "5IPCUgPYsxNbha+onboiqmqg1UZJ2EFNWwPF0cZFfP/SHOONGj5lJEbBk9GfUaytbu+oQIpMeUZpCKC4KnRrCw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MjJlMTY1OTljYjdhNGZmMGI4OGNlMGJiMGMxMzc4MThlZDQ1OWVkN2ZkYjVmNGZkOGI3NmViNGE0ZmFmNmZjOCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_049",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA2RB8F1KfBA0bjDHJnJ2svttgrpq2BkLLK3P/3M6QHOE=",
+   "sig": "RvBAaFtvnQG5KPI9rCzeBF5q0uvDtDvJvP2NvV9E0mVU6p+7G90GPbdmUgQfIyIdAbASnE5gKFOneAYy+SvrBQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YWRhYTc5YWMwZTI4ZWIwMTM0MGVkNTMxMDg2ZThmZDVlY2Y0NWM4MjZjN2NkZTRiZGRmYzQ0MDU5ZDU4OTQyMyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_050",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA8Jk2brNPjJ0s+X1+bersbW1/9dxc1jtoSR+s+vfn8Mc=",
+   "sig": "HycDMR5hI6H/rugZE+iLBXWLtrO8PJ0vMp4IxLWkydgqUVK6eLcyst9hwUbHrve/neTbYLQ6I5XK8OVgh4/CAQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZWI4NjM0YmE5NTYwYmIzYTVmODYzY2RkNTFjNWY2ZDM5ZjU1ZmViZWI5ZWZiMjFiZTIxODZjZGJjNzRjZmU4MSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_051",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEALLLXUHIoWoQ+pl5uVSbS9u0i8XNcTPH+QeTIMZYbf8o=",
+   "sig": "9EYxEIIR3vSr9eqdSMIEkajkCIHisSLjiru6xqM6j6EAbpSQFhqkT3vfOa2ZmyIgyGOa3eTb+hrjRY3kE4zFAQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MTgzOGIwYjI4YzQyM2YzMjA1YTdkMDFjYjZhNDgxZjRkZTdmZDliNDU3MzhlZGU5OTkyNGRiYzA0ZmU4ODhlMyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_052",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAplQf1nVzC33OniAtB5/5xru9pZkA3Ty4pZmstTcaouA=",
+   "sig": "dT75JKLbD83ezUF/RNjttyJTEBboCUa5oYM9ghitnTs16dXP3JaNmsffLtvfFA6V0NL9NKkwOjlxo9HnC9kDCw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6Y2JhNzFkYjJlYTM5NDA4YmY1MWE1YThkOTkxYTNmZmFlNzNiZTM4ZmM2N2M0YmIwMTY0YjQxZDEwODYzMGIzZiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_053",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAaweXm9Ggqsv8AV38lTiH0BQClWUuvQ8Bkpv1PO1GT+k=",
+   "sig": "jYP4sdYipurH82WOvoqbs728Ry2uRO8EWx3IszcRZASgJNjyxUrA/1UUdar09G+IjpJ+pvc6ZqURlxNia03OCQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NmI5ZWEwZjM4NDYwNWU3ZjNjM2ZkMTY2MmQzOTFhOGNmMjFmOWQ1NTM1ZmFiY2E2YmJmNDBmNmVhYWJjOTI4ZSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_054",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEASgNKGW05vWpXjJ5lDOzWTOnwsaSFz/eTfHBVTJkzl4I=",
+   "sig": "6n2R7BH5h17J64b06TkFsupn6u3WMGn4vRVoTTiYsEatPexvS97NUqcnObhiEK3A6B1ykE2Yh5RR8ia95ozYCA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NmJhM2M5ODkyYzBjZTliYjY2NGMwNmQ1M2JkZmZiZTEzODg1YTFhNzQyM2YwNzI2NjZiYWM1YTRhMTBiMGNjZCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_055",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAFDu658dvBPOUoCoa9Pdpjff69ac8SBcNbZ4CULkRMV4=",
+   "sig": "3XP5/fz0ZIVf68Xv5bhtwYcbfYHCti3mnE2of8k2NfsrBC7CiGm6f+ze+RM1SFJbQ4iVkTz8E6BxqDmDYTPcBQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YzhhMzNlNzZjM2VlN2FlZjY5ZTRjZjM1MmFhYWE0NzNiZjVjMTgwYzU2ODMwNzVjOTAxNTJlZTUyODQ5YjVlMSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_056",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA5OS4dk1Qw+yfyGsszHujByAQMqz33dnk9hAlHoF0Hf8=",
+   "sig": "RFfwHlpqVTBRStxNk+EHP2XMJaYUdlefh3bvrgjJq+7Sp3GLTiJ1WfZ65IbvZz82Ymj60WjrNCdMhaDVyQplBQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZjA4YmRiNzVmNDFhY2M3OTZiNDFhZjA3YTM2NWVmODA4YTgyNjEwYTcxOTVkZDUzZGVhZTc4ZjNiN2U5ZDZjNCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_057",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAKUt0JuDeWQePtA7LfDq5rg9esmKhbVN6Rf8jD5WL5X8=",
+   "sig": "ZU0ijOkPQRkQFWSQcSIgHAEkg3N2b4bGmratrCdamISMQQ2M0i+WUVJHo6J98Z4axgQawiAwEEfhX9u82ETyBw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6OGIwM2I0ZGRjMWYwMWZjN2IzOTY2OWE2MDdjZjQyYWUyZGZlMzE0MTRhZTc0MTY2YjkwMjA3OTI2ZjVjOTI1MSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_058",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAZySaR5+Vy+7cz0QPoNWivbfqAsVL7/tRqvWA0qAnOGY=",
+   "sig": "DiH+tazhr2z3pidawflsr38UpjAbY5QJTgvCClQanGE2gxVj7ppi2SOl2C2mZjBhoMnF0D2e05ncqEKGKBsWCw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YWRmZTliNGM2MmViNjBlY2EyZDNiZjVjODgyMDljZGFkYmJlNTdkY2Q4ZjhjMmViMTNkMWEyMTQ3OWQ4M2IzZCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_059",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA0ZyQ5u6jPE0T30e5eFkelo3V2FinHpJgiUGLfHA+lQI=",
+   "sig": "kkjxxve5p/cjs4OSrtWksjLXpblnr0AoKCSUnTacGnV/PzgaptXHKxI6eH5aVmljQytlcwr1e+rHqJg2oSXaBg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MzZjYWI3Yjk4MTE5NTU2ZTExZmM4OTdmNDkyM2M5Yzg1MzJiYWNjYTFlZjVkOWIxNWIzNDgwYWY4NzAyNzdlYyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_060",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAgqsIf4zjAgsiYOxm6zHlAJOrMphsnBvNSG7KUvf1g0A=",
+   "sig": "FfvWTorpHQtARuTnEVEO1KkCodXEeTSD3sbqYTMx24waXvoGmSl0kQb2JBCOKNme19gnIjossUOu1mOn9QXABA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YzE4NDZiNTAxMTAzNDBiNWIzOGE4YWExZDgxZWVhMGJhNDA1ZDgyMjlkYTBlOGFmZDY5MDY3ZDgwZTFmM2E3NyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_061",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEACe27vo9gODns5jW8CqnCIwEe0Pl2E9059wAflLVrgas=",
+   "sig": "n8ieYqiQiGv3Eqrf1UdxLotRxK51aaOwRs5ZdMTzPdP6fsEwMKUglW+GDkwpOR5KT/oHFBBXZfsF1aw5JBW2AA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6N2NmYzMyZGEwOTEzMGZmMDc2NjE5ZmEyNmFkYzc5OGVmNjQzNDY0NWQ2ZGExOWVkN2NkMjBmNjA1NDY4M2Y4OSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_062",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEADYMX+3slcQItkvuxsU2sX9c8WK6S8otl38CRhRkwNR8=",
+   "sig": "1zhouWDi4aUnRHXKdWkkAjcPVYP3kt9Zle99howvkIoLnYk9bdXQgb41kDo+cIsQu8xei/RM2HOZZv6FIftfDg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZTc0NWJmOGMyNzA4OGQ0NTMzNzdhNWJlNzc5NDc0MzcxOTU3MGQ0NDZiOGUyMzNiY2M0NjBjNmYyZDgzYWI0OSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_063",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAqAqkqUKBW6nBQoBq5BOJPy1EP8DVb0eBGcIskB3QiVE=",
+   "sig": "Gs7xYBm0/+na+xyLAwamx/56aMo9bihUecrwNmF+MelgSQjLL+rCs+ASNaU64EF/xtA0pEjirp48r9qetGPvCw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZTExYjM2YjJhYWUxZDU3MzE1NmI3ZGUwYmVkYmJkMDVhYzU5YTBiZDI0OTY0YjA1NWE0MmI2ZmQ0NmNiZTQzNCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_064",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAk30IuLYNhXDiOPmO0v0bvjqIdMYP+0Yy1khWYGQs8mU=",
+   "sig": "B5JIFNt71COHG/pWL39XUvmOvd7XlnuTzG+qNl0MmYNjpPvr34kMCOpjDnNFoMVEHg48vXVyagu2GH+vRP7XCw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NDc1OTI1ZWI0N2VjOWU0ZjcwOGMwMDYwZDIyOWU5OTk0ODgyNzE1MzY5YjUxZDk3MDc2NWVlZWY3NTk1NWNiNiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_065",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAVCdxKUEBbUnS9tEqgpbZbiM78j/Hzbw3YUIBtTRYR0M=",
+   "sig": "KxDTLrwA//8b0uFZBaGi02PPv94oFwN0SebOx8oq/SkW4CkSXzorw0IJYgwE6gaXxvhQlduRPn89YLN0x483Ag==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6Y2VkMGUzNzdmNjQ2ZGE3NzJlNzQ4MWNhN2M2ZWJjYmI1NmRkZjcyMWIxZWVhODc0M2U4YmQxZjA0NjllZTk4NSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_066",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAyJpSZMAn6sZnoRBM5GViSob0dtF80SfB0+UkUqbIswU=",
+   "sig": "feV8Cywr6ZXwIUJqBYSmexjVGuuQldIs3qLY5NfdkeQceFEqeg8x4d5NZGiS1u3csW+cnpo413b6+Uw6qDs8Bw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ODcxNTQ0YzkzNzk1MTI4Nzg2YWM4MzRjMTIwMzUzMDgxMWUwMGU0ZGM5MzRmNjI1MGYwM2Y4NjY4NTU1MTU3OCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_067",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA+52Md0H+YbRtATzlKyj6jLIE6uz9ukPAJz9JU0mIkAg=",
+   "sig": "IJvriz8iFc7rOSdL+VbuzlmUVMjR5Q5i2DDwO3yOcu+C9cQOl5IwST6lbX1tP70WPsXrKcyJhacCpU8znTiKCw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MzRkZmFmOWVmYjgzYzEyYmFiMjZjMTM4MDZiZTVjNzUwYjE0OGI3MjVjNDI0NzY1OWZmYmZkM2M1ZTgxZDBlNiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_068",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEALmt0CnU6RNo+I5veeyNvnnaC/STWBj2GJb5yY5pMZYc=",
+   "sig": "YJ8h5lyyo2OBe6DLYMvn1I6fzfpc6MEHBMOOlzsved+Iv2MSDkjJUFRajTmzZNc0V+1sQ8ukDUdG8PIV2Kg1DA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MzRkZTNlOGZkYjczZGYxYWU1ZGI1MzgwNTJlNzQzOWM0N2Y1ZjllNzNkNTg3MDVhYTQzYTliZTBjOWI1ZDE2NyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_069",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABH2RiKQ/NxXpGizl3qGBcb33oKHLSr1X1YfqB9Jy63w=",
+   "sig": "Z08GzwphMZrLeX7CuFyVFFIHSI6dP0GjofH/0oN8EaargjzbTdoSOUp/EiHfeg3nLlhdtDgf4f9rVIj/IRa4BQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZmYxNWU3M2I5M2IxMTIzOWU3ZWJhYTBlYjUxYmQyOGRmZDkzYTJiZWEyYzRhY2Q3YTRlMzRkNTkxOTI1MzYzNiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_070",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAYoJa0RrEu6UHRl2jUroejilgQT6hYEBefSG6hQpWL6M=",
+   "sig": "41NlhjwU/B9MB/jKuDlLn0h1zkEZn/OOyauRJno0m3WlALj2cB30lMuv7gOgGQMW00Q5KqV3HKKaaT4cRJk2Cw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NzFmMDFlYmFkYTFjZWEyYWIyOWUzZjY1YTNjMDBhZWQ1MjE0NDcwMzFhNmViMzU3NzdjOTEzZWY5YzA3NmE0MCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_071",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA3Iwi96pFi+e1vK2Gw4jS6AJvquzscsM2iMbHl59sRAY=",
+   "sig": "cywchQ/ydncKZoUZmfSbXKYTZWwxvjzMTZ+psjueApkq21uB+n+aPkT/rJF2XNpXvH3GmYHFgKDijBNvpISLDw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDFhYWU3MjkwYThhNGUxNTVkYjU1MjJkMGIxYmZkN2NmMmY0MDg3MTJhZWU2MGVhNmRkODgxM2UyYWNiZjU1MiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_072",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAVquOpZAB+b15GghqW1PXFZAFDvv3YYc6sLHWhP3YvJQ=",
+   "sig": "dlzEAPsrB4zMQyfZJz8FfCZissb7r0LPvB0vBGD3Y+e1vNJkIqLEHnEFan/HDJaxE6oTimNBXqqqanjVa8jvAA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6M2E4OWZhYjRjMTE2OTE5NGQ0NTE3NDZiODM3OTkxMzA3MTY1NjhjMWFkMWJhMTU3MWZhOTAwNWQ4ODVlZjY5OSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_073",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAHwDtFHB3Dw4BBjaQhG6ZIJ8ybWCCpQ6nCthizFl+00M=",
+   "sig": "3DEuSSju7x/UEZ1ndP38YCOIzBt6dcyTDdP5mxqdLEuxrkIR/UY3I3BqEiCwhsu7MjtueuxRSIhENq2QdIBwBg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YTc3ODMzZGE5NTU1NzE1NmFiZDM1OGYzNDQxMGI3NzlhYWI4ZmMzNTZmZDFiMzEwNmRkNGI4Y2RhYjk2OWIyZSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_074",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAOseLYml1x1tRIwbAvW3z9IVqDBRlJaI80U3BSmSDPDk=",
+   "sig": "8zvQjJnLNwzYlclJ/arBRpE7JmCJKU2dPcgsOltIbMsfh4dcvCWBxACSt8QxM+eLOx6CNcl/xk9IqixXMcMLAw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZjEzZjMzNzZlMzRmMzRmMGM4ODgwZjUxZmY3OWU1YzM4NTBhMTVhYmVjOWE0OWIxY2NhNGE5ODNiNDljMzFkOCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_075",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAYz0ivtlzAnIEookAV89p59a18BPrSEXcth0O07M425c=",
+   "sig": "u3w2uectQ/KYa1breC4P+qfJebsgS3S+qpDTG0PjWGYjEkG4Q26AFb9m4irxr7+feJ1udTO7vp3bpH+D/ryZDg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZTQ4YWUzZTU4ODhjZDhhZTNlMWJkN2RhMjcyNjk1ZTA5MDUzZmJlZTJhMmE3YWM5ZGI0NjNiNzRiMGRjMzYxZiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_076",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAjXxfzq+yo4g3D4tbFkpdfR7FP2uZWvvE9n5vyB61eDY=",
+   "sig": "IwFGVNVyMAiIw4XsAwJ4b94BJn8j53KWZvcQk/OuBsnho5boZt4BGzeWYvpmj55i9Hx5zMRSi2l4h+HyEB6RBA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NDRjNjYzOGUyMGFmMjgzYWJjN2ViMWVjNWQ1YzgwMTA1NTA5NDRkNzc5ZTM2YjMyMzY3NzI5ZDYxNjNhZDI1ZCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_077",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEATTaip2iaxJ53R7zogZyF1YyQlsU3qkbwBtpy9CVXuwY=",
+   "sig": "bg1A+bG1A1DqSBCUAlAXHskdCHokPSqo70YYP7qwPWNMp+TcsuIPFOrUcFWdlaFqVWLWekMOg2m0NxkmASBIAg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NTFkOGJjNmFlNDE5ODQ5N2ZlNjllYWExZjc5NDIxOGEwYjVmMGQ1NWUzODEyZjJkZWNiYzUxMTRkNzJjNWQyZiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_078",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAr5Zkc+O/FRqEjNr+AUS5/S+3C7QNxiKhxhjunXcqHng=",
+   "sig": "VfavTe1khkSvhk5XeZ8DsEWCWEcahqFiPfIPbMPzS2rEifzOD0BTbVKJAYgA3I4e1TAnE5hk3sH9ak2c4XiTCQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6OTk2YjExMGUyNTdiZWFkYzIxYTIzYzRhOTM4OTdmNWIyMTQ1MDQzZTA3ODIxNTJmMDJjZDk0NTM3NDc1MGNmZSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_079",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAOLD2WaBZVr5G7ZJbsrLl4tVSRRBQOMySk+6lW3YlldQ=",
+   "sig": "cWg20Z+6KfgqQfEmrVfJH/QQNBX8wiIKH4bCC6Sb1+M+w+ogfS3PL6HaORn8aPRclVNtMu7kJm2XzXMnNs/7Dw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ODc3MTY3MTQ3ZDFjNGIxNGRlNjJkODY5OGQ5NjAxMWVkMWI2ZGMwZjA3M2IxYmYwZDM0MTJmYTIzYjMzNmJkMiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_080",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAChmwWPvyBgeMFhcujDl0wovYgofHZX6wEYaI9Xmbt44=",
+   "sig": "a0g3gEj1v9B2TXHQJ+sy/DhoLHUp7GZomkSfAR+EwB/291TzMksIPnCoWqMnS2BaPvisrvDPzVe1LfNHfY8nDg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZDJlZTk1NTI5YmEzZDlkYzJjMDM1MjhkNDU4MmU4M2ZlMzlmODMzNjVmYWYwY2M5NjMyYmQ1MzIzMzU3NzY1YSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_081",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAAAkNvPf8cMURPYQnBBjpSELlbMpuC9QYei1mt+UTrfI=",
+   "sig": "zE308TE9dlcuZpOJQ9G3mirLPnxLn1iQr3AQYW2EeEsJ2pjBi2M3FawKKnPNya+qa1eTgrY128c/9iXxpTc/AQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6Yzc1NzYyNWY0YjhkMWU2NjJjMWE5MWNmODMxNzMwOGFhOTY2NGMyMzlhNmMwMDU1ZjlkNTU3ZmNjYjk1Nzg5MiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_082",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEALiI1sC0/MWKgaHh38s3h1s5UIru1pxpkzPKzkOhudBU=",
+   "sig": "BVKSc/cKz+S7M0hkEZYntdEeTIyXkXVnU8M/o1D0xKjYCKlhNVBfRqDSqyJhKF4wVrCZTtn/ZFRnGCEUtx+EDg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MDk4MTFiNjgxZmJmYzEwYzFjY2IxNjAzNWE1NDFlZjJmMTZlMDk2NjEwMzVkMTFkNjU1NmIyZWM3Y2RmZjNiNCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_083",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAIrZ18Xc/ZzDxxP/7RTS1w9CjyHoRtsgWq4IDxSKVcL8=",
+   "sig": "l71YfQnKe4TytKWvQKjvvaQHNNQ+mifTCo7sA+8spLNoOQ3R4xOVFDOTTZ1Kk2hq4tjAsx1R72cwXE2mpeYbDA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NmMxNTg1YzQ4YTE5NjY2NzBjMmJjNWUyOGRiNjk4ZDQyNzQwY2I5YThhOTEzMGRmYTMyZDM5MGEzZTk1ZjUxZiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_084",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAZt91S/Rts+frmSIw87STif7N1mYym1R0jU7CkHYtpKE=",
+   "sig": "WlBBc+RaDvG3n9amwzvwriMMwj+RQd9LX6jyWqBgygrihbS+aAjql4c4qd08rQ3qSIV5wiPH58sU3Se1rUW1Bg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ODc4MDdkNmM0ZmVmYzY5OTYyMzA4MmRjNDgwMDEwYzEyMmJkNTc4MDVmYjRlMzMyNGY2YzJmZGNiNGZmOThhZiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_085",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAJOEpLYgWHab/N4aSHUYSSkQsX8GGD26QYeLG2xPBmz8=",
+   "sig": "NOJZAJGgLmfnBCxg5kCTRjZuzUMkNnbxDdNVhTHA3WkeCrV9g2v5AMBtGoGe7NmsignRBj5mQpHXYltz6aZICw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YTlhYjc4MmEwMjJlOTczNGQ2ZTZhNGQ0NWI4ZWVkOGE0MTNiYjliOTI4ZTIyZDc2YWVkMWQ0ODUwZDkxYTE2MiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_086",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEASm/F7M0DoOMV+hnYX67bJvWAU3QhAxFnXJvYtRP5Igg=",
+   "sig": "AfHFVK7zSuEmWQdCLP3CUn69S/R40OK/wEfBapsvMNK8jDPjRf5bC43/ffsEwP/Td7QOe5fWilJI7DSGzibzCQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZTFmMzk5MWYyMTY3YjI3MDgwYjg2ZDY4MjUwMDliYzZlODEyMTMxZWEwNTExZmE1YzFlMGFmYTJhNjlmOWJlOSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_087",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAtwTamVc+cj0nkkQiFOXeB22ZbN1vLzgRrLs4LW3tFco=",
+   "sig": "Wx9mPctOMCC9hlZzbrpkgKcQD4mnMK0MoY9qOQwFCY4bexlwH1BSpczN/tbwthsKARyFkQ0TN05Bs41n5jFIDw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ODZiMzYzNDY2NmI5ZDEwZmRmZjM2YzNlYmY4ODU5M2Q0NmIyYjAyYzdhY2NiMzUwMDczYzMzZTQxMDA4NGE1YSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_088",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAWv/inXYEVBaJT9JzhkyK1GLjFzGNcyNDN0zXm8VZXHI=",
+   "sig": "7xLnL1nw3cNyThpdsSfPTcwQKCIlooP6P5j44DRms67t++K4kH5uFk2H57fEU+g3g+57ywQstOSA4SqoYKFFDg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6OGM5MWRmMmNhYzMxOTgyYmU1ZTdiNTdlMjA5N2FiZWExMmRhODdhMmI2OTMxM2U5YWY1ZjcyOGQyMDIxNTZmYiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_089",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAwoIsv/fr69gVLWOuAknqXuw6xOBUpwnjHNqmP/NDVLo=",
+   "sig": "I98Pxyd6JXiRWbLGg5RkOEBkY3DERCEhkZIdQ5hOrtbwQgG4/Wh+M/pMfwLHZcueoSfgBR57S0wUvaqDdGy2AA==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ODExYWIxZDdkMjQzNzI1YTUxODZmMThlMmZmN2VjZDMwMDM3ZTRlODAyYTFjODM0MWFiY2VjMzIyYzI0NjM4YyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_090",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEA0nFCOMKszjB2yP3zCyIkJDP0Bhu2aCgG3QQeFaoQ0tc=",
+   "sig": "kPdgFcy9UvkFZ79VS9yL+2iUx0qgS/0dIeRP9cx415sNffvSoAhyk8ZgfTGwTrX3UGvE2DuAezBapJXSsQaUDQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YWMzYjY3MjM2MjA2M2NiMDE1NzYwZDQwNzc4ZTM5NzE1MjI0MzQwYzlhY2U4MzAzN2U2YTQwNTBmN2M5ZmYzYSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_091",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEABmk2pAc5rZU/B8a6rYbQow6jNlUVIbG6TMXEMYHDNgc=",
+   "sig": "g0vzHrz+YEQsZQ1VhiNeMz+7251SFa+uvfyyPLJaLpo7IgcA6Yc+PWrRg6r22RnFpilJwdOAXgKqe3hALyQoCw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MjE4MjdkOTEyZjczNzI5ZGZlNWU2MGQ4OWQ3OTEzYTc0YmNjNjU1NDc5MzFjMjIzMjJjNzc5NTkwNWU2NzExMiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_092",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAQLbn6Pd09K+ugr2JIxtbfxz4sKhG8JROnQzByMKUFmk=",
+   "sig": "PyNDbMc3tGNEyws0x0Oh/Bfu2JosapvA/j6dVBLReD2tqypjoC23DIh+meCCgW+bGMX4PatjinlZImSPYxAhCQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NjEwOThlMmI1ODJhYjIzNDljM2Q2YWUwM2RlMDlkNjc5NGNiNmY4OTcxMzc0ZTNlZDk0NjU5YjQxYThlYjI4YiIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_093",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAMicPTS7Ti3LDP0J24RpcIvLQ5585Kh/EmkflVoYJ3YU=",
+   "sig": "pAMqW/8INKgEwZd+lxdOZStNQqbx+LU+2oxfJ5Vwfr1AaOviMl9IqRg/tZRlyif7GaWAGHUXUueCloKiOKJwBw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZTlhNjRmNDdlZmU2MGU3Njc2OGFlMzQ0YjQyOWFjNGUwZTk1Nzk2MWJhNTgyOTE4OWRjMTM4ZDI3ZmZmYTM0NyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_094",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAzhvw32Vuw9EBMuWbvXmrnyqD+CpZjPbsdUa/C2vH87g=",
+   "sig": "V/fIaYbXItzn9nZSCn8vpbRSfAXPVDXMHCAgV+Az2AMWci0wXBZirRs9aWxVivzDe2ntLFTXcdTlSKv9d5U6DQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NmYwZjY4MzQ0OGRmMGRiN2VjZWEwZjU5NjkwZmFkNmI2ZmE2ZjZmOGE4YjVhYzdhZDQyYTVmNjJkYzJhMTNjOCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_095",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAXNNrEXklme/r/gvEw41bH9hOKyXz6eTY4l1cqRnZZ6w=",
+   "sig": "YHrtn619VetubKax6/WikgTRNWLJQr33d7vQ3dZueu+01IOTO4yU1gBqBBEqo/wTrR1foGFL6L/Jgwzm2NNnBw==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MTdkY2M1OWEyMTQ3MTUwZjEwMDI0MmY1NDFjOTNmYTk2MDdiZWM5Nzc1YzdmYzNlYWUwNjE0YmMzNGZmOGVjNyIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_096",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAtd7wnvfPQwsCdsZyCWlc51L6w3tj/9Ob7wdUVsBHGAo=",
+   "sig": "JPu6txaxiQ0V/3q900siyQJuhuRa82CaZDeOuB2fmvFgdMldyYyveEgGksrPwD3P3C/7UkmHGcoFSniHuJFiCQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6ZDNmYWU0MmI4NDY4NGI4MzFjMjAwZTk4NTcyYzM0NzYyODYxMzBkMThiMDhkMDM4YmExMmRhZGYwNDRmYmI1MCIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_097",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAvFvZFAdAdLUvKcM6LYZlSi4CF8i44+5jWppFQDBfI70=",
+   "sig": "SkiZyWVHpxH++ur5dVkgT2So59mw+sD/5JGkTdFHWD4PR/4bqDaF3OJslF94AfnsE9zXKDJCw74bM090qX+5BQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6MzdkOGRjNDUxYWVlNjI3ODMwMGMyNDUzYTM3YzI0MDcxYzE1MjE1NzFiMjFhMjRmOTFmYjA4M2IzNWUwZWIzNSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_098",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAZ7/rKvcE3j3X/XOcui5lkxXYk0YRIZAfyUjiVOmnyP0=",
+   "sig": "Yjf1cgVX9Glh66gXCR9Kc0jJzsgVmwmBgRzhfvPqzDqfD9vr91uyljlRKl53XO8VPkRFQRljcSNPT5Yby5hUDg==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NGRjYmQ2OTE4MDI0MjVjNGM0NzlkMGQzNGViZjJhZDI2NDNkZWVjYjBjMTI1ODgyNzQ2NjI5YWM0OWVkMDUyMSIsInZlcnNpb24iOiJ2MSJ9"
+  },
+  {
+   "id": "F_positive_099",
+   "class": "genuine",
+   "expected": "ACCEPT",
+   "note": "legitimate keypair, genuine signature over a real Raven preimage",
+   "keyFormat": "spki-ed25519",
+   "key": "MCowBQYDK2VwAyEAx8cdz5S1U1yQt6cOm+oWFwHlEPk71J3Trq/JSDhFn0M=",
+   "sig": "qHTPuTy6nvTtwXMVW1AVqRh1f6xlGB45Ds0Lsg85eQuiMwNR5nnI2M/hfiAzq0BZYyzrwNZHgQNid02W8yvdCQ==",
+   "msg": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6YzBhYjUwNzZkYWVmNDAzYTc3Njk3NDNmNzQxMWIwZWNmNjEzNGViYjFjYjU3NGRmODNkOGZlZjhhNzc0OTQ4YSIsInZlcnNpb24iOiJ2MSJ9"
+  }
+ ]
+}
