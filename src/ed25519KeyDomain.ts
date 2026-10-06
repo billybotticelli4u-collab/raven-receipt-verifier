@@ -128,7 +128,8 @@ export function assertEd25519PublicKeyRaw(raw: Uint8Array): void {
 export function assertEd25519SignatureRaw(sig: Uint8Array): void {
   if (sig.length !== 64) throw new Error("bad signature length");
   // R must be a canonical curve point (libsodium rejects non-canonical R).
-  decompressCanonicalEd25519Point(sig.subarray(0, 32));
+  const r = decompressCanonicalEd25519Point(sig.subarray(0, 32));
+  if (ed25519PointHasSmallOrder(r)) throw new Error("ed25519 signature R has small order");
   const s = leBytesToBigInt(sig.subarray(32));
   if (s >= L) throw new Error("noncanonical ed25519 scalar S");
 }
