@@ -1,0 +1,23 @@
+[
+  {
+    "file": "PARENT_BACKEND.json",
+    "forgeable": 27,
+    "positives": 100,
+    "pass": null,
+    "by_class": null
+  },
+  {
+    "file": "PARENT_JS_KERNEL.json",
+    "forgeable": 27,
+    "positives": 100,
+    "pass": null,
+    "by_class": null
+  },
+  {
+    "file": "PARENT_PYTHON.json",
+    "forgeable": 21,
+    "positives": 100,
+    "pass": null,
+    "by_class": null
+  }
+]

@@ -1,0 +1,69 @@
+{
+  "name": "raven-receipt-verifier",
+  "version": "0.1.0",
+  "description": "Open, dependency-free local verifier for Raven receipt-v1: verify a signed on-chain-evidence receipt offline against an independently pinned key, and bind it to the exact chain/mint/token-program subject requested.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": false,
+  "homepage": "https://ravenattest.com",
+  "bugs": "https://ravenattest.com/security.html",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/canonicalDataSnapshot.*",
+    "dist/canonicalJson.*",
+    "dist/detect.*",
+    "dist/ed25519KeyDomain.*",
+    "dist/ed25519NodeVerify.*",
+    "dist/index.*",
+    "dist/outcomeProjection.*",
+    "dist/receiptRules.*",
+    "dist/receiptV1.*",
+    "dist/solanaAddress.*",
+    "dist/trustAnchor.*",
+    "dist/verifyReceiptV1.*",
+    "dist/verifyReceiptV1ForSubject.*",
+    "README.md",
+    "LICENSE",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "build": "node scripts/clean-dist.mjs && tsc -p tsconfig.build.json",
+    "prepack": "npm run build",
+    "test": "node --test test/*.test.ts",
+    "test:packed": "node scripts/test-packed-install.mjs",
+    "test:cjs": "node scripts/test-cjs-consumer.mjs",
+    "test:declarations": "node scripts/test-declaration-consumer.mjs"
+  },
+  "keywords": [
+    "raven",
+    "solana",
+    "attestation",
+    "receipt",
+    "verification",
+    "ed25519"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^25.0.0",
+    "typescript": "^6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/billybotticelli4u-collab/raven-receipt-verifier.git"
+  }
+}

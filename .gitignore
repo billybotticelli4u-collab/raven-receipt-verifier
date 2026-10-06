@@ -1,3 +1,6 @@
 node_modules/
-packages/verify-js/dist/
+dist/
 *.tgz
+.DS_Store
+coverage/
+.npm-pack-scratch/
