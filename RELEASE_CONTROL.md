@@ -14,7 +14,24 @@ provenance. It is **not** authorization to publish.
 | PR #211 | DO NOT TOUCH | Private `-launchguard` draft held; not this path. |
 | Private `-launchguard` | READ-ONLY / PRIVATE | Do not merge publish workflows there; do not flip visibility. |
 
-## Measured pack identity (after `repository` field)
+## Current R1/T1 pack binding (2026-10-06)
+
+The reviewed packed bytes from source `608a145f2c01d6dab30d5dbfccead9fa8b922306`
+supersede the historical `e023c7d` / `848d13d3…` binding below.
+A binding-only successor still needs exact-source review; this table is not ceremony clearance.
+
+| Field | Value |
+| --- | --- |
+| Package | `raven-receipt-verifier@0.1.0` |
+| Members | `56` |
+| Decoded-tar SHA-256 (controlling binding) | `d038b7036e77cf1e079967ba4261fb829e083efd8cb0618a9e07fc9c4fb358e4` |
+| Archive SHA-256 (transport only) | `be2b7e851ad8d00759d9f1fa16cadeb1fe0b82a69bc7011bc9cf14201f74e0a6` |
+| npm integrity | `sha512-UfE6JXDJL3CH3rx04QJurULxonPDYlNxk8B8bIQi+E3rohxPqeB8aiVtW6TNPf15Jy+nZXRfiT1IVVe1r2/76g==` |
+
+`FIRST_PUBLISH_CEREMONY` remains `BLOCKED`. R2 (Proxy re-read) and mixed-order-key
+contract wording remain open. No publication, merge or deployment is authorized here.
+
+## Historical pack identity — superseded, not a ceremony target
 
 Measured locally on 2026-09-23 (Europe/Rome) after setting:
 
@@ -53,7 +70,7 @@ the public successor adds the matching public `repository` field.
 
 ## Ceremony steps remaining (Owner / Glen)
 
-1. Independent review of this public tree ↔ decoded-tar `6764b02d…3520` and Ed25519 packed corpus (0-forgeable expected).
+1. Independent review of this exact public source successor ↔ decoded-tar `d038b7036e77cf1e079967ba4261fb829e083efd8cb0618a9e07fc9c4fb358e4` and Ed25519 packed corpus (0-forgeable expected).
 2. Owner GO / no-GO on first publication (this document is not GO).
 3. Confirm public repo remains the provenance source (not private `-launchguard`).
 4. Repository-file change only: set `FIRST_PUBLISH_CEREMONY` from `BLOCKED` to the reviewed clear value after pins/review match.
