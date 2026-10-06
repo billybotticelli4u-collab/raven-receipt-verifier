@@ -1,0 +1,24 @@
+{
+  "provenance": {
+    "source": "CLAUDE-COWORK-R1-DELTA-433E7E4-B8E0905-2026-10-06/instruments/vectors.json",
+    "sha256": "d4ea3690ea3b7f6138f0973c3f05060aca4e4492a03c988d7b4abd9970c43963",
+    "selection": "T2 and T8; public test keys, not production identities; no mixed-order key acceptance decision"
+  },
+  "message_b64": "eyJkb21haW4iOiJyYXZlbi1yZWNlaXB0IiwicGF5bG9hZEhhc2giOiJzaGEyNTY6NDA1ODAyMzg2ODMzMDhhYjkyYTUyYTRiMGI2MzI5MGY1YWRlYzFjZDA5MThjZTk2ZWMxYjQ5OTViM2MyMWNjYyIsInZlcnNpb24iOiJ2MSJ9",
+  "vectors": {
+    "order2R_mixedKey": {
+      "key_b64": "MCowBQYDK2VwAyEA+kbl84Ag7a0os1wwZOUbK6j3f0vF2L/tanS3O/EJ9Ew=",
+      "signature_b64": "7P///////////////////////////////////////3+ZJaWzklb0LBeKQe9Kbl5kqoBoBG/cVvMZVVeB/OEsCw==",
+      "R_order": 2,
+      "key_is_mixed_order": true,
+      "R_hex": "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f"
+    },
+    "order8R_mixedKey": {
+      "key_b64": "MCowBQYDK2VwAyEAyER9rKXRmM+S6APUzxT+9NtEjQeaQQGSAwINVxwuLQA=",
+      "signature_b64": "xxdqcD1N2E+6PAt2DRBnDyogU/osOczGTsf9d5KsA/oj9DGrt7kAXM67igvPaAACg3S0uny17TsJ0/i8KWfYBg==",
+      "R_order": 8,
+      "key_is_mixed_order": true,
+      "R_hex": "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac03fa"
+    }
+  }
+}
