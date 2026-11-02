@@ -11,14 +11,25 @@ trust a Raven receipt.
 > signer, no scanner, no network, no advice. A receipt is signed evidence, not a
 > verdict.
 
-## Install
+## Source-only status
+
+**Source only, not yet published to npm.** On 2026-11-02, the public registry lookup
+for `raven-receipt-verifier` returned HTTP 404. The `0.1.0` version and API examples
+below describe this source candidate, not an available registry release or an
+approved customer installation.
+
+For source review, run these commands from the repository root. Installing the
+development dependencies requires registry access or a populated cache:
 
 ```sh
-npm install raven-receipt-verifier
+npm --prefix packages/verify-js ci
+npm --prefix packages/verify-js run build
+npm --prefix packages/verify-js test
 ```
 
-The published package exports compiled ESM and TypeScript declarations from
-`dist/`; consumers do not need Node's TypeScript type-stripping support or a
+The source build emits compiled ESM and TypeScript declarations in `dist/`,
+as specified by the candidate's export map. Consumers of those compiled files
+do not need Node's TypeScript type-stripping support or a
 TypeScript loader. Node 22.18 and later are supported (the release-plan
 verified floor). The package is deliberately **ESM-only**: on the supported
 Node floor, CommonJS consumers can `require()` it natively via Node's
@@ -26,8 +37,9 @@ require(esm) support, so no dual build is shipped.
 
 ## Trust bootstrap for the production key
 
-For a customer path, npm provenance authenticates package/source lineage. It
-does not tell you which Raven signer key you intended to trust.
+For a future published package, npm provenance would authenticate package/source
+lineage. It would not tell you which Raven signer key you intended to trust.
+Building this source does not supply the authenticated handoff described below.
 
 Initial signer trust comes from an authenticated Raven commercial/onboarding
 handoff that names the exact package identity (`raven-receipt-verifier`), the
